@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Training: Pure</title>
     
-    <!-- Tailwind CSS (Design) - Wenn das blockiert wird, sieht es hässlich aus, aber LÄUFT trotzdem -->
+    <!-- Tailwind CSS (Design) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
-        /* Fallback, falls Tailwind nicht lädt */
-        .fallback-btn { padding: 10px 20px; margin: 5px; background: #ddd; border: 1px solid #999; cursor: pointer; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Extra Schriftart für Arabisch falls nötig, meistens reicht System-Font */
+        .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
     </style>
 </head>
 <body class="bg-green-50 text-gray-800">
@@ -43,7 +43,7 @@
         <!-- Hier wird der Inhalt per Javascript reingeladen -->
     </div>
 
-    <!-- JAVASCRIPT LOGIC (Keine externen Libraries mehr!) -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
         // DATEN (HIER KANNST DU EDITIEREN)
@@ -99,24 +99,40 @@
                     { en: "stupid", de: "blöd", type: "neg" }
                 ]
             }
+            // Weitere Module hier einfügen...
         ];
 
         // ==========================================
-        // APP LOGIC (Pure Vanilla JS)
+        // UI TEXTS (DEUTSCH & ARABISCH)
+        // ==========================================
+        const UI_TEXT = {
+            vocab: {
+                de: "Klicke auf die Karte. Höre das Wort. Schreibe das Wort.",
+                ar: "اضغط على البطاقة. استمع للكلمة. اكتب الكلمة."
+            },
+            sentences: {
+                de: "Wähle aus jeder Spalte ein Wort. Baue einen Satz.",
+                ar: "اختر كلمة من كل قائمة. ركب جملة."
+            },
+            opinion: {
+                de: "Wie findest du das? Wähle eine Meinung.",
+                ar: "ما رأيك؟ اختر إجابة."
+            },
+            report: {
+                de: "Schreibe deinen Namen. Drucke das Blatt.",
+                ar: "اكتب اسمك. اطبع الورقة."
+            }
+        };
+
+        // ==========================================
+        // APP LOGIC
         // ==========================================
         
         const app = {
             currentUnitId: COURSE_DATA[0].id,
             activeTab: 'vocab',
-            state: { // Temporärer Speicher
-                sentenceSelection: { col1: null, col2: null, col3: null },
-                flippedCards: {},
-                quizInputs: {}
-            },
-            data: { // Persistenter Speicher (LocalStorage)
-                sentences: [],
-                opinions: {}
-            },
+            state: { sentenceSelection: { col1: null, col2: null, col3: null }, flippedCards: {}, quizInputs: {} },
+            data: { sentences: [], opinions: {} },
 
             init: function() {
                 this.loadData();
@@ -124,15 +140,13 @@
                 this.render();
             },
 
-            getUnit: function() {
-                return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0];
-            },
+            getUnit: function() { return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0]; },
 
             setUnit: function(id) {
                 this.currentUnitId = id;
                 this.activeTab = 'vocab';
-                this.state = { sentenceSelection: {}, flippedCards: {}, quizInputs: {} }; // Reset Temp State
-                this.loadData(); // Load data for new unit
+                this.state = { sentenceSelection: {}, flippedCards: {}, quizInputs: {} };
+                this.loadData();
                 this.renderUnitSelector();
                 this.render();
             },
@@ -143,22 +157,15 @@
                 this.render();
             },
 
-            // --- STORAGE ---
             loadData: function() {
                 try {
                     const saved = localStorage.getItem('english_data_' + this.currentUnitId);
-                    if (saved) {
-                        this.data = JSON.parse(saved);
-                    } else {
-                        this.data = { sentences: [], opinions: {} };
-                    }
-                } catch(e) { console.error("Storage Error", e); }
+                    if (saved) { this.data = JSON.parse(saved); } else { this.data = { sentences: [], opinions: {} }; }
+                } catch(e) {}
             },
 
             saveData: function() {
-                try {
-                    localStorage.setItem('english_data_' + this.currentUnitId, JSON.stringify(this.data));
-                } catch(e) {}
+                try { localStorage.setItem('english_data_' + this.currentUnitId, JSON.stringify(this.data)); } catch(e) {}
             },
 
             addSentence: function(sentence) {
@@ -173,7 +180,6 @@
                 this.saveData();
             },
 
-            // --- TTS ---
             speak: function(text) {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
@@ -184,7 +190,16 @@
                 }
             },
 
-            // --- RENDERING ---
+            // --- RENDERING HELPERS ---
+            renderInstructions: function(type) {
+                return `
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                        <p class="font-bold text-gray-700 text-sm mb-1">🇩🇪 ${UI_TEXT[type].de}</p>
+                        <p class="ar text-gray-500 text-sm text-right">🇸🇦 ${UI_TEXT[type].ar}</p>
+                    </div>
+                `;
+            },
+
             renderUnitSelector: function() {
                 const container = document.getElementById('unit-selector');
                 container.innerHTML = COURSE_DATA.map(unit => `
@@ -214,7 +229,6 @@
 
             // 1. VOCAB RENDERER
             renderVocab: function(container, unit) {
-                // Generate Quiz items logic (simple random selection based on unit id to be consistent)
                 const quizHTML = unit.vocab.slice(0, 3).map((word, idx) => {
                     const masked = word.en.replace(/[aeiouAEIOU]/g, '_');
                     const inputVal = this.state.quizInputs[word.en] || '';
@@ -225,7 +239,7 @@
                             <span class="font-mono text-lg bg-white border px-3 py-1 rounded w-full sm:w-48 text-center tracking-widest text-gray-600 font-bold">${masked}</span>
                             <div class="relative w-full flex-grow">
                                 <input type="text" oninput="app.handleQuizInput('${word.en}', this.value)" value="${inputVal}"
-                                    class="w-full border-2 p-2 pl-4 rounded-lg outline-none ${inputVal.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'}" placeholder="Ganzes Wort...">
+                                    class="w-full border-2 p-2 pl-4 rounded-lg outline-none ${inputVal.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'}" placeholder="Word...">
                                 ${isCorrect ? '<i class="ph ph-check-circle text-green-500 text-2xl absolute right-2 top-1/2 -translate-y-1/2"></i>' : ''}
                             </div>
                         </div>
@@ -234,7 +248,9 @@
 
                 container.innerHTML = `
                     <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Step 1</span> Learn the Words</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Step 1</span> Learn the Words</h2>
+                        ${this.renderInstructions('vocab')}
+                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                             ${unit.vocab.map((word, idx) => `
                                 <div onclick="app.toggleCard(${idx})" class="bg-white rounded-xl shadow-sm hover:shadow-md p-6 cursor-pointer border-2 transition-all relative overflow-hidden group ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
@@ -248,7 +264,7 @@
                             `).join('')}
                         </div>
                         <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                             <h3 class="text-xl font-bold text-gray-800 mb-4">⚡ Speed Quiz: Fill in vowels</h3>
+                             <h3 class="text-xl font-bold text-gray-800 mb-4">⚡ Speed Quiz</h3>
                              ${quizHTML}
                         </div>
                     </div>
@@ -257,14 +273,12 @@
 
             toggleCard: function(idx) {
                 this.state.flippedCards[idx] = !this.state.flippedCards[idx];
-                this.render(); // Re-render to show change
+                this.render(); 
             },
 
             handleQuizInput: function(id, val) {
                 this.state.quizInputs[id] = val;
-                this.render(); // Re-render to show validation
-                // Keep focus logic would be complex in pure HTML re-render, but good enough for now
-                // Ideally we'd update DOM directly, but full re-render is safer for state consistency
+                this.render(); 
                 setTimeout(() => {
                     const inputs = document.querySelectorAll(`input[value="${val}"]`);
                     if(inputs.length > 0) inputs[inputs.length-1].focus();
@@ -291,7 +305,9 @@
 
                 container.innerHTML = `
                     <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Step 2</span> Build Sentences</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Step 2</span> Build Sentences</h2>
+                        ${this.renderInstructions('sentences')}
+                        
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                             ${renderCol('col1', unit.sentenceParts.col1, 'blue')}
                             ${renderCol('col2', unit.sentenceParts.col2, 'purple')}
@@ -342,7 +358,9 @@
                 
                 container.innerHTML = `
                     <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Step 3</span> Express Opinions</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Step 3</span> Express Opinions</h2>
+                        ${this.renderInstructions('opinion')}
+                        
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                             ${unit.opinions.map(op => `
                                 <div onclick="app.speak('${op.en}')" class="p-4 rounded-xl text-center border-2 cursor-pointer hover:scale-105 transition-transform ${op.type === 'pos' ? 'bg-green-50 border-green-200' : op.type === 'neg' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}">
@@ -383,7 +401,9 @@
             renderReport: function(container, unit) {
                 container.innerHTML = `
                     <div class="max-w-2xl mx-auto">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Step 4</span> Final Report</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Step 4</span> Final Report</h2>
+                        ${this.renderInstructions('report')}
+                        
                         <div class="bg-white p-8 rounded-xl shadow-2xl border-t-8 border-green-600 relative overflow-hidden">
                              <div class="flex justify-between items-start mb-8 border-b border-gray-100 pb-6">
                                 <div><h1 class="text-3xl font-bold text-gray-900">My English Report</h1><p class="text-green-600 font-medium">${unit.title}</p></div>
