@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Training: Pure</title>
+    <title>English Training: Complete Course</title>
     
     <!-- Tailwind CSS (Design) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,7 +12,6 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Klasse für arabische Schrift (Rechts-nach-Links) */
         .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
     </style>
 </head>
@@ -20,16 +19,17 @@
 
     <!-- HEADER / UNIT SELECTOR -->
     <div class="bg-green-800 text-white p-4 shadow-md">
-        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 English Trainer</h1>
-            
-            <div class="flex items-center gap-4">
+        <div class="max-w-4xl mx-auto flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 English Trainer</h1>
                 <button onclick="app.testAudio()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 border border-green-500">
                     🔊 Audio Test
                 </button>
-                <div id="unit-selector" class="flex flex-wrap gap-2 bg-green-900/50 p-1 rounded-lg">
-                    <!-- Units werden hier rein generiert -->
-                </div>
+            </div>
+            
+            <!-- Unit Selector (Scrollbar) -->
+            <div id="unit-selector" class="flex overflow-x-auto gap-2 bg-green-900/50 p-2 rounded-lg hide-scroll">
+                <!-- Units werden hier rein generiert -->
             </div>
         </div>
     </div>
@@ -50,12 +50,13 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN (JETZT MIT ARABISCH)
+        // DATEN: HIER SIND ALLE 6 MODULE
         // ==========================================
         const COURSE_DATA = [
+            // MODUL 1: HOLIDAYS
             {
                 id: "unit1",
-                title: "Modul 1: Holidays",
+                title: "1: Holidays",
                 icon: "🌴",
                 vocab: [
                     { en: "played football", de: "Fußball gespielt", ar: "لعب كرة القدم", icon: "⚽" },
@@ -79,9 +80,11 @@
                     { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
                 ]
             },
+            
+            // MODUL 2: HOBBIES
             {
                 id: "unit2",
-                title: "Modul 2: Hobbies",
+                title: "2: Hobbies",
                 icon: "🎮",
                 vocab: [
                     { en: "read comics", de: "Comics lesen", ar: "قرأ القصص المصورة", icon: "📚" },
@@ -102,9 +105,124 @@
                     { en: "okay", de: "okay", ar: "حسناً", type: "neu" },
                     { en: "stupid", de: "blöd", ar: "غبي", type: "neg" }
                 ]
+            },
+
+            // MODUL 3: SCHOOL (Neu)
+            {
+                id: "unit3",
+                title: "3: School",
+                icon: "🏫",
+                vocab: [
+                    { en: "Math", de: "Mathe", ar: "رياضيات", icon: "📐" },
+                    { en: "English", de: "Englisch", ar: "إنجليزي", icon: "🇬🇧" },
+                    { en: "History", de: "Geschichte", ar: "تاريخ", icon: "🏛️" },
+                    { en: "Art", de: "Kunst", ar: "فن", icon: "🎨" },
+                    { en: "Ruler", de: "Lineal", ar: "مسطرة", icon: "📏" },
+                    { en: "Pen", de: "Stift", ar: "قلم", icon: "🖊️" },
+                    { en: "Bag", de: "Tasche", ar: "حقيبة", icon: "🎒" },
+                    { en: "Book", de: "Buch", ar: "كتاب", icon: "📖" }
+                ],
+                sentenceParts: {
+                    col1: { title: "When?", items: ["On Monday", "On Tuesday", "On Friday"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "What?", items: ["have Math", "have English", "have History", "have Art"] }
+                },
+                opinions: [
+                    { en: "easy", de: "einfach", ar: "سهل", type: "pos" },
+                    { en: "hard", de: "schwer", ar: "صعب", type: "neg" },
+                    { en: "good", de: "gut", ar: "جيد", type: "pos" },
+                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" }
+                ]
+            },
+
+            // MODUL 4: TOWN (Neu)
+            {
+                id: "unit4",
+                title: "4: Town",
+                icon: "🏙️",
+                vocab: [
+                    { en: "Cinema", de: "Kino", ar: "سينما", icon: "🍿" },
+                    { en: "Supermarket", de: "Supermarkt", ar: "سوبر ماركت", icon: "🛒" },
+                    { en: "Park", de: "Park", ar: "حديقة", icon: "🌳" },
+                    { en: "Hospital", de: "Krankenhaus", ar: "مستشفى", icon: "🏥" },
+                    { en: "Go left", de: "Geh links", ar: "اذهب لليسار", icon: "⬅️" },
+                    { en: "Go right", de: "Geh rechts", ar: "اذهب لليمين", icon: "➡️" },
+                    { en: "Go straight", de: "Geh geradeaus", ar: "اذهب للأمام", icon: "⬆️" },
+                    { en: "Stop", de: "Stopp", ar: "قف", icon: "🛑" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Where?", items: ["To the cinema", "To the park", "To the shop"] },
+                    col2: { title: "Please...", items: ["go left", "go right", "go straight"] },
+                    col3: { title: "Distance", items: ["and stop", "for 100 meters"] }
+                },
+                opinions: [
+                    { en: "near", de: "nah", ar: "قريب", type: "pos" },
+                    { en: "far", de: "weit", ar: "بعيد", type: "neu" },
+                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
+                    { en: "small", de: "klein", ar: "صغير", type: "neu" }
+                ]
+            },
+
+            // MODUL 5: SHOPPING (Neu)
+            {
+                id: "unit5",
+                title: "5: Shopping",
+                icon: "🛍️",
+                vocab: [
+                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
+                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
+                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
+                    { en: "Bread", de: "Brot", ar: "خبز", icon: "🍞" },
+                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
+                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Polite", items: ["I would like", "I want"] },
+                    col2: { title: "Action", items: ["to buy"] },
+                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple", "bread"] }
+                },
+                opinions: [
+                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
+                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
+                    { en: "nice", de: "schön", ar: "جميل", type: "pos" },
+                    { en: "ugly", de: "hässlich", ar: "قبيح", type: "neg" }
+                ]
+            },
+
+            // MODUL 6: TRAVEL (Neu)
+            {
+                id: "unit6",
+                title: "6: Travel",
+                icon: "✈️",
+                vocab: [
+                    { en: "Train", de: "Zug", ar: "قطار", icon: "🚆" },
+                    { en: "Bus", de: "Bus", ar: "حافلة", icon: "🚌" },
+                    { en: "Plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
+                    { en: "Car", de: "Auto", ar: "سيارة", icon: "🚗" },
+                    { en: "Ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
+                    { en: "Passport", de: "Pass", ar: "جواز سفر", icon: "🛂" },
+                    { en: "Suitcase", de: "Koffer", ar: "حقيبة سفر", icon: "🧳" },
+                    { en: "Hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
+                ],
+                sentenceParts: {
+                    col1: { title: "When?", items: ["In summer", "Next week"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "Travel by...", items: ["go by plane", "go by train", "go by car"] }
+                },
+                opinions: [
+                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
+                    { en: "slow", de: "langsam", ar: "بطيء", type: "neg" },
+                    { en: "exciting", de: "aufregend", ar: "مثير", type: "pos" },
+                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
+                ]
             }
         ];
 
+        // ==========================================
+        // UI TEXTS (DEUTSCH & ARABISCH)
+        // ==========================================
         const UI_TEXT = {
             vocab: { de: "Klicke auf die Karte. Höre das Wort. Schreibe das Wort.", ar: "اضغط على البطاقة. استمع للكلمة. اكتب الكلمة." },
             sentences: { de: "Wähle aus jeder Spalte ein Wort. Baue einen Satz.", ar: "اختر كلمة من كل قائمة. ركب جملة." },
@@ -140,25 +258,17 @@
                     return;
                 }
 
-                // 1. Laufende Sprache abbrechen
                 window.speechSynthesis.cancel();
-
-                // 2. Neues Objekt erstellen
                 const utterance = new SpeechSynthesisUtterance(text);
-                
-                // 3. Sprache erzwingen (Standard Englisch)
                 utterance.lang = 'en-US';
-                utterance.rate = 0.9; // Leicht verlangsamt
-                utterance.volume = 1.0; // Max Lautstärke
-
-                // 4. Abspielen
+                utterance.rate = 0.9; 
+                utterance.volume = 1.0; 
                 window.speechSynthesis.speak(utterance);
             },
 
             testAudio: function() {
                 this.speak("Hello! The audio is working.");
             },
-            // ------------------
 
             getUnit: function() { return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0]; },
 
@@ -214,8 +324,8 @@
                 const container = document.getElementById('unit-selector');
                 container.innerHTML = COURSE_DATA.map(unit => `
                     <button onclick="app.setUnit('${unit.id}')" 
-                        class="px-3 py-1 rounded text-sm font-medium transition-colors flex items-center gap-2 ${this.currentUnitId === unit.id ? 'bg-white text-green-800 shadow' : 'text-green-100 hover:bg-green-700'}">
-                        <span>${unit.icon}</span> <span class="hidden sm:inline">${unit.title}</span>
+                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 ${this.currentUnitId === unit.id ? 'bg-white text-green-800 border-white shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
+                        <span>${unit.icon}</span> <span>${unit.title}</span>
                     </button>
                 `).join('');
             },
