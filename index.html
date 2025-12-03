@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmads English App</title>
+    <title>Ahmed's English App</title>
     
-    <!-- Tailwind CSS (Design) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
@@ -14,99 +14,112 @@
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
         
-        /* Animationen für Spiele */
-        .card-flip { transition: transform 0.6s; transform-style: preserve-3d; }
-        .card-flip.flipped { transform: rotateY(180deg); }
+        /* Karten Animationen */
         .perspective { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
-<body class="bg-green-50 text-gray-800">
+<body class="bg-green-50 text-gray-800 pb-20">
 
     <!-- HEADER -->
     <div class="bg-green-800 text-white p-4 shadow-md sticky top-0 z-50">
         <div class="max-w-4xl mx-auto flex flex-col gap-4">
-            <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 Ahmads English App</h1>
-                <button onclick="app.testAudio()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 border border-green-500">
-                    🔊 Audio Test
+            <div class="flex justify-between items-center flex-wrap gap-2">
+                <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 Ahmed's English App</h1>
+                <button onclick="app.testAudio()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded-full text-xs flex items-center gap-2 border border-green-500">
+                    🔊 Audio Check / فحص الصوت
                 </button>
             </div>
             
             <!-- Unit Selector -->
             <div id="unit-selector" class="flex overflow-x-auto gap-2 bg-green-900/50 p-2 rounded-lg hide-scroll">
-                <!-- Units werden hier generiert -->
+                <!-- Wird per JS gefüllt -->
             </div>
         </div>
     </div>
 
     <!-- NAVIGATION TABS -->
-    <div id="nav-container" class="bg-white/90 backdrop-blur border-b border-green-100 p-2 mb-6 shadow-sm hidden">
+    <div id="nav-container" class="bg-white/90 backdrop-blur border-b border-green-100 p-2 mb-6 shadow-sm">
         <div id="nav-tabs" class="max-w-4xl mx-auto flex justify-center gap-2 overflow-x-auto hide-scroll">
-            <!-- Tabs kommen hier rein -->
+            <!-- Tabs werden hier generiert -->
         </div>
     </div>
 
     <!-- MAIN CONTENT AREA -->
-    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh] pb-20"></div>
+    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh]"></div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN (ALLE 20 MODULE)
+        // 1. DATEN (SIMPLE PRESENT & TRILINGUAL UI)
         // ==========================================
+        
+        // UI TEXTE (Dreisprachig für Buttons)
+        const UI = {
+            tabs: {
+                vocab: { en: "Words", de: "Wörter", ar: "كلمات" },
+                sentences: { en: "Sentences", de: "Sätze", ar: "جمل" },
+                memory: { en: "Memory", de: "Memory", ar: "ذاكرة" },
+                scramble: { en: "Scramble", de: "Buchstabensalat", ar: "خلط الحروف" }
+            },
+            btn: {
+                newWords: { en: "New Words", de: "Neue Wörter", ar: "كلمات جديدة" },
+                save: { en: "Check & Save", de: "Prüfen & Speichern", ar: "تحقق وحفظ" },
+                restart: { en: "Restart", de: "Neustart", ar: "إعادة تشغيل" },
+                skip: { en: "Skip Word", de: "Wort überspringen", ar: "تخطى الكلمة" }
+            },
+            instr: {
+                vocab: { en: "Listen and learn.", de: "Höre und lerne.", ar: "استمع وتعلم." },
+                sentences: { en: "Build and write.", de: "Baue und schreibe.", ar: "بناء وكتابة." },
+                memory: { en: "Find pairs.", de: "Finde Paare.", ar: "ابحث عن أزواج." },
+                scramble: { en: "Sort letters.", de: "Sortiere Buchstaben.", ar: "رتب الحروف." }
+            }
+        };
+
         const COURSE_DATA = [
+            // UNIT 1: HOLIDAYS (Simple Present Activities)
             {
                 id: "unit1",
-                title: "1: Holidays",
-                icon: "🌴",
+                title: "1: Free Time",
+                icon: "⚽",
                 vocab: [
-                    { en: "played football", de: "Fußball gespielt", ar: "لعب كرة القدم", icon: "⚽" },
-                    { en: "watched TV", de: "ferngesehen", ar: "شاهد التلفاز", icon: "📺" },
-                    { en: "slept long", de: "lange geschlafen", ar: "نام طويلاً", icon: "😴" },
-                    { en: "met friends", de: "Freunde getroffen", ar: "قابل الأصدقاء", icon: "🤝" },
-                    { en: "played video games", de: "Videospiele gespielt", ar: "لعب ألعاب الفيديو", icon: "🎮" },
-                    { en: "ate pizza", de: "Pizza gegessen", ar: "أكل البيتزا", icon: "🍕" },
-                    { en: "went to the park", de: "in den Park gegangen", ar: "ذهب إلى الحديقة", icon: "🌳" },
-                    { en: "listened to music", de: "Musik gehört", ar: "استمع إلى الموسيقى", icon: "🎧" }
+                    { en: "play football", de: "Fußball spielen", ar: "يلعب كرة القدم", icon: "⚽" },
+                    { en: "watch TV", de: "fernsehen", ar: "يشاهد التلفاز", icon: "📺" },
+                    { en: "sleep long", de: "lange schlafen", ar: "ينام طويلاً", icon: "😴" },
+                    { en: "meet friends", de: "Freunde treffen", ar: "يقابل الأصدقاء", icon: "🤝" },
+                    { en: "play games", de: "Spiele spielen", ar: "يلعب الألعاب", icon: "🎮" },
+                    { en: "eat pizza", de: "Pizza essen", ar: "يأكل البيتزا", icon: "🍕" },
+                    { en: "go to the park", de: "in den Park gehen", ar: "يذهب للحديقة", icon: "🌳" },
+                    { en: "listen to music", de: "Musik hören", ar: "يستمع للموسيقى", icon: "🎧" }
                 ],
                 sentenceParts: {
-                    col1: { title: "When?", items: ["In the holidays"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "What?", items: ["played football", "watched TV", "met friends", "slept long", "ate pizza", "went to the park"] }
-                },
-                opinions: [
-                    { en: "cool", de: "cool / toll", ar: "رائع", type: "pos" },
-                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
-                    { en: "ok", de: "okay", ar: "حسناً", type: "neu" },
-                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
-                ]
+                    col1: { title: "Person", items: ["I", "We"] },
+                    col2: { title: "Action", items: ["play football", "watch TV", "eat pizza", "meet friends"] }, // Verbs match subject
+                    col3: { title: "Time/Place", items: ["at the weekend", "in the park", "at home"] }
+                }
             },
+            // UNIT 2: HOBBIES
             {
                 id: "unit2",
                 title: "2: Hobbies",
                 icon: "🎮",
                 vocab: [
-                    { en: "read comics", de: "Comics lesen", ar: "قرأ القصص المصورة", icon: "📚" },
-                    { en: "ride a bike", de: "Fahrrad fahren", ar: "ركب دراجة", icon: "🚲" },
-                    { en: "swim", de: "schwimmen", ar: "سبح", icon: "🏊" },
-                    { en: "draw pictures", de: "Bilder malen", ar: "رسم صوراً", icon: "🎨" },
-                    { en: "play cards", de: "Karten spielen", ar: "لعب الورق", icon: "🃏" },
-                    { en: "dance", de: "tanzen", ar: "رقص", icon: "💃" }
+                    { en: "read comics", de: "Comics lesen", ar: "يقرأ قصص", icon: "📚" },
+                    { en: "ride a bike", de: "Rad fahren", ar: "يركب دراجة", icon: "🚲" },
+                    { en: "swim", de: "schwimmen", ar: "يسبح", icon: "🏊" },
+                    { en: "draw pictures", de: "malen", ar: "يرسم", icon: "🎨" },
+                    { en: "play cards", de: "Karten spielen", ar: "يلعب ورق", icon: "🃏" },
+                    { en: "dance", de: "tanzen", ar: "يرقص", icon: "💃" }
                 ],
                 sentenceParts: {
-                    col1: { title: "How often?", items: ["Every day", "Sometimes", "Never"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "What?", items: ["read comics", "ride my bike", "swim", "draw pictures", "play cards"] }
-                },
-                opinions: [
-                    { en: "great", de: "großartig", ar: "عظيم", type: "pos" },
-                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
-                    { en: "okay", de: "okay", ar: "حسناً", type: "neu" },
-                    { en: "stupid", de: "blöd", ar: "غبي", type: "neg" }
-                ]
+                    col1: { title: "Time", items: ["Every day", "Sometimes"] },
+                    col2: { title: "Person", items: ["I", "We"] },
+                    col3: { title: "Action", items: ["read comics", "ride a bike", "swim", "dance"] }
+                }
             },
+            // UNIT 3: SCHOOL
             {
                 id: "unit3",
                 title: "3: School",
@@ -114,513 +127,371 @@
                 vocab: [
                     { en: "Math", de: "Mathe", ar: "رياضيات", icon: "📐" },
                     { en: "English", de: "Englisch", ar: "إنجليزي", icon: "🇬🇧" },
-                    { en: "History", de: "Geschichte", ar: "تاريخ", icon: "🏛️" },
-                    { en: "Art", de: "Kunst", ar: "فن", icon: "🎨" },
-                    { en: "Pen", de: "Stift", ar: "قلم", icon: "🖊️" },
-                    { en: "Bag", de: "Tasche", ar: "حقيبة", icon: "🎒" }
+                    { en: "pen", de: "Stift", ar: "قلم", icon: "🖊️" },
+                    { en: "bag", de: "Tasche", ar: "حقيبة", icon: "🎒" },
+                    { en: "book", de: "Buch", ar: "كتاب", icon: "📖" },
+                    { en: "ruler", de: "Lineal", ar: "مسطرة", icon: "📏" }
                 ],
                 sentenceParts: {
-                    col1: { title: "When?", items: ["On Monday", "On Tuesday"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "What?", items: ["have Math", "have English", "have History"] }
-                },
-                opinions: [
-                    { en: "easy", de: "einfach", ar: "سهل", type: "pos" },
-                    { en: "hard", de: "schwer", ar: "صعب", type: "neg" }
-                ]
+                    col1: { title: "Day", items: ["On Monday", "On Tuesday"] },
+                    col2: { title: "Person", items: ["I", "We"] },
+                    col3: { title: "Have", items: ["have Math", "have English", "have a test"] }
+                }
             },
+            // UNIT 4: TOWN
             {
                 id: "unit4",
                 title: "4: Town",
                 icon: "🏙️",
                 vocab: [
-                    { en: "Cinema", de: "Kino", ar: "سينما", icon: "🍿" },
-                    { en: "Park", de: "Park", ar: "حديقة", icon: "🌳" },
-                    { en: "Go left", de: "Geh links", ar: "اذهب لليسار", icon: "⬅️" },
-                    { en: "Go right", de: "Geh rechts", ar: "اذهب لليمين", icon: "➡️" },
-                    { en: "Go straight", de: "Geh geradeaus", ar: "اذهب للأمام", icon: "⬆️" }
+                    { en: "cinema", de: "Kino", ar: "سينما", icon: "🍿" },
+                    { en: "park", de: "Park", ar: "حديقة", icon: "🌳" },
+                    { en: "supermarket", de: "Supermarkt", ar: "سوبر ماركت", icon: "🛒" },
+                    { en: "school", de: "Schule", ar: "مدرسة", icon: "🏫" },
+                    { en: "go left", de: "links gehen", ar: "يسار", icon: "⬅️" },
+                    { en: "go right", de: "rechts gehen", ar: "يمين", icon: "➡️" },
+                    { en: "stop", de: "stopp", ar: "قف", icon: "🛑" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Where?", items: ["To the cinema", "To the park"] },
-                    col2: { title: "Please...", items: ["go left", "go right"] },
-                    col3: { title: "Distance", items: ["and stop", "for 100 meters"] }
-                },
-                opinions: [
-                    { en: "near", de: "nah", ar: "قريب", type: "pos" },
-                    { en: "far", de: "weit", ar: "بعيد", type: "neu" }
-                ]
+                    col1: { title: "Imperative", items: ["Please go", "Go"] },
+                    col2: { title: "Direction", items: ["left", "right", "straight"] },
+                    col3: { title: "Place", items: ["to the cinema", "to the park", "to school"] }
+                }
             },
+            // UNIT 5: SHOPPING
             {
                 id: "unit5",
                 title: "5: Shopping",
                 icon: "🛍️",
                 vocab: [
-                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
-                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
-                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
-                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
-                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
-                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
-                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
+                    { en: "t-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
+                    { en: "jeans", de: "Jeans", ar: "جينز", icon: "👖" },
+                    { en: "apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "banana", de: "Banane", ar: "موزة", icon: "🍌" },
+                    { en: "buy", de: "kaufen", ar: "يشتري", icon: "💳" },
+                    { en: "money", de: "Geld", ar: "مال", icon: "💶" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Polite", items: ["I would like", "I want"] },
-                    col2: { title: "Action", items: ["to buy"] },
-                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple"] }
-                },
-                opinions: [
-                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
-                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
-                    { en: "nice", de: "schön", ar: "جميل", type: "pos" }
-                ]
+                    col1: { title: "Person", items: ["I", "We"] },
+                    col2: { title: "Verb", items: ["buy", "want", "need"] },
+                    col3: { title: "Item", items: ["a t-shirt", "jeans", "an apple", "a banana"] }
+                }
             },
+            // UNIT 6: MY BODY
             {
                 id: "unit6",
                 title: "6: My Body",
                 icon: "💪",
                 vocab: [
-                    { en: "Head", de: "Kopf", ar: "رأس", icon: "😶" },
-                    { en: "Arm", de: "Arm", ar: "ذراع", icon: "💪" },
-                    { en: "Leg", de: "Bein", ar: "ساق", icon: "🦵" },
-                    { en: "Hand", de: "Hand", ar: "يد", icon: "✋" },
-                    { en: "Foot", de: "Fuß", ar: "قدم", icon: "🦶" },
-                    { en: "Eye", de: "Auge", ar: "عين", icon: "👁️" },
-                    { en: "Ear", de: "Ohr", ar: "أذن", icon: "👂" },
-                    { en: "Mouth", de: "Mund", ar: "فم", icon: "👄" }
+                    { en: "head", de: "Kopf", ar: "رأس", icon: "😶" },
+                    { en: "arm", de: "Arm", ar: "ذراع", icon: "💪" },
+                    { en: "leg", de: "Bein", ar: "ساق", icon: "🦵" },
+                    { en: "hand", de: "Hand", ar: "يد", icon: "✋" },
+                    { en: "foot", de: "Fuß", ar: "قدم", icon: "🦶" },
+                    { en: "eye", de: "Auge", ar: "عين", icon: "👁️" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Simon says", items: ["Touch your", "Point to your"] },
-                    col2: { title: "Which side?", items: ["left", "right"] },
-                    col3: { title: "Body part", items: ["hand", "foot", "ear", "eye"] }
-                },
-                opinions: [
-                    { en: "strong", de: "stark", ar: "قوي", type: "pos" },
-                    { en: "hurt", de: "verletzt/weh tun", ar: "مؤلم", type: "neg" },
-                    { en: "healthy", de: "gesund", ar: "صحي", type: "pos" },
-                    { en: "tired", de: "müde", ar: "متعب", type: "neg" }
-                ]
+                    col1: { title: "Command", items: ["Touch your", "Point to your"] },
+                    col2: { title: "Side", items: ["left", "right"] },
+                    col3: { title: "Part", items: ["hand", "foot", "eye", "ear"] }
+                }
             },
+            // UNIT 7: TRAVEL
             {
                 id: "unit7",
                 title: "7: Travel",
                 icon: "✈️",
                 vocab: [
-                    { en: "Train", de: "Zug", ar: "قطار", icon: "🚆" },
-                    { en: "Bus", de: "Bus", ar: "حافلة", icon: "🚌" },
-                    { en: "Plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
-                    { en: "Car", de: "Auto", ar: "سيارة", icon: "🚗" },
-                    { en: "Ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
-                    { en: "Hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
+                    { en: "train", de: "Zug", ar: "قطار", icon: "🚆" },
+                    { en: "bus", de: "Bus", ar: "حافلة", icon: "🚌" },
+                    { en: "plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
+                    { en: "car", de: "Auto", ar: "سيارة", icon: "🚗" },
+                    { en: "ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
+                    { en: "hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
                 ],
                 sentenceParts: {
-                    col1: { title: "When?", items: ["In summer", "Next week"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "Travel by...", items: ["go by plane", "go by train", "go by car"] }
-                },
-                opinions: [
-                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
-                    { en: "slow", de: "langsam", ar: "بطيء", type: "neg" },
-                    { en: "exciting", de: "aufregend", ar: "مثير", type: "pos" }
-                ]
+                    col1: { title: "Time", items: ["In summer", "On Monday"] },
+                    col2: { title: "Person", items: ["I", "We"] },
+                    col3: { title: "Action", items: ["go by bus", "go by car", "go by plane"] }
+                }
             },
+            // UNIT 8: ANIMALS
             {
                 id: "unit8",
                 title: "8: Animals",
                 icon: "🐾",
                 vocab: [
-                    { en: "Dog", de: "Hund", ar: "كلب", icon: "🐕" },
-                    { en: "Cat", de: "Katze", ar: "قطة", icon: "🐈" },
-                    { en: "Lion", de: "Löwe", ar: "أسد", icon: "🦁" },
-                    { en: "Elephant", de: "Elefant", ar: "فيل", icon: "🐘" },
-                    { en: "Mouse", de: "Maus", ar: "فأر", icon: "🐁" },
-                    { en: "Bird", de: "Vogel", ar: "طائر", icon: "🐦" },
-                    { en: "Fish", de: "Fisch", ar: "سمكة", icon: "🐟" },
-                    { en: "Snake", de: "Schlange", ar: "ثعبان", icon: "🐍" }
+                    { en: "dog", de: "Hund", ar: "كلب", icon: "🐕" },
+                    { en: "cat", de: "Katze", ar: "قطة", icon: "🐈" },
+                    { en: "lion", de: "Löwe", ar: "أسد", icon: "🦁" },
+                    { en: "elephant", de: "Elefant", ar: "فيل", icon: "🐘" },
+                    { en: "bird", de: "Vogel", ar: "طائر", icon: "🐦" },
+                    { en: "fish", de: "Fisch", ar: "سمكة", icon: "🐟" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Look!", items: ["I see", "I like"] },
-                    col2: { title: "Adjective", items: ["a big", "a small", "a fast"] },
-                    col3: { title: "Animal", items: ["lion", "elephant", "mouse", "bird"] }
-                },
-                opinions: [
-                    { en: "cute", de: "süß", ar: "لطيف", type: "pos" },
-                    { en: "dangerous", de: "gefährlich", ar: "خطير", type: "neg" },
-                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
-                    { en: "strong", de: "stark", ar: "قوي", type: "pos" }
-                ]
-            }, 
+                    col1: { title: "Start", items: ["Look,", "I see"] },
+                    col2: { title: "Size", items: ["a big", "a small", "a fast"] },
+                    col3: { title: "Animal", items: ["lion", "elephant", "cat", "dog"] }
+                }
+            },
+            // UNIT 9: FOOD & DRINKS
             {
                 id: "unit9",
-                title: "9: Food & Drinks",
+                title: "9: Food",
                 icon: "🍔",
                 vocab: [
-                    { en: "Burger", de: "Burger", ar: "برغر", icon: "🍔" },
-                    { en: "Pizza", de: "Pizza", ar: "بيتزا", icon: "🍕" },
-                    { en: "Salad", de: "Salat", ar: "سلطة", icon: "🥗" },
-                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
-                    { en: "Water", de: "Wasser", ar: "ماء", icon: "💧" },
-                    { en: "Milk", de: "Milch", ar: "حليب", icon: "🥛" },
-                    { en: "Juice", de: "Saft", ar: "عصير", icon: "🧃" },
-                    { en: "Cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
+                    { en: "burger", de: "Burger", ar: "برغر", icon: "🍔" },
+                    { en: "salad", de: "Salat", ar: "سلطة", icon: "🥗" },
+                    { en: "water", de: "Wasser", ar: "ماء", icon: "💧" },
+                    { en: "milk", de: "Milch", ar: "حليب", icon: "🥛" },
+                    { en: "juice", de: "Saft", ar: "عصير", icon: "🧃" },
+                    { en: "cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Polite", items: ["Can I have", "I would like"] },
+                    col1: { title: "Polite", items: ["I like", "I want"] },
                     col2: { title: "Action", items: ["to eat", "to drink"] },
-                    col3: { title: "Item", items: ["a burger", "a pizza", "water", "apple juice"] }
-                },
-                opinions: [
-                    { en: "delicious", de: "lecker", ar: "لذيذ", type: "pos" },
-                    { en: "yummy", de: "lecker (ugs.)", ar: "شهي", type: "pos" },
-                    { en: "hot", de: "heiß", ar: "ساخن", type: "neu" },
-                    { en: "cold", de: "kalt", ar: "بارد", type: "neu" }
-                ]
+                    col3: { title: "Item", items: ["a burger", "salad", "water", "juice"] }
+                }
             },
+            // UNIT 10: MY DAY
             {
                 id: "unit10",
                 title: "10: My Day",
                 icon: "⏰",
                 vocab: [
-                    { en: "Morning", de: "Morgen", ar: "صباح", icon: "🌅" },
-                    { en: "Night", de: "Nacht", ar: "ليل", icon: "🌙" },
-                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
-                    { en: "Clock", de: "Uhr", ar: "ساعة", icon: "⏰" },
-                    { en: "Breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
-                    { en: "School bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
-                    { en: "Homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
-                    { en: "Shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
+                    { en: "morning", de: "Morgen", ar: "صباح", icon: "🌅" },
+                    { en: "bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
+                    { en: "school bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
+                    { en: "homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
+                    { en: "shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
                 ],
                 sentenceParts: {
                     col1: { title: "Time", items: ["In the morning", "At 8 o'clock"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "Action", items: ["get up", "go to school", "eat breakfast", "go to sleep"] }
-                },
-                opinions: [
-                    { en: "early", de: "früh", ar: "مبكر", type: "neu" },
-                    { en: "late", de: "spät", ar: "متأخر", type: "neg" },
-                    { en: "tired", de: "müde", ar: "متعب", type: "neg" },
-                    { en: "active", de: "aktiv/fit", ar: "نشيط", type: "pos" }
-                ]
+                    col2: { title: "Person", items: ["I", "We"] },
+                    col3: { title: "Action", items: ["get up", "eat breakfast", "go to school"] }
+                }
             },
+            // UNIT 11: FAMILY
             {
                 id: "unit11",
                 title: "11: Family",
                 icon: "👨‍👩‍👧‍👦",
                 vocab: [
-                    { en: "Mother", de: "Mutter", ar: "أم", icon: "👩" },
-                    { en: "Father", de: "Vater", ar: "أب", icon: "👨" },
-                    { en: "Sister", de: "Schwester", ar: "أخت", icon: "👧" },
-                    { en: "Brother", de: "Bruder", ar: "أخ", icon: "👦" },
-                    { en: "Grandma", de: "Oma", ar: "جدة", icon: "👵" },
-                    { en: "Grandpa", de: "Opa", ar: "جد", icon: "👴" },
-                    { en: "Baby", de: "Baby", ar: "طفل", icon: "👶" },
-                    { en: "Friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
+                    { en: "mother", de: "Mutter", ar: "أم", icon: "👩" },
+                    { en: "father", de: "Vater", ar: "أب", icon: "👨" },
+                    { en: "sister", de: "Schwester", ar: "أخت", icon: "👧" },
+                    { en: "brother", de: "Bruder", ar: "أخ", icon: "👦" },
+                    { en: "baby", de: "Baby", ar: "طفل", icon: "👶" },
+                    { en: "friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["This is my", "I love my"] },
-                    col2: { title: "Who?", items: ["mother", "father", "sister", "brother"] },
-                    col3: { title: "Name/Desc", items: ["called Anna", "who is nice"] }
-                },
-                opinions: [
-                    { en: "nice", de: "nett", ar: "لطيف", type: "pos" },
-                    { en: "funny", de: "lustig", ar: "مضحك", type: "pos" },
-                    { en: "strict", de: "streng", ar: "صارم", type: "neg" },
-                    { en: "kind", de: "freundlich", ar: "ودود", type: "pos" }
-                ]
+                    col1: { title: "Start", items: ["This is my", "I love my"] },
+                    col2: { title: "Person", items: ["mother", "father", "sister", "brother"] },
+                    col3: { title: "Name", items: ["Anna", "Tom", "Ali", "Sara"] }
+                }
             },
+            // UNIT 12: CLOTHES
             {
                 id: "unit12",
                 title: "12: Clothes",
                 icon: "🧥",
                 vocab: [
-                    { en: "Jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
-                    { en: "Hat", de: "Hut/Mütze", ar: "قبعة", icon: "🧢" },
-                    { en: "Dress", de: "Kleid", ar: "فستان", icon: "👗" },
-                    { en: "Skirt", de: "Rock", ar: "تنورة", icon: "👗" },
-                    { en: "Socks", de: "Socken", ar: "جوارب", icon: "🧦" },
-                    { en: "Pullover", de: "Pulli", ar: "بلوفر", icon: "🧥" },
-                    { en: "Glasses", de: "Brille", ar: "نظارة", icon: "👓" },
-                    { en: "Scarf", de: "Schal", ar: "وشاح", icon: "🧣" }
+                    { en: "jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
+                    { en: "hat", de: "Hut", ar: "قبعة", icon: "🧢" },
+                    { en: "shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "socks", de: "Socken", ar: "جوارب", icon: "🧦" },
+                    { en: "pullover", de: "Pulli", ar: "بلوفر", icon: "🧥" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["I wear", "He wears"] },
-                    col2: { title: "Color", items: ["a red", "a blue", "a green"] },
-                    col3: { title: "Item", items: ["jacket", "hat", "pullover"] }
-                },
-                opinions: [
-                    { en: "cool", de: "cool", ar: "رائع", type: "pos" },
-                    { en: "warm", de: "warm", ar: "دافئ", type: "pos" },
-                    { en: "old", de: "alt", ar: "قديم", type: "neu" },
-                    { en: "new", de: "neu", ar: "جديد", type: "pos" }
-                ]
+                    col1: { title: "Person", items: ["I", "He", "She"] },
+                    col2: { title: "Verb", items: ["wear", "wears"] },
+                    col3: { title: "Item", items: ["a jacket", "a hat", "blue shoes"] }
+                }
             },
+            // UNIT 13: WEATHER
             {
                 id: "unit13",
                 title: "13: Weather",
                 icon: "☀️",
                 vocab: [
-                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
-                    { en: "Rain", de: "Regen", ar: "مطر", icon: "🌧️" },
-                    { en: "Snow", de: "Schnee", ar: "ثلج", icon: "❄️" },
-                    { en: "Wind", de: "Wind", ar: "رياح", icon: "💨" },
-                    { en: "Cloud", de: "Wolke", ar: "سحابة", icon: "☁️" },
-                    { en: "Hot", de: "Heiß", ar: "حار", icon: "🥵" },
-                    { en: "Cold", de: "Kalt", ar: "بارد", icon: "🥶" },
-                    { en: "Storm", de: "Sturm", ar: "عاصفة", icon: "⛈️" }
+                    { en: "sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "rain", de: "Regen", ar: "مطر", icon: "🌧️" },
+                    { en: "wind", de: "Wind", ar: "رياح", icon: "💨" },
+                    { en: "hot", de: "heiß", ar: "حار", icon: "🥵" },
+                    { en: "cold", de: "kalt", ar: "بارد", icon: "🥶" }
                 ],
                 sentenceParts: {
                     col1: { title: "Time", items: ["Today", "Tomorrow"] },
                     col2: { title: "Verb", items: ["is", "will be"] },
-                    col3: { title: "Weather", items: ["sunny", "rainy", "windy", "cold"] }
-                },
-                opinions: [
-                    { en: "nice", de: "schön", ar: "جميل", type: "pos" },
-                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" },
-                    { en: "wet", de: "nass", ar: "مبتل", type: "neu" },
-                    { en: "freezing", de: "eiskalt", ar: "متجمد", type: "neg" }
-                ]
+                    col3: { title: "Weather", items: ["sunny", "rainy", "hot", "cold"] }
+                }
             },
+            // UNIT 14: NUMBERS
             {
                 id: "unit14",
                 title: "14: Numbers",
                 icon: "🔢",
                 vocab: [
-                    { en: "One", de: "Eins", ar: "واحد", icon: "1️⃣" },
-                    { en: "Two", de: "Zwei", ar: "اثنان", icon: "2️⃣" },
-                    { en: "Three", de: "Drei", ar: "ثلاثة", icon: "3️⃣" },
-                    { en: "Four", de: "Vier", ar: "أربعة", icon: "4️⃣" },
-                    { en: "Five", de: "Fünf", ar: "خمسة", icon: "5️⃣" },
-                    { en: "Six", de: "Sechs", ar: "ستة", icon: "6️⃣" },
-                    { en: "Seven", de: "Sieben", ar: "سبعة", icon: "7️⃣" },
-                    { en: "Eight", de: "Acht", ar: "ثمانية", icon: "8️⃣" }
+                    { en: "one", de: "Eins", ar: "واحد", icon: "1️⃣" },
+                    { en: "two", de: "Zwei", ar: "اثنان", icon: "2️⃣" },
+                    { en: "three", de: "Drei", ar: "ثلاثة", icon: "3️⃣" },
+                    { en: "four", de: "Vier", ar: "أربعة", icon: "4️⃣" },
+                    { en: "five", de: "Fünf", ar: "خمسة", icon: "5️⃣" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Subject", items: ["I see", "I have"] },
+                    col1: { title: "Subject", items: ["I have", "I see"] },
                     col2: { title: "Number", items: ["one", "two", "three", "five"] },
-                    col3: { title: "Object", items: ["apples", "cars", "pens", "books"] }
-                },
-                opinions: [
-                    { en: "many", de: "viele", ar: "كثير", type: "pos" },
-                    { en: "few", de: "wenige", ar: "قليل", type: "neu" },
-                    { en: "enough", de: "genug", ar: "كاف", type: "pos" },
-                    { en: "zero", de: "null/keine", ar: "صفر", type: "neg" }
-                ]
+                    col3: { title: "Object", items: ["pens", "books", "apples", "cars"] }
+                }
             },
+            // UNIT 15: MY ROOM
             {
                 id: "unit15",
                 title: "15: My Room",
                 icon: "🛏️",
                 vocab: [
-                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
-                    { en: "Chair", de: "Stuhl", ar: "كرسي", icon: "🪑" },
-                    { en: "Desk", de: "Tisch", ar: "طاولة", icon: "🖥️" },
-                    { en: "Lamp", de: "Lampe", ar: "مصباح", icon: "💡" },
-                    { en: "Door", de: "Tür", ar: "باب", icon: "🚪" },
-                    { en: "Window", de: "Fenster", ar: "نافذة", icon: "🪟" },
-                    { en: "Computer", de: "Computer", ar: "كمبيوتر", icon: "💻" },
-                    { en: "Box", de: "Kiste", ar: "صندوق", icon: "📦" }
+                    { en: "bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "chair", de: "Stuhl", ar: "كرسي", icon: "🪑" },
+                    { en: "desk", de: "Tisch", ar: "طاولة", icon: "🖥️" },
+                    { en: "lamp", de: "Lampe", ar: "مصباح", icon: "💡" },
+                    { en: "door", de: "Tür", ar: "باب", icon: "🚪" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Where?", items: ["In my room", "Next to the bed"] },
-                    col2: { title: "Is...", items: ["is a", "is the"] },
-                    col3: { title: "Item", items: ["lamp", "chair", "desk", "computer"] }
-                },
-                opinions: [
-                    { en: "clean", de: "sauber", ar: "نظيف", type: "pos" },
-                    { en: "messy", de: "unordentlich", ar: "فوضوي", type: "neg" },
-                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
-                    { en: "small", de: "klein", ar: "صغير", type: "neu" }
-                ]
+                    col1: { title: "Where?", items: ["In my room", "Next to me"] },
+                    col2: { title: "Is", items: ["is"] },
+                    col3: { title: "Object", items: ["a bed", "a chair", "a desk", "a lamp"] }
+                }
             },
+            // UNIT 16: FEELINGS
             {
                 id: "unit16",
                 title: "16: Feelings",
                 icon: "😊",
                 vocab: [
-                    { en: "Happy", de: "Glücklich", ar: "سعيد", icon: "😊" },
-                    { en: "Sad", de: "Traurig", ar: "حزين", icon: "😢" },
-                    { en: "Angry", de: "Wütend", ar: "غاضب", icon: "😡" },
-                    { en: "Tired", de: "Müde", ar: "متعب", icon: "😴" },
-                    { en: "Hungry", de: "Hungrig", ar: "جائع", icon: "😋" },
-                    { en: "Thirsty", de: "Durstig", ar: "عطشان", icon: "🥤" },
-                    { en: "Scared", de: "Ängstlich", ar: "خائف", icon: "😱" },
-                    { en: "Sick", de: "Krank", ar: "مريض", icon: "🤒" }
+                    { en: "happy", de: "glücklich", ar: "سعيد", icon: "😊" },
+                    { en: "sad", de: "traurig", ar: "حزين", icon: "😢" },
+                    { en: "tired", de: "müde", ar: "متعب", icon: "😴" },
+                    { en: "hungry", de: "hungrig", ar: "جائع", icon: "😋" },
+                    { en: "sick", de: "krank", ar: "مريض", icon: "🤒" }
                 ],
                 sentenceParts: {
                     col1: { title: "Person", items: ["I am", "He is", "She is"] },
-                    col2: { title: "Feeling", items: ["very", "a little"] },
-                    col3: { title: "Emotion", items: ["happy", "sad", "tired", "hungry"] }
-                },
-                opinions: [
-                    { en: "good", de: "gut", ar: "جيد", type: "pos" },
-                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" },
-                    { en: "okay", de: "okay", ar: "حسناً", type: "neu" },
-                    { en: "great", de: "super", ar: "عظيم", type: "pos" }
-                ]
+                    col2: { title: "Very", items: ["very", "a little"] },
+                    col3: { title: "Feeling", items: ["happy", "sad", "tired", "hungry"] }
+                }
             },
+            // UNIT 17: JOBS
             {
                 id: "unit17",
                 title: "17: Jobs",
                 icon: "👮",
                 vocab: [
-                    { en: "Teacher", de: "Lehrer", ar: "معلم", icon: "👨‍🏫" },
-                    { en: "Doctor", de: "Arzt", ar: "طبيب", icon: "👨‍⚕️" },
-                    { en: "Police", de: "Polizei", ar: "شرطة", icon: "👮" },
-                    { en: "Cook", de: "Koch", ar: "طباخ", icon: "👨‍🍳" },
-                    { en: "Driver", de: "Fahrer", ar: "سائق", icon: "🚕" },
-                    { en: "Pilot", de: "Pilot", ar: "طيار", icon: "✈️" },
-                    { en: "Farmer", de: "Bauer", ar: "مزارع", icon: "👨‍🌾" },
-                    { en: "Singer", de: "Sänger", ar: "مغني", icon: "🎤" }
+                    { en: "teacher", de: "Lehrer", ar: "معلم", icon: "👨‍🏫" },
+                    { en: "doctor", de: "Arzt", ar: "طبيب", icon: "👨‍⚕️" },
+                    { en: "police", de: "Polizei", ar: "شرطة", icon: "👮" },
+                    { en: "driver", de: "Fahrer", ar: "سائق", icon: "🚕" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["My father", "My mother", "I want to be"] },
-                    col2: { title: "Is/A", items: ["is a", "a"] },
-                    col3: { title: "Job", items: ["teacher", "doctor", "pilot", "cook"] }
-                },
-                opinions: [
-                    { en: "hard", de: "hart", ar: "صعب", type: "neg" },
-                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
-                    { en: "important", de: "wichtig", ar: "مهم", type: "pos" },
-                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
-                ]
+                    col1: { title: "Person", items: ["My father", "My mother"] },
+                    col2: { title: "Verb", items: ["is a"] },
+                    col3: { title: "Job", items: ["teacher", "doctor", "driver", "police officer"] }
+                }
             },
+            // UNIT 18: COLORS
             {
                 id: "unit18",
                 title: "18: Colors",
                 icon: "🎨",
                 vocab: [
-                    { en: "Red", de: "Rot", ar: "أحمر", icon: "🔴" },
-                    { en: "Blue", de: "Blau", ar: "أزرق", icon: "🔵" },
-                    { en: "Green", de: "Grün", ar: "أخضر", icon: "🟢" },
-                    { en: "Yellow", de: "Gelb", ar: "أصفر", icon: "🟡" },
-                    { en: "Black", de: "Schwarz", ar: "أسود", icon: "⚫" },
-                    { en: "White", de: "Weiß", ar: "أبيض", icon: "⚪" },
-                    { en: "Orange", de: "Orange", ar: "برتقالي", icon: "🟠" },
-                    { en: "Pink", de: "Pink", ar: "وردي", icon: "🩷" }
+                    { en: "red", de: "Rot", ar: "أحمر", icon: "🔴" },
+                    { en: "blue", de: "Blau", ar: "أزرق", icon: "🔵" },
+                    { en: "green", de: "Grün", ar: "أخضر", icon: "🟢" },
+                    { en: "yellow", de: "Gelb", ar: "أصفر", icon: "🟡" },
+                    { en: "black", de: "Schwarz", ar: "أسود", icon: "⚫" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Object", items: ["The car", "The flower", "My shirt"] },
+                    col1: { title: "Object", items: ["The car", "The ball", "My shirt"] },
                     col2: { title: "Is", items: ["is"] },
                     col3: { title: "Color", items: ["red", "blue", "green", "black"] }
-                },
-                opinions: [
-                    { en: "bright", de: "hell", ar: "ساطع", type: "pos" },
-                    { en: "dark", de: "dunkel", ar: "داكن", type: "neu" },
-                    { en: "beautiful", de: "wunderschön", ar: "جميل", type: "pos" },
-                    { en: "colorful", de: "bunt", ar: "ملون", type: "pos" }
-                ]
+                }
             },
+            // UNIT 19: AT HOME
             {
                 id: "unit19",
                 title: "19: At Home",
                 icon: "🏠",
                 vocab: [
-                    { en: "House", de: "Haus", ar: "منزل", icon: "🏠" },
-                    { en: "Kitchen", de: "Küche", ar: "مطبخ", icon: "🍳" },
-                    { en: "Bathroom", de: "Bad", ar: "حمام", icon: "🛁" },
-                    { en: "Garden", de: "Garten", ar: "حديقة", icon: "🌻" },
-                    { en: "Living room", de: "Wohnzimmer", ar: "غرفة المعيشة", icon: "🛋️" },
-                    { en: "Bedroom", de: "Schlafzimmer", ar: "غرفة النوم", icon: "🛏️" },
-                    { en: "Door", de: "Tür", ar: "باب", icon: "🚪" },
-                    { en: "Wall", de: "Wand", ar: "جدار", icon: "🧱" }
+                    { en: "kitchen", de: "Küche", ar: "مطبخ", icon: "🍳" },
+                    { en: "bathroom", de: "Bad", ar: "حمام", icon: "🛁" },
+                    { en: "garden", de: "Garten", ar: "حديقة", icon: "🌻" },
+                    { en: "living room", de: "Wohnzimmer", ar: "غرفة المعيشة", icon: "🛋️" }
                 ],
                 sentenceParts: {
                     col1: { title: "Who?", items: ["I am", "Mom is"] },
                     col2: { title: "Where?", items: ["in the"] },
-                    col3: { title: "Room", items: ["kitchen", "garden", "bathroom", "house"] }
-                },
-                opinions: [
-                    { en: "cozy", de: "gemütlich", ar: "مريح", type: "pos" },
-                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
-                    { en: "small", de: "klein", ar: "صغير", type: "neu" },
-                    { en: "quiet", de: "ruhig", ar: "هادئ", type: "pos" }
-                ]
+                    col3: { title: "Room", items: ["kitchen", "garden", "bathroom"] }
+                }
             },
+            // UNIT 20: NATURE
             {
                 id: "unit20",
                 title: "20: Nature",
                 icon: "🌳",
                 vocab: [
-                    { en: "Tree", de: "Baum", ar: "شجرة", icon: "🌳" },
-                    { en: "Flower", de: "Blume", ar: "زهرة", icon: "🌸" },
-                    { en: "Water", de: "Wasser", ar: "ماء", icon: "💧" },
-                    { en: "Sky", de: "Himmel", ar: "سماء", icon: "☁️" },
-                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
-                    { en: "Moon", de: "Mond", ar: "قمر", icon: "🌙" },
-                    { en: "Star", de: "Stern", ar: "نجمة", icon: "⭐" },
-                    { en: "Stone", de: "Stein", ar: "حجر", icon: "🪨" }
+                    { en: "tree", de: "Baum", ar: "شجرة", icon: "🌳" },
+                    { en: "flower", de: "Blume", ar: "زهرة", icon: "🌸" },
+                    { en: "sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "moon", de: "Mond", ar: "قمر", icon: "🌙" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Look!", items: ["I see a", "Look at the"] },
-                    col2: { title: "Adjective", items: ["big", "beautiful", "high"] },
-                    col3: { title: "Nature", items: ["tree", "flower", "star", "moon"] }
-                },
-                opinions: [
-                    { en: "beautiful", de: "schön", ar: "جميل", type: "pos" },
-                    { en: "green", de: "grün", ar: "أخضر", type: "neu" },
-                    { en: "high", de: "hoch", ar: "عالي", type: "neu" },
-                    { en: "sunny", de: "sonnig", ar: "مشمس", type: "pos" }
-                ]
+                    col1: { title: "Start", items: ["I see a", "Look at the"] },
+                    col2: { title: "Adjective", items: ["big", "beautiful", "green"] },
+                    col3: { title: "Object", items: ["tree", "flower", "sun", "moon"] }
+                }
             }
-        ]; // <--- HIER IST JETZT ALLES SAUBER
+        ];
 
         // ==========================================
-        // APP LOGIC
+        // 2. APP LOGIC
         // ==========================================
         
         const app = {
-            currentUnitId: "all_words",
-            activeTab: 'list',
+            currentUnitId: "unit1",
+            activeTab: 'vocab',
+            
+            // State
             state: {
                 sentenceSelection: { col1: null, col2: null, col3: null },
+                sentenceInput: "", // Für das Tippen
                 flippedCards: {},
-                quizSelection: [],
-                memoryCards: [],
-                memoryFlipped: [],
-                memoryMatched: [],
-                memoryLock: false,
-                scrambleWord: null,
-                scrambleInput: ""
+                quizSelection: [], 
+                memoryCards: [], memoryFlipped: [], memoryMatched: [], memoryLock: false,
+                scrambleWord: null, scrambleInput: ""
             },
-            data: { sentences: [], opinions: {} },
+            
+            data: { sentences: [] }, // Speicher für fertige Sätze
 
             init: function() {
                 this.loadData();
                 this.renderUnitSelector();
-                this.setUnit("all_words");
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.getVoices(); 
-                }
+                this.setUnit("unit1");
+                // Preload voices
+                if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
             },
 
-            getAllVocab: function() {
-                return COURSE_DATA.flatMap(unit => unit.vocab.map(v => ({...v, unit: unit.title})));
-            },
-
-            getUnit: function() {
-                if (this.currentUnitId === "all_words") {
-                    return {
-                        id: "all_words",
-                        title: "Alle Wörter & Spiele",
-                        icon: "📚",
-                        vocab: this.getAllVocab(),
-                        isSpecial: true
-                    };
-                }
-                return COURSE_DATA.find(u => u.id === this.currentUnitId);
-            },
+            // HELPERS
+            getUnit: function() { return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0]; },
 
             setUnit: function(id) {
                 this.currentUnitId = id;
-                if (id === "all_words") this.activeTab = "list";
-                else this.activeTab = "vocab";
-                
+                this.activeTab = "vocab"; // Immer Start bei Vocab
+                // Reset State
                 this.state = { 
-                    sentenceSelection: {}, flippedCards: {}, quizSelection: [], 
+                    sentenceSelection: {}, sentenceInput: "", flippedCards: {}, quizSelection: [], 
                     memoryCards: [], memoryFlipped: [], memoryMatched: [], memoryLock: false,
                     scrambleWord: null, scrambleInput: ""
                 };
-                
-                this.loadData();
                 this.refreshQuizSelection();
                 this.renderUnitSelector();
                 this.render();
@@ -635,109 +506,86 @@
 
             refreshQuizSelection: function() {
                 const unit = this.getUnit();
-                if (!unit || !unit.vocab) return;
                 const shuffled = [...unit.vocab].sort(() => 0.5 - Math.random());
                 this.state.quizSelection = shuffled.slice(0, 3);
             },
 
-            loadData: function() {
-                try {
-                    const saved = localStorage.getItem('english_data_' + this.currentUnitId);
-                    if (saved) { this.data = JSON.parse(saved); } else { this.data = { sentences: [], opinions: {} }; }
-                } catch(e) {}
-            },
-            saveData: function() {
-                try { localStorage.setItem('english_data_' + this.currentUnitId, JSON.stringify(this.data)); } catch(e) {}
-            },
-            addSentence: function(s) {
-                if (!this.data.sentences.includes(s)) { this.data.sentences.push(s); this.saveData(); }
-            },
-            addOpinion: function(a, o) {
-                this.data.opinions[a] = o; this.saveData();
-            },
-
-            speak: function(text) {
+            // AUDIO SPEECH
+            speak: function(text, lang = 'en-US') {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const u = new SpeechSynthesisUtterance(text);
-                    u.lang = 'en-US'; u.rate = 0.9;
+                    u.lang = lang; 
+                    u.rate = 0.9;
                     window.speechSynthesis.speak(u);
-                } else {
-                    alert("Audio Error: Browser doesn't support speech");
                 }
             },
             testAudio: function() { this.speak("Hello! Audio is working."); },
 
+            // STORAGE (Nur Sätze speichern reicht)
+            loadData: function() {
+                try {
+                    const saved = localStorage.getItem('ahmed_app_' + this.currentUnitId);
+                    if (saved) this.data = JSON.parse(saved);
+                    else this.data = { sentences: [] };
+                } catch(e) {}
+            },
+            saveData: function() {
+                try { localStorage.setItem('ahmed_app_' + this.currentUnitId, JSON.stringify(this.data)); } catch(e) {}
+            },
+            addSentence: function(s) {
+                if (!this.data.sentences.includes(s)) { 
+                    this.data.sentences.push(s); 
+                    this.saveData(); 
+                }
+            },
+
+            // RENDER FUNKTIONEN
             renderUnitSelector: function() {
                 const container = document.getElementById('unit-selector');
-                let html = `
-                    <button onclick="app.setUnit('all_words')" 
-                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 
-                        ${this.currentUnitId === 'all_words' ? 'bg-yellow-400 text-yellow-900 border-yellow-200 shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
-                        <span>📚</span> 
-                        <div class="flex flex-col items-start leading-tight">
-                            <span>Alle Wörter & Spiele</span>
-                            <span class="text-xs font-normal ar">كل الكلمات والألعاب</span>
-                        </div>
-                    </button>
-                `;
-                html += COURSE_DATA.map(unit => `
+                container.innerHTML = COURSE_DATA.map(unit => `
                     <button onclick="app.setUnit('${unit.id}')" 
                         class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 
                         ${this.currentUnitId === unit.id ? 'bg-white text-green-800 border-white shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
                         <span>${unit.icon}</span> <span>${unit.title}</span>
                     </button>
                 `).join('');
-                container.innerHTML = html;
             },
 
-            renderNav: function(isSpecial) {
-                const container = document.getElementById('nav-container');
+            renderNav: function() {
                 const tabsContainer = document.getElementById('nav-tabs');
-                container.classList.remove('hidden');
-                
-                let tabs = [];
-                if (isSpecial) {
-                    tabs = [
-                        { id: 'list', label: '📖 Liste', color: 'bg-yellow-500' },
-                        { id: 'memory', label: '🕹️ Memory', color: 'bg-purple-500' },
-                        { id: 'scramble', label: '🧩 Scramble', color: 'bg-blue-500' }
-                    ];
-                } else {
-                    tabs = [
-                        { id: 'vocab', label: '1. Words', color: 'bg-green-600' },
-                        { id: 'sentences', label: '2. Sentences', color: 'bg-blue-600' },
-                        { id: 'opinion', label: '3. Opinion', color: 'bg-purple-600' },
-                        { id: 'report', label: '4. Report', color: 'bg-gray-600' }
-                    ];
-                }
+                // 4 Buttons für jedes Modul
+                const tabs = [
+                    { id: 'vocab', label: UI.tabs.vocab, color: 'bg-green-600' },
+                    { id: 'sentences', label: UI.tabs.sentences, color: 'bg-blue-600' },
+                    { id: 'memory', label: UI.tabs.memory, color: 'bg-purple-600' },
+                    { id: 'scramble', label: UI.tabs.scramble, color: 'bg-yellow-500' }
+                ];
 
                 tabsContainer.innerHTML = tabs.map(t => `
                     <button onclick="app.setTab('${t.id}')" 
-                        class="px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-sm ${this.activeTab === t.id ? `${t.color} text-white scale-105 shadow-md` : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}">
-                        ${t.label}
+                        class="px-4 py-2 rounded-lg text-sm transition-all shadow-sm flex flex-col items-center leading-none gap-1
+                        ${this.activeTab === t.id ? `${t.color} text-white scale-105 shadow-md font-bold` : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}">
+                        <span>${t.label.en}</span>
+                        <span class="text-[10px] opacity-80">${t.label.de} | <span class="ar">${t.label.ar}</span></span>
                     </button>
                 `).join('');
             },
 
             render: function() {
                 const unit = this.getUnit();
-                this.renderNav(unit.isSpecial);
+                this.renderNav();
                 const content = document.getElementById('app-content');
 
-                if (unit.isSpecial) {
-                    if (this.activeTab === 'list') this.renderAllList(content, unit);
-                    else if (this.activeTab === 'memory') this.renderMemory(content);
-                    else if (this.activeTab === 'scramble') this.renderScramble(content);
-                } else {
-                    if (this.activeTab === 'vocab') this.renderVocab(content, unit);
-                    else if (this.activeTab === 'sentences') this.renderSentences(content, unit);
-                    else if (this.activeTab === 'opinion') this.renderOpinion(content, unit);
-                    else if (this.activeTab === 'report') this.renderReport(content, unit);
-                }
+                if (this.activeTab === 'vocab') this.renderVocab(content, unit);
+                else if (this.activeTab === 'sentences') this.renderSentences(content, unit);
+                else if (this.activeTab === 'memory') this.renderMemory(content);
+                else if (this.activeTab === 'scramble') this.renderScramble(content);
             },
 
+            // --- VIEW 1: VOCABULARY ---
             renderVocab: function(container, unit) {
+                // Quiz HTML
                 const quizHTML = this.state.quizSelection.map((word, idx) => {
                     const masked = word.en.replace(/[aeiouAEIOU]/g, '_');
                     return `
@@ -746,10 +594,8 @@
                             <div class="relative w-full flex-grow group">
                                 <input type="text" id="quiz-input-${idx}" data-correct="${word.en}" oninput="app.checkQuizInput(this)" 
                                     class="w-full border-2 border-gray-300 p-2 pl-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-medium" 
-                                    placeholder="Ganzes Wort..." autocomplete="off">
-                                <div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 transition-opacity" id="quiz-icon-${idx}">
-                                    <span class="text-2xl">✅</span>
-                                </div>
+                                    placeholder="..." autocomplete="off">
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 transition-opacity text-2xl" id="quiz-icon-${idx}">✅</div>
                             </div>
                         </div>
                     `;
@@ -757,31 +603,45 @@
 
                 container.innerHTML = `
                     <div class="animate-fade-in space-y-8">
-                        <div class="bg-white p-6 rounded-2xl shadow-md border-l-8 border-green-500">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Step 1: Words</h2>
-                            <p class="text-gray-600 mb-1">🇩🇪 Klicke auf die Karte. Höre das Wort.</p>
-                            <p class="text-gray-400 text-sm ar">🇸🇦 اضغط على البطاقة. استمع للكلمة.</p>
+                        <!-- Info Box -->
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-8 border-green-500 flex flex-col gap-1">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="bg-green-100 px-2 rounded">Step 1</span> ${UI.tabs.vocab.en}</h2>
+                            <p class="text-sm text-gray-600">🇩🇪 ${UI.instr.vocab.de}</p>
+                            <p class="text-sm text-gray-500 ar">🇸🇦 ${UI.instr.vocab.ar}</p>
                         </div>
+
+                        <!-- Cards -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             ${unit.vocab.map((word, idx) => `
-                                <div onclick="app.toggleCard(${idx})" class="bg-white rounded-xl shadow-sm hover:shadow-lg p-6 cursor-pointer border-2 transition-all transform hover:-translate-y-1 duration-200 group ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <span class="text-5xl filter drop-shadow-sm">${word.icon}</span>
-                                        <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-12 h-12 flex items-center justify-center bg-blue-50 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition-colors shadow-sm">🔊</button>
+                                <div onclick="app.toggleCard(${idx})" class="bg-white rounded-xl shadow-sm hover:shadow-lg p-4 border-2 transition-all cursor-pointer ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-4xl">${word.icon}</span>
+                                        <div class="flex gap-2">
+                                            <!-- Arabic Audio -->
+                                            <button onclick="event.stopPropagation(); app.speak('${word.ar}', 'ar-SA')" class="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200">🇸🇦 🔊</button>
+                                            <!-- English Audio -->
+                                            <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200">🇬🇧 🔊</button>
+                                        </div>
                                     </div>
-                                    <h3 class="text-2xl font-bold text-gray-800 mb-1">${word.en}</h3>
-                                    <div class="transition-all duration-300 overflow-hidden ${this.state.flippedCards[idx] ? 'max-h-24 opacity-100 mt-3 pt-3 border-t border-green-200' : 'max-h-0 opacity-0'}">
-                                        <p class="text-green-700 font-bold text-lg">${word.de}</p>
-                                        <p class="text-gray-500 ar text-lg mt-1">${word.ar}</p>
+                                    <h3 class="text-2xl font-bold text-gray-800">${word.en}</h3>
+                                    
+                                    <div class="mt-2 pt-2 border-t border-gray-200 transition-all ${this.state.flippedCards[idx] ? 'opacity-100' : 'opacity-0'}">
+                                        <p class="text-green-700 font-bold">${word.de}</p>
+                                        <p class="text-gray-500 ar text-lg">${word.ar}</p>
                                     </div>
-                                    ${!this.state.flippedCards[idx] ? '<p class="text-xs text-gray-400 mt-2 font-medium uppercase tracking-wide">Click to translate</p>' : ''}
+                                    ${!this.state.flippedCards[idx] ? '<p class="text-[10px] text-gray-400 mt-1 uppercase tracking-wide">Click to translate</p>' : ''}
                                 </div>
                             `).join('')}
                         </div>
+
+                        <!-- Speed Quiz -->
                         <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                              <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">⚡ Speed Quiz <span class="text-sm font-normal text-gray-500">(Fülle die Lücken)</span></h3>
-                                <button onclick="app.refreshQuizAndRender()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-sm font-bold flex items-center gap-1 transition-colors">🔄 Neue Wörter</button>
+                                <h3 class="text-lg font-bold text-gray-800">⚡ Speed Quiz</h3>
+                                <button onclick="app.refreshQuizSelection(); app.render()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold flex flex-col items-center">
+                                    <span>${UI.btn.newWords.en}</span>
+                                    <span class="text-[10px] opacity-70">${UI.btn.newWords.de}</span>
+                                </button>
                              </div>
                              ${quizHTML}
                         </div>
@@ -789,148 +649,117 @@
                 `;
             },
 
+            toggleCard: function(idx) {
+                this.state.flippedCards[idx] = !this.state.flippedCards[idx];
+                this.render();
+            },
+
             checkQuizInput: function(inputEl) {
                 const val = inputEl.value.trim().toLowerCase();
                 const correct = inputEl.dataset.correct.toLowerCase();
                 const icon = document.getElementById(inputEl.id.replace('input', 'icon'));
-                
                 if (val === correct) {
-                    inputEl.classList.remove('border-gray-300', 'focus:border-blue-500', 'border-red-300', 'bg-red-50');
-                    inputEl.classList.add('border-green-500', 'bg-green-50', 'text-green-800');
+                    inputEl.className = "w-full border-2 border-green-500 bg-green-50 text-green-800 p-2 pl-4 rounded-lg outline-none font-medium";
                     icon.style.opacity = '1';
-                } else if (val.length > 2) {
-                    inputEl.classList.add('border-red-300', 'bg-red-50');
                 } else {
-                    inputEl.classList.remove('border-green-500', 'bg-green-50', 'text-green-800', 'border-red-300', 'bg-red-50');
-                    inputEl.classList.add('border-gray-300');
                     icon.style.opacity = '0';
                 }
             },
 
-            refreshQuizAndRender: function() {
-                this.refreshQuizSelection();
-                this.render();
-            },
-
-            toggleCard: function(idx) {
-                this.state.flippedCards[idx] = !this.state.flippedCards[idx];
-                this.render(); 
-            },
-
+            // --- VIEW 2: SENTENCES (Builder + Typing) ---
             renderSentences: function(container, unit) {
                 const sel = this.state.sentenceSelection;
-                const isComplete = sel.col1 && sel.col2 && sel.col3;
+                const constructedSentence = (sel.col1 && sel.col2 && sel.col3) ? `${sel.col1} ${sel.col2} ${sel.col3}.` : "...";
+                const isReady = (sel.col1 && sel.col2 && sel.col3);
+                
+                // Typing Check
+                const isTypedCorrectly = this.state.sentenceInput.trim() === constructedSentence;
+
                 container.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
-                            <h2 class="text-xl font-bold">Step 2: Sentences</h2>
-                            <p class="text-sm text-gray-600">🇩🇪 Wähle aus jeder Spalte. Baue einen Satz.</p>
+                    <div class="space-y-6 animate-fade-in">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-8 border-blue-500 flex flex-col gap-1">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="bg-blue-100 px-2 rounded">Step 2</span> ${UI.tabs.sentences.en}</h2>
+                            <p class="text-sm text-gray-600">🇩🇪 ${UI.instr.sentences.de}</p>
+                            <p class="text-sm text-gray-500 ar">🇸🇦 ${UI.instr.sentences.ar}</p>
                         </div>
+
+                        <!-- 1. Builder -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             ${['col1', 'col2', 'col3'].map(col => `
-                                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                                    <h3 class="font-bold text-blue-800 mb-2 uppercase text-xs">${unit.sentenceParts[col].title}</h3>
+                                <div class="bg-blue-50 p-3 rounded-xl border border-blue-100">
+                                    <h3 class="font-bold text-blue-800 mb-2 uppercase text-xs tracking-wider">${unit.sentenceParts[col].title}</h3>
                                     ${unit.sentenceParts[col].items.map(item => `
-                                        <button onclick="app.state.sentenceSelection.${col} = '${item}'; app.render()" class="w-full p-2 mb-2 rounded text-left text-sm transition-all ${sel[col] === item ? 'bg-blue-600 text-white shadow-lg transform scale-105' : 'bg-white hover:bg-blue-100'}">${item}</button>
+                                        <button onclick="app.state.sentenceSelection.${col} = '${item}'; app.state.sentenceInput = ''; app.render()" 
+                                            class="w-full p-2 mb-2 rounded text-left text-sm transition-all ${sel[col] === item ? 'bg-blue-600 text-white shadow-lg transform scale-105' : 'bg-white hover:bg-blue-100'}">
+                                            ${item}
+                                        </button>
                                     `).join('')}
                                 </div>
                             `).join('')}
                         </div>
-                        <div class="bg-gray-800 text-white p-6 rounded-xl text-center shadow-lg">
-                             <div class="text-xl mb-4 font-mono">
-                                <span class="${sel.col1 ? 'text-blue-300' : 'text-gray-500'}">${sel.col1 || '...'}</span>
-                                <span class="${sel.col2 ? 'text-purple-300' : 'text-gray-500'}">${sel.col2 || '...'}</span>
-                                <span class="${sel.col3 ? 'text-orange-300' : 'text-gray-500'}">${sel.col3 || '...'}</span>.
+
+                        <!-- 2. Display & Type -->
+                        <div class="bg-gray-800 text-white p-6 rounded-xl shadow-lg">
+                             <div class="text-center mb-4">
+                                <p class="text-xs text-gray-400 uppercase mb-1">Your Sentence:</p>
+                                <div class="text-xl md:text-2xl font-mono min-h-[2rem]">${constructedSentence}</div>
                              </div>
-                             ${isComplete ? `<button onclick="app.addSentence('${sel.col1} ${sel.col2} ${sel.col3}.'); app.state.sentenceSelection={}; app.speak('Excellent'); app.render()" class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-6 rounded-full shadow-lg animate-bounce">Save It</button>` : ''}
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-500 text-sm mb-2">Saved Sentences:</h3>
-                            ${this.data.sentences.map(s => `<div class="bg-white p-2 rounded mb-1 shadow-sm flex justify-between"><span>${s}</span><button onclick="app.speak('${s.replace(/'/g, "\\'")}')">🔊</button></div>`).join('')}
-                        </div>
-                    </div>`;
-            },
 
-            renderOpinion: function(container, unit) {
-                container.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-purple-500">
-                            <h2 class="text-xl font-bold">Step 3: Opinion</h2>
-                            <p class="text-sm text-gray-600">🇩🇪 Wie findest du das? Wähle.</p>
-                        </div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            ${unit.opinions.map(op => `
-                                <div onclick="app.speak('${op.en}')" class="p-3 rounded-lg text-center border bg-white hover:shadow-md cursor-pointer">
-                                    <div class="font-bold text-lg">${op.en}</div>
-                                    <div class="text-xs text-gray-500">${op.de} / ${op.ar}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow border">
-                            ${unit.vocab.slice(0,5).map(v => `
-                                <div class="flex justify-between items-center border-b last:border-0 py-2">
-                                    <span class="font-medium">${v.en} was...</span>
-                                    <div class="flex gap-1">
-                                        ${unit.opinions.map(op => `
-                                            <button onclick="app.addOpinion('${v.en}', '${op.en}'); app.speak('${v.en} was ${op.en}'); app.render()" class="px-2 py-1 text-xs rounded border ${this.data.opinions[v.en]===op.en ? 'bg-purple-600 text-white' : 'hover:bg-gray-50'}">${op.en}</button>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>`;
-            },
-
-            renderReport: function(container, unit) {
-                container.innerHTML = `
-                    <div class="bg-white p-8 rounded-xl shadow-2xl">
-                        <h1 class="text-3xl font-bold mb-4 border-b pb-2">My English Report</h1>
-                        <input class="text-2xl w-full border-b mb-6 outline-none" placeholder="My Name...">
-                        <div class="space-y-4">
-                            <h3 class="font-bold">Sentences:</h3>
-                            <ul class="list-disc pl-5">${this.data.sentences.map(s => `<li>${s}</li>`).join('')}</ul>
-                            <h3 class="font-bold">Opinions:</h3>
-                            <ul class="list-disc pl-5">${Object.entries(this.data.opinions).map(([k,v]) => `<li>${k} was ${v}</li>`).join('')}</ul>
-                        </div>
-                        <button onclick="window.print()" class="mt-8 bg-gray-800 text-white px-6 py-3 rounded-lg w-full">Print</button>
-                    </div>`;
-            },
-
-            renderAllList: function(container, unit) {
-                container.innerHTML = `
-                    <div class="bg-white rounded-xl shadow overflow-hidden">
-                        <div class="p-4 bg-yellow-400 text-yellow-900 font-bold flex justify-between">
-                            <span>Wörterliste (${unit.vocab.length} Words)</span>
-                            <span>📖</span>
-                        </div>
-                        <div class="divide-y divide-gray-100 max-h-[70vh] overflow-y-auto">
-                            ${unit.vocab.map(w => `
-                                <div class="p-3 flex items-center justify-between hover:bg-yellow-50" onclick="app.speak('${w.en.replace(/'/g, "\\'")}')">
-                                    <div class="flex items-center gap-3">
-                                        <span class="text-2xl">${w.icon}</span>
-                                        <div>
-                                            <div class="font-bold text-gray-800">${w.en}</div>
-                                            <div class="text-xs text-gray-500">${w.unit}</div>
+                             ${isReady ? `
+                                <div class="mt-4 pt-4 border-t border-gray-600">
+                                    <p class="text-sm text-yellow-400 mb-2 text-center">👇 Type the sentence here / Schreib den Satz / اكتب الجملة 👇</p>
+                                    <input type="text" 
+                                        value="${this.state.sentenceInput}"
+                                        oninput="app.state.sentenceInput = this.value; app.render()"
+                                        class="w-full p-3 rounded text-gray-900 text-center font-mono outline-none border-4 ${isTypedCorrectly ? 'border-green-500 bg-green-50' : 'border-gray-500'}" 
+                                        placeholder="...">
+                                    
+                                    ${isTypedCorrectly ? `
+                                        <div class="mt-4 text-center">
+                                            <button onclick="app.addSentence('${constructedSentence}'); app.state.sentenceSelection={}; app.state.sentenceInput=''; app.speak('Excellent'); app.render()" 
+                                                class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-8 rounded-full shadow-lg animate-bounce flex flex-col items-center mx-auto">
+                                                <span>✅ ${UI.btn.save.en}</span>
+                                                <span class="text-[10px] font-normal">${UI.btn.save.de}</span>
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-sm font-medium text-gray-600">${w.de}</div>
-                                        <div class="text-sm text-gray-400 ar">${w.ar}</div>
-                                    </div>
+                                    ` : ''}
                                 </div>
-                            `).join('')}
+                             ` : ''}
                         </div>
-                    </div>
-                `;
+
+                        <!-- 3. Saved List -->
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <h3 class="font-bold text-gray-500 text-sm mb-3 border-b pb-2">My Saved Sentences:</h3>
+                            <div class="space-y-2">
+                                ${this.data.sentences.map(s => `
+                                    <div class="bg-blue-50 p-2 rounded flex justify-between items-center">
+                                        <span class="font-medium text-gray-800">${s}</span>
+                                        <button onclick="app.speak('${s.replace(/'/g, "\\'")}')" class="text-blue-500 hover:bg-blue-100 p-1 rounded">🔊</button>
+                                    </div>
+                                `).join('')}
+                                ${this.data.sentences.length === 0 ? '<p class="text-xs text-gray-400 italic">No sentences yet.</p>' : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                
+                // Focus hack for typing
+                if (isReady && !isTypedCorrectly && document.querySelector('input')) {
+                    setTimeout(() => document.querySelector('input').focus(), 10);
+                }
             },
 
+            // --- VIEW 3: MEMORY ---
             initMemoryGame: function() {
-                const all = this.getAllVocab();
-                const selection = [...all].sort(() => 0.5 - Math.random()).slice(0, 6);
+                const unit = this.getUnit();
+                // Select 6 pairs from current unit, duplicate if less than 6
+                let pool = unit.vocab;
+                if (pool.length < 6) pool = [...pool, ...pool].slice(0,6);
+                else pool = pool.slice(0,6);
+
                 let cards = [];
-                selection.forEach((w, i) => {
-                    cards.push({ id: i, type: 'en', text: w.en, matchId: i, icon: w.icon });
-                    cards.push({ id: i, type: 'de', text: w.de, matchId: i, icon: '' });
+                pool.forEach((w, i) => {
+                    cards.push({ id: i + 'a', type: 'en', text: w.en, matchId: i, icon: w.icon });
+                    cards.push({ id: i + 'b', type: 'de', text: w.de, matchId: i, icon: '' }); 
                 });
                 this.state.memoryCards = cards.sort(() => 0.5 - Math.random());
                 this.state.memoryFlipped = [];
@@ -968,23 +797,29 @@
             },
 
             renderMemory: function(container) {
+                if(this.state.memoryCards.length === 0) this.initMemoryGame();
                 container.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center bg-purple-100 p-4 rounded-lg text-purple-800">
-                            <h2 class="font-bold">🕹️ Memory Game</h2>
-                            <button onclick="app.initMemoryGame(); app.render()" class="bg-purple-600 text-white px-3 py-1 rounded shadow text-sm">Neu starten</button>
+                    <div class="space-y-4 animate-fade-in">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-8 border-purple-500 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="bg-purple-100 px-2 rounded">Step 3</span> ${UI.tabs.memory.en}</h2>
+                                <p class="text-sm text-gray-600">🇩🇪 ${UI.instr.memory.de}</p>
+                            </div>
+                            <button onclick="app.initMemoryGame(); app.render()" class="bg-purple-600 text-white px-3 py-2 rounded-lg text-xs font-bold shadow hover:bg-purple-700">
+                                🔄 ${UI.btn.restart.en}
+                            </button>
                         </div>
                         <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
                             ${this.state.memoryCards.map((card, idx) => {
                                 const isFlipped = this.state.memoryFlipped.includes(idx) || this.state.memoryMatched.includes(card.matchId);
                                 const isMatched = this.state.memoryMatched.includes(card.matchId);
                                 return `
-                                    <div onclick="app.flipMemoryCard(${idx})" class="perspective h-24 sm:h-32 cursor-pointer group">
-                                        <div class="relative w-full h-full duration-500 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}" style="transform-style: preserve-3d; transition: transform 0.6s;">
-                                            <div class="absolute w-full h-full bg-purple-600 rounded-xl flex items-center justify-center text-white text-2xl shadow-md backface-hidden" style="backface-visibility: hidden;">❓</div>
+                                    <div onclick="app.flipMemoryCard(${idx})" class="perspective h-24 cursor-pointer group">
+                                        <div class="relative w-full h-full duration-500 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}" style="transition: transform 0.6s;">
+                                            <div class="absolute w-full h-full bg-purple-600 rounded-xl flex items-center justify-center text-white text-3xl shadow-md backface-hidden" style="backface-visibility: hidden;">❓</div>
                                             <div class="absolute w-full h-full ${isMatched ? 'bg-green-100 border-green-500' : 'bg-white'} border-2 rounded-xl flex flex-col items-center justify-center shadow-md backface-hidden" style="transform: rotateY(180deg); backface-visibility: hidden;">
                                                 <span class="text-2xl">${card.icon}</span>
-                                                <span class="font-bold text-center text-sm sm:text-base leading-tight p-1">${card.text}</span>
+                                                <span class="font-bold text-center text-xs sm:text-sm p-1 leading-tight">${card.text}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -995,9 +830,11 @@
                 `;
             },
 
+            // --- VIEW 4: SCRAMBLE ---
             initScrambleGame: function() {
-                const all = this.getAllVocab();
-                this.state.scrambleWord = all[Math.floor(Math.random() * all.length)];
+                const unit = this.getUnit();
+                // Random word from unit
+                this.state.scrambleWord = unit.vocab[Math.floor(Math.random() * unit.vocab.length)];
                 this.state.scrambleInput = "";
             },
 
@@ -1021,23 +858,38 @@
                 const isCorrect = this.state.scrambleInput.toLowerCase().trim() === word.en.toLowerCase();
 
                 container.innerHTML = `
-                    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl text-center border-t-8 border-blue-500">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">🧩 Word Scramble</h2>
-                        <div class="text-6xl mb-4">${word.icon}</div>
-                        <div class="bg-blue-50 p-4 rounded-xl mb-6">
-                            <p class="text-blue-800 font-mono text-2xl tracking-widest font-bold">${scrambled}</p>
-                            <p class="text-xs text-blue-400 mt-2 uppercase">Bringe die Buchstaben in Ordnung</p>
+                    <div class="space-y-6 animate-fade-in">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-l-8 border-yellow-500">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><span class="bg-yellow-100 px-2 rounded">Step 4</span> ${UI.tabs.scramble.en}</h2>
+                            <p class="text-sm text-gray-600">🇩🇪 ${UI.instr.scramble.de}</p>
                         </div>
-                        <input type="text" oninput="app.checkScramble(this.value)" value="${this.state.scrambleInput}"
-                            class="w-full text-center text-2xl p-3 border-b-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-gray-300 focus:border-blue-500'} outline-none transition-all placeholder-gray-300 mb-4"
-                            placeholder="Type here..." autofocus>
-                        ${isCorrect ? `<div class="animate-bounce text-green-600 font-bold text-xl">✅ Correct! Next word coming...</div>` : `<div class="text-gray-400 text-sm flex justify-between px-4"><span>🇩🇪 ${word.de}</span><span class="ar">🇸🇦 ${word.ar}</span></div>`}
-                        <button onclick="app.initScrambleGame(); app.render()" class="mt-8 text-gray-400 text-sm underline hover:text-gray-600">Wort überspringen</button>
+
+                        <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl text-center border border-gray-100">
+                            <div class="text-6xl mb-4 animate-bounce">${word.icon}</div>
+                            
+                            <div class="bg-yellow-50 p-4 rounded-xl mb-6 border border-yellow-200">
+                                <p class="text-yellow-800 font-mono text-3xl tracking-widest font-bold">${scrambled}</p>
+                            </div>
+
+                            <input type="text" oninput="app.checkScramble(this.value)" value="${this.state.scrambleInput}"
+                                class="w-full text-center text-2xl p-3 border-b-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-gray-300 focus:border-yellow-500'} outline-none transition-all placeholder-gray-300 mb-4"
+                                placeholder="..." autofocus>
+                            
+                            ${isCorrect ? 
+                                `<div class="text-green-600 font-bold text-xl">✅ Correct! Next...</div>` : 
+                                `<div class="text-gray-400 text-sm flex justify-between px-4"><span>🇩🇪 ${word.de}</span><span class="ar">🇸🇦 ${word.ar}</span></div>`
+                            }
+                            
+                            <button onclick="app.initScrambleGame(); app.render()" class="mt-8 text-gray-400 text-xs hover:text-gray-600 underline">
+                                ⏩ ${UI.btn.skip.en} / ${UI.btn.skip.de}
+                            </button>
+                        </div>
                     </div>
                 `;
+                // Focus hack
                 setTimeout(() => {
                     const inp = container.querySelector('input');
-                    if(inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+                    if(inp && !isCorrect) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
                 }, 50);
             }
         };
