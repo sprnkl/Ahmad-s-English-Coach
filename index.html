@@ -13,12 +13,19 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
+        
+        /* Animationen für Spiele */
+        .card-flip { transition: transform 0.6s; transform-style: preserve-3d; }
+        .card-flip.flipped { transform: rotateY(180deg); }
+        .perspective { perspective: 1000px; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
 <body class="bg-green-50 text-gray-800">
 
-    <!-- HEADER / UNIT SELECTOR -->
-    <div class="bg-green-800 text-white p-4 shadow-md">
+    <!-- HEADER -->
+    <div class="bg-green-800 text-white p-4 shadow-md sticky top-0 z-50">
         <div class="max-w-4xl mx-auto flex flex-col gap-4">
             <div class="flex justify-between items-center">
                 <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 Ahmads English App</h1>
@@ -27,33 +34,29 @@
                 </button>
             </div>
             
-            <!-- Unit Selector (Scrollbar) -->
+            <!-- Unit Selector -->
             <div id="unit-selector" class="flex overflow-x-auto gap-2 bg-green-900/50 p-2 rounded-lg hide-scroll">
-                <!-- Units werden hier rein generiert -->
+                <!-- Units werden hier generiert -->
             </div>
         </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
-    <div class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-green-100 p-2 mb-6 shadow-sm">
+    <!-- NAVIGATION TABS (werden dynamisch je nach Modul angezeigt) -->
+    <div id="nav-container" class="bg-white/90 backdrop-blur border-b border-green-100 p-2 mb-6 shadow-sm hidden">
         <div id="nav-tabs" class="max-w-4xl mx-auto flex justify-center gap-2 overflow-x-auto hide-scroll">
-            <button onclick="app.setTab('vocab')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all bg-green-600 text-white shadow-md" data-tab="vocab">1. Words</button>
-            <button onclick="app.setTab('sentences')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="sentences">2. Sentences</button>
-            <button onclick="app.setTab('opinion')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="opinion">3. Opinion</button>
-            <button onclick="app.setTab('report')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="report">4. Report</button>
+            <!-- Tabs kommen hier rein -->
         </div>
     </div>
 
     <!-- MAIN CONTENT AREA -->
-    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh]"></div>
+    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh] pb-20"></div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN: HIER SIND ALLE 6 MODULE
+        // DATEN
         // ==========================================
         const COURSE_DATA = [
-            // MODUL 1: HOLIDAYS
             {
                 id: "unit1",
                 title: "1: Holidays",
@@ -80,8 +83,6 @@
                     { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
                 ]
             },
-            
-            // MODUL 2: HOBBIES
             {
                 id: "unit2",
                 title: "2: Hobbies",
@@ -106,8 +107,6 @@
                     { en: "stupid", de: "blöd", ar: "غبي", type: "neg" }
                 ]
             },
-
-            // MODUL 3: SCHOOL (Neu)
             {
                 id: "unit3",
                 title: "3: School",
@@ -117,283 +116,313 @@
                     { en: "English", de: "Englisch", ar: "إنجليزي", icon: "🇬🇧" },
                     { en: "History", de: "Geschichte", ar: "تاريخ", icon: "🏛️" },
                     { en: "Art", de: "Kunst", ar: "فن", icon: "🎨" },
-                    { en: "Ruler", de: "Lineal", ar: "مسطرة", icon: "📏" },
                     { en: "Pen", de: "Stift", ar: "قلم", icon: "🖊️" },
-                    { en: "Bag", de: "Tasche", ar: "حقيبة", icon: "🎒" },
-                    { en: "Book", de: "Buch", ar: "كتاب", icon: "📖" }
+                    { en: "Bag", de: "Tasche", ar: "حقيبة", icon: "🎒" }
                 ],
                 sentenceParts: {
-                    col1: { title: "When?", items: ["On Monday", "On Tuesday", "On Friday"] },
+                    col1: { title: "When?", items: ["On Monday", "On Tuesday"] },
                     col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "What?", items: ["have Math", "have English", "have History", "have Art"] }
+                    col3: { title: "What?", items: ["have Math", "have English", "have History"] }
                 },
                 opinions: [
                     { en: "easy", de: "einfach", ar: "سهل", type: "pos" },
-                    { en: "hard", de: "schwer", ar: "صعب", type: "neg" },
-                    { en: "good", de: "gut", ar: "جيد", type: "pos" },
-                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" }
+                    { en: "hard", de: "schwer", ar: "صعب", type: "neg" }
                 ]
             },
-
-            // MODUL 4: TOWN (Neu)
             {
                 id: "unit4",
                 title: "4: Town",
                 icon: "🏙️",
                 vocab: [
                     { en: "Cinema", de: "Kino", ar: "سينما", icon: "🍿" },
-                    { en: "Supermarket", de: "Supermarkt", ar: "سوبر ماركت", icon: "🛒" },
                     { en: "Park", de: "Park", ar: "حديقة", icon: "🌳" },
-                    { en: "Hospital", de: "Krankenhaus", ar: "مستشفى", icon: "🏥" },
                     { en: "Go left", de: "Geh links", ar: "اذهب لليسار", icon: "⬅️" },
                     { en: "Go right", de: "Geh rechts", ar: "اذهب لليمين", icon: "➡️" },
-                    { en: "Go straight", de: "Geh geradeaus", ar: "اذهب للأمام", icon: "⬆️" },
-                    { en: "Stop", de: "Stopp", ar: "قف", icon: "🛑" }
+                    { en: "Go straight", de: "Geh geradeaus", ar: "اذهب للأمام", icon: "⬆️" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Where?", items: ["To the cinema", "To the park", "To the shop"] },
-                    col2: { title: "Please...", items: ["go left", "go right", "go straight"] },
+                    col1: { title: "Where?", items: ["To the cinema", "To the park"] },
+                    col2: { title: "Please...", items: ["go left", "go right"] },
                     col3: { title: "Distance", items: ["and stop", "for 100 meters"] }
                 },
                 opinions: [
                     { en: "near", de: "nah", ar: "قريب", type: "pos" },
-                    { en: "far", de: "weit", ar: "بعيد", type: "neu" },
-                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
-                    { en: "small", de: "klein", ar: "صغير", type: "neu" }
-                ]
-            },
-
-            // MODUL 5: SHOPPING (Neu)
-            {
-                id: "unit5",
-                title: "5: Shopping",
-                icon: "🛍️",
-                vocab: [
-                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
-                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
-                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
-                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
-                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
-                    { en: "Bread", de: "Brot", ar: "خبز", icon: "🍞" },
-                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
-                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
-                ],
-                sentenceParts: {
-                    col1: { title: "Polite", items: ["I would like", "I want"] },
-                    col2: { title: "Action", items: ["to buy"] },
-                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple", "bread"] }
-                },
-                opinions: [
-                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
-                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
-                    { en: "nice", de: "schön", ar: "جميل", type: "pos" },
-                    { en: "ugly", de: "hässlich", ar: "قبيح", type: "neg" }
-                ]
-            },
-
-            // MODUL 6: TRAVEL (Neu)
-            {
-                id: "unit6",
-                title: "6: Travel",
-                icon: "✈️",
-                vocab: [
-                    { en: "Train", de: "Zug", ar: "قطار", icon: "🚆" },
-                    { en: "Bus", de: "Bus", ar: "حافلة", icon: "🚌" },
-                    { en: "Plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
-                    { en: "Car", de: "Auto", ar: "سيارة", icon: "🚗" },
-                    { en: "Ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
-                    { en: "Passport", de: "Pass", ar: "جواز سفر", icon: "🛂" },
-                    { en: "Suitcase", de: "Koffer", ar: "حقيبة سفر", icon: "🧳" },
-                    { en: "Hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
-                ],
-                sentenceParts: {
-                    col1: { title: "When?", items: ["In summer", "Next week"] },
-                    col2: { title: "Who?", items: ["I"] },
-                    col3: { title: "Travel by...", items: ["go by plane", "go by train", "go by car"] }
-                },
-                opinions: [
-                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
-                    { en: "slow", de: "langsam", ar: "بطيء", type: "neg" },
-                    { en: "exciting", de: "aufregend", ar: "مثير", type: "pos" },
-                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
+                    { en: "far", de: "weit", ar: "بعيد", type: "neu" }
                 ]
             }
         ];
-
-        // ==========================================
-        // UI TEXTS (DEUTSCH & ARABISCH)
-        // ==========================================
-        const UI_TEXT = {
-            vocab: { de: "Klicke auf die Karte. Höre das Wort. Schreibe das Wort.", ar: "اضغط على البطاقة. استمع للكلمة. اكتب الكلمة." },
-            sentences: { de: "Wähle aus jeder Spalte ein Wort. Baue einen Satz.", ar: "اختر كلمة من كل قائمة. ركب جملة." },
-            opinion: { de: "Wie findest du das? Wähle eine Meinung.", ar: "ما رأيك؟ اختر إجابة." },
-            report: { de: "Schreibe deinen Namen. Drucke das Blatt.", ar: "اكتب اسمك. اطبع الورقة." }
-        };
 
         // ==========================================
         // APP LOGIC
         // ==========================================
         
         const app = {
-            currentUnitId: COURSE_DATA[0].id,
-            activeTab: 'vocab',
-            state: { sentenceSelection: { col1: null, col2: null, col3: null }, flippedCards: {}, quizInputs: {} },
+            currentUnitId: "all_words", // Start mit All Words
+            activeTab: 'list',
+            
+            // State
+            state: {
+                sentenceSelection: { col1: null, col2: null, col3: null },
+                flippedCards: {},
+                quizSelection: [], // Für das Speed Quiz (3 zufällige Wörter)
+                
+                // Memory Game State
+                memoryCards: [],
+                memoryFlipped: [],
+                memoryMatched: [],
+                memoryLock: false,
+
+                // Scramble Game State
+                scrambleWord: null,
+                scrambleInput: ""
+            },
+            
             data: { sentences: [], opinions: {} },
 
             init: function() {
                 this.loadData();
                 this.renderUnitSelector();
-                this.render();
-                
-                // Audio Init Versuch
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.getVoices(); 
+                this.setUnit("all_words"); // Default Unit
+            },
+
+            // --- HELPER: GET ALL VOCAB ---
+            getAllVocab: function() {
+                return COURSE_DATA.flatMap(unit => unit.vocab.map(v => ({...v, unit: unit.title})));
+            },
+
+            getUnit: function() {
+                if (this.currentUnitId === "all_words") {
+                    return {
+                        id: "all_words",
+                        title: "Alle Wörter & Spiele",
+                        icon: "📚",
+                        vocab: this.getAllVocab(),
+                        isSpecial: true
+                    };
                 }
+                return COURSE_DATA.find(u => u.id === this.currentUnitId);
             },
-
-            // --- AUDIO CORE ---
-            speak: function(text) {
-                if (!('speechSynthesis' in window)) {
-                    alert("Dein Browser unterstützt leider keine Audio-Ausgabe.");
-                    return;
-                }
-
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.9; 
-                utterance.volume = 1.0; 
-                window.speechSynthesis.speak(utterance);
-            },
-
-            testAudio: function() {
-                this.speak("Hello! The audio is working.");
-            },
-
-            getUnit: function() { return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0]; },
 
             setUnit: function(id) {
                 this.currentUnitId = id;
-                this.activeTab = 'vocab';
-                this.state = { sentenceSelection: {}, flippedCards: {}, quizInputs: {} };
+                // Standard Tab Logik
+                if (id === "all_words") this.activeTab = "list";
+                else this.activeTab = "vocab";
+                
+                this.state = { 
+                    sentenceSelection: {}, flippedCards: {}, quizSelection: [], 
+                    memoryCards: [], memoryFlipped: [], memoryMatched: [], memoryLock: false,
+                    scrambleWord: null, scrambleInput: ""
+                };
+                
                 this.loadData();
+                this.refreshQuizSelection(); // Initial Quiz Selection
                 this.renderUnitSelector();
                 this.render();
             },
 
             setTab: function(tabId) {
                 this.activeTab = tabId;
-                this.updateNavStyles();
+                if(tabId === 'memory') this.initMemoryGame();
+                if(tabId === 'scramble') this.initScrambleGame();
                 this.render();
             },
 
+            refreshQuizSelection: function() {
+                const unit = this.getUnit();
+                if (!unit || !unit.vocab) return;
+                // Wähle 3 zufällige Wörter
+                const shuffled = [...unit.vocab].sort(() => 0.5 - Math.random());
+                this.state.quizSelection = shuffled.slice(0, 3);
+            },
+
+            // --- SPEICHERN ---
             loadData: function() {
                 try {
                     const saved = localStorage.getItem('english_data_' + this.currentUnitId);
                     if (saved) { this.data = JSON.parse(saved); } else { this.data = { sentences: [], opinions: {} }; }
                 } catch(e) {}
             },
-
             saveData: function() {
                 try { localStorage.setItem('english_data_' + this.currentUnitId, JSON.stringify(this.data)); } catch(e) {}
             },
+            addSentence: function(s) {
+                if (!this.data.sentences.includes(s)) { this.data.sentences.push(s); this.saveData(); }
+            },
+            addOpinion: function(a, o) {
+                this.data.opinions[a] = o; this.saveData();
+            },
 
-            addSentence: function(sentence) {
-                if (!this.data.sentences.includes(sentence)) {
-                    this.data.sentences.push(sentence);
-                    this.saveData();
+            // --- AUDIO ---
+            speak: function(text) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'en-US'; u.rate = 0.9;
+                    window.speechSynthesis.speak(u);
                 }
             },
+            testAudio: function() { this.speak("Hello! Audio is working."); },
 
-            addOpinion: function(activity, opinion) {
-                this.data.opinions[activity] = opinion;
-                this.saveData();
-            },
-
-            // --- RENDERING HELPERS ---
-            renderInstructions: function(type) {
-                return `
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
-                        <p class="font-bold text-gray-700 text-sm mb-1">🇩🇪 ${UI_TEXT[type].de}</p>
-                        <p class="ar text-gray-500 text-sm text-right">🇸🇦 ${UI_TEXT[type].ar}</p>
-                    </div>
-                `;
-            },
-
+            // --- UI RENDERERS ---
             renderUnitSelector: function() {
                 const container = document.getElementById('unit-selector');
-                container.innerHTML = COURSE_DATA.map(unit => `
+                let html = `
+                    <button onclick="app.setUnit('all_words')" 
+                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 
+                        ${this.currentUnitId === 'all_words' ? 'bg-yellow-400 text-yellow-900 border-yellow-200 shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
+                        <span>📚</span> <span>Alle Wörter & Spiele</span>
+                    </button>
+                `;
+                html += COURSE_DATA.map(unit => `
                     <button onclick="app.setUnit('${unit.id}')" 
-                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 ${this.currentUnitId === unit.id ? 'bg-white text-green-800 border-white shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
+                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 
+                        ${this.currentUnitId === unit.id ? 'bg-white text-green-800 border-white shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
                         <span>${unit.icon}</span> <span>${unit.title}</span>
+                    </button>
+                `).join('');
+                container.innerHTML = html;
+            },
+
+            renderNav: function(isSpecial) {
+                const container = document.getElementById('nav-container');
+                const tabsContainer = document.getElementById('nav-tabs');
+                container.classList.remove('hidden');
+                
+                let tabs = [];
+                if (isSpecial) {
+                    tabs = [
+                        { id: 'list', label: '📖 Liste', color: 'bg-yellow-500' },
+                        { id: 'memory', label: '🕹️ Memory', color: 'bg-purple-500' },
+                        { id: 'scramble', label: '🧩 Scramble', color: 'bg-blue-500' }
+                    ];
+                } else {
+                    tabs = [
+                        { id: 'vocab', label: '1. Words', color: 'bg-green-600' },
+                        { id: 'sentences', label: '2. Sentences', color: 'bg-blue-600' },
+                        { id: 'opinion', label: '3. Opinion', color: 'bg-purple-600' },
+                        { id: 'report', label: '4. Report', color: 'bg-gray-600' }
+                    ];
+                }
+
+                tabsContainer.innerHTML = tabs.map(t => `
+                    <button onclick="app.setTab('${t.id}')" 
+                        class="px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-sm ${this.activeTab === t.id ? `${t.color} text-white scale-105 shadow-md` : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}">
+                        ${t.label}
                     </button>
                 `).join('');
             },
 
-            updateNavStyles: function() {
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    const isActive = btn.getAttribute('data-tab') === this.activeTab;
-                    btn.className = `nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all ${isActive ? 'bg-green-600 text-white shadow-md scale-105' : 'text-gray-500 hover:bg-green-50'}`;
-                });
-            },
-
             render: function() {
-                const content = document.getElementById('app-content');
                 const unit = this.getUnit();
+                this.renderNav(unit.isSpecial);
+                const content = document.getElementById('app-content');
 
-                if (this.activeTab === 'vocab') this.renderVocab(content, unit);
-                else if (this.activeTab === 'sentences') this.renderSentences(content, unit);
-                else if (this.activeTab === 'opinion') this.renderOpinion(content, unit);
-                else if (this.activeTab === 'report') this.renderReport(content, unit);
+                if (unit.isSpecial) {
+                    // SPECIAL UNIT VIEWS
+                    if (this.activeTab === 'list') this.renderAllList(content, unit);
+                    else if (this.activeTab === 'memory') this.renderMemory(content);
+                    else if (this.activeTab === 'scramble') this.renderScramble(content);
+                } else {
+                    // STANDARD UNIT VIEWS
+                    if (this.activeTab === 'vocab') this.renderVocab(content, unit);
+                    else if (this.activeTab === 'sentences') this.renderSentences(content, unit);
+                    else if (this.activeTab === 'opinion') this.renderOpinion(content, unit);
+                    else if (this.activeTab === 'report') this.renderReport(content, unit);
+                }
             },
 
-            // 1. VOCAB RENDERER
+            // --- STANDARD VIEWS ---
+
             renderVocab: function(container, unit) {
-                const quizHTML = unit.vocab.slice(0, 3).map((word, idx) => {
+                // Quiz Section HTML generator (NUR HTML, keine Logik hier)
+                const quizHTML = this.state.quizSelection.map((word, idx) => {
+                    // Maskieren: Vokale weg
                     const masked = word.en.replace(/[aeiouAEIOU]/g, '_');
-                    const inputVal = this.state.quizInputs[word.en] || '';
-                    const isCorrect = inputVal.toLowerCase().trim() === word.en.toLowerCase();
-                    
                     return `
-                        <div class="flex flex-col sm:flex-row gap-2 items-center bg-gray-50 p-2 rounded-lg mb-2">
-                            <span class="font-mono text-lg bg-white border px-3 py-1 rounded w-full sm:w-48 text-center tracking-widest text-gray-600 font-bold">${masked}</span>
-                            <div class="relative w-full flex-grow">
-                                <input type="text" oninput="app.handleQuizInput('${word.en}', this.value)" value="${inputVal}"
-                                    class="w-full border-2 p-2 pl-4 rounded-lg outline-none ${inputVal.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'}" placeholder="Word...">
-                                ${isCorrect ? '<i class="ph ph-check-circle text-green-500 text-2xl absolute right-2 top-1/2 -translate-y-1/2"></i>' : ''}
+                        <div class="flex flex-col sm:flex-row gap-2 items-center bg-gray-50 p-3 rounded-lg mb-3 border border-gray-200">
+                            <span class="font-mono text-xl bg-white border-2 border-gray-300 px-4 py-1 rounded-md w-full sm:w-48 text-center tracking-[0.2em] text-gray-700 font-bold shadow-sm">${masked}</span>
+                            <div class="relative w-full flex-grow group">
+                                <input type="text" 
+                                    id="quiz-input-${idx}"
+                                    data-correct="${word.en}"
+                                    oninput="app.checkQuizInput(this)" 
+                                    class="w-full border-2 border-gray-300 p-2 pl-4 rounded-lg outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-medium" 
+                                    placeholder="Ganzes Wort..." autocomplete="off">
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 transition-opacity" id="quiz-icon-${idx}">
+                                    <span class="text-2xl">✅</span>
+                                </div>
                             </div>
                         </div>
                     `;
                 }).join('');
 
                 container.innerHTML = `
-                    <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Step 1</span> Learn the Words</h2>
-                        ${this.renderInstructions('vocab')}
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                    <div class="animate-fade-in space-y-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-md border-l-8 border-green-500">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Step 1: Words</h2>
+                            <p class="text-gray-600 mb-1">🇩🇪 Klicke auf die Karte. Höre das Wort.</p>
+                            <p class="text-gray-400 text-sm ar">🇸🇦 اضغط على البطاقة. استمع للكلمة.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             ${unit.vocab.map((word, idx) => `
-                                <div onclick="app.toggleCard(${idx})" class="bg-white rounded-xl shadow-sm hover:shadow-md p-6 cursor-pointer border-2 transition-all relative overflow-hidden group ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <span class="text-4xl">${word.icon}</span>
-                                        <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-full hover:bg-blue-500 hover:text-white text-blue-500 transition-colors"><i class="ph ph-speaker-high text-xl"></i></button>
+                                <div onclick="app.toggleCard(${idx})" 
+                                     class="bg-white rounded-xl shadow-sm hover:shadow-lg p-6 cursor-pointer border-2 transition-all transform hover:-translate-y-1 duration-200 group 
+                                     ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <span class="text-5xl filter drop-shadow-sm">${word.icon}</span>
+                                        <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" 
+                                            class="w-12 h-12 flex items-center justify-center bg-blue-50 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition-colors shadow-sm">
+                                            🔊
+                                        </button>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mt-2">${word.en}</h3>
-                                    ${this.state.flippedCards[idx] ? `
-                                        <div class="mt-2 pt-2 border-t border-green-200">
-                                            <p class="text-green-700 font-bold">= ${word.de}</p>
-                                            <p class="text-gray-500 ar text-right">= ${word.ar}</p>
-                                        </div>
-                                    ` : '<p class="text-xs text-gray-400 mt-2">Click to translate</p>'}
+                                    <h3 class="text-2xl font-bold text-gray-800 mb-1">${word.en}</h3>
+                                    
+                                    <div class="transition-all duration-300 overflow-hidden ${this.state.flippedCards[idx] ? 'max-h-24 opacity-100 mt-3 pt-3 border-t border-green-200' : 'max-h-0 opacity-0'}">
+                                        <p class="text-green-700 font-bold text-lg">${word.de}</p>
+                                        <p class="text-gray-500 ar text-lg mt-1">${word.ar}</p>
+                                    </div>
+                                    ${!this.state.flippedCards[idx] ? '<p class="text-xs text-gray-400 mt-2 font-medium uppercase tracking-wide">Click to translate</p>' : ''}
                                 </div>
                             `).join('')}
                         </div>
+
                         <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                             <h3 class="text-xl font-bold text-gray-800 mb-4">⚡ Speed Quiz</h3>
+                             <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">⚡ Speed Quiz <span class="text-sm font-normal text-gray-500">(Fülle die Lücken)</span></h3>
+                                <button onclick="app.refreshQuizAndRender()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-sm font-bold flex items-center gap-1 transition-colors">
+                                    🔄 Neue Wörter
+                                </button>
+                             </div>
                              ${quizHTML}
                         </div>
                     </div>
                 `;
+            },
+
+            // NEU: Direkte DOM Manipulation für flüssiges Tippen ohne Fokus-Verlust
+            checkQuizInput: function(inputEl) {
+                const val = inputEl.value.trim().toLowerCase();
+                const correct = inputEl.dataset.correct.toLowerCase();
+                const icon = document.getElementById(inputEl.id.replace('input', 'icon'));
+                
+                if (val === correct) {
+                    inputEl.classList.remove('border-gray-300', 'focus:border-blue-500', 'border-red-300', 'bg-red-50');
+                    inputEl.classList.add('border-green-500', 'bg-green-50', 'text-green-800');
+                    icon.style.opacity = '1';
+                } else if (val.length > 2) {
+                    inputEl.classList.add('border-red-300', 'bg-red-50');
+                } else {
+                    inputEl.classList.remove('border-green-500', 'bg-green-50', 'text-green-800', 'border-red-300', 'bg-red-50');
+                    inputEl.classList.add('border-gray-300');
+                    icon.style.opacity = '0';
+                }
+            },
+
+            refreshQuizAndRender: function() {
+                this.refreshQuizSelection();
+                this.render(); // Hier ist Re-Render okay, weil wir neue Wörter wollen
             },
 
             toggleCard: function(idx) {
@@ -401,160 +430,271 @@
                 this.render(); 
             },
 
-            handleQuizInput: function(id, val) {
-                this.state.quizInputs[id] = val;
-                this.render(); 
-                setTimeout(() => {
-                    const inputs = document.querySelectorAll(`input[value="${val}"]`);
-                    if(inputs.length > 0) inputs[inputs.length-1].focus();
-                }, 10);
-            },
-
-
-            // 2. SENTENCE RENDERER
+            // --- SENTENCES & OPINION & REPORT (Keep existing logic mostly, simplified render) ---
             renderSentences: function(container, unit) {
                 const sel = this.state.sentenceSelection;
                 const isComplete = sel.col1 && sel.col2 && sel.col3;
-                
-                const renderCol = (id, data, color) => `
-                    <div class="bg-${color}-50 p-4 rounded-xl border border-${color}-100">
-                        <h3 class="font-bold text-${color}-800 mb-3 uppercase text-sm tracking-wide">${data.title}</h3>
-                        ${data.items.map(item => `
-                            <button onclick="app.selectSentencePart('${id}', '${item}')" 
-                                class="w-full p-3 mb-2 rounded-lg text-left transition-all text-sm font-medium ${sel[id] === item ? `bg-${color}-600 text-white shadow-lg` : `bg-white text-gray-600 hover:bg-${color}-100`}">
-                                ${item}
-                            </button>
-                        `).join('')}
-                    </div>
-                `;
-
                 container.innerHTML = `
-                    <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Step 2</span> Build Sentences</h2>
-                        ${this.renderInstructions('sentences')}
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                            ${renderCol('col1', unit.sentenceParts.col1, 'blue')}
-                            ${renderCol('col2', unit.sentenceParts.col2, 'purple')}
-                            ${renderCol('col3', unit.sentenceParts.col3, 'orange')}
+                    <div class="space-y-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                            <h2 class="text-xl font-bold">Step 2: Sentences</h2>
+                            <p class="text-sm text-gray-600">🇩🇪 Wähle aus jeder Spalte. Baue einen Satz.</p>
                         </div>
-                        <div class="bg-gray-800 text-white p-8 rounded-2xl shadow-xl text-center">
-                             <div class="text-xl md:text-3xl mb-6 font-mono font-medium">
-                                <span class="${sel.col1 ? 'text-blue-300' : 'text-gray-600'}">${sel.col1 || '...'}</span>
-                                <span class="${sel.col2 ? 'text-purple-300' : 'text-gray-600'}">${sel.col2 || '...'}</span>
-                                <span class="${sel.col3 ? 'text-orange-300' : 'text-gray-600'}">${sel.col3 || '...'}</span>.
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            ${['col1', 'col2', 'col3'].map(col => `
+                                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                    <h3 class="font-bold text-blue-800 mb-2 uppercase text-xs">${unit.sentenceParts[col].title}</h3>
+                                    ${unit.sentenceParts[col].items.map(item => `
+                                        <button onclick="app.state.sentenceSelection.${col} = '${item}'; app.render()" 
+                                            class="w-full p-2 mb-2 rounded text-left text-sm transition-all ${sel[col] === item ? 'bg-blue-600 text-white shadow-lg transform scale-105' : 'bg-white hover:bg-blue-100'}">
+                                            ${item}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="bg-gray-800 text-white p-6 rounded-xl text-center shadow-lg">
+                             <div class="text-xl mb-4 font-mono">
+                                <span class="${sel.col1 ? 'text-blue-300' : 'text-gray-500'}">${sel.col1 || '...'}</span>
+                                <span class="${sel.col2 ? 'text-purple-300' : 'text-gray-500'}">${sel.col2 || '...'}</span>
+                                <span class="${sel.col3 ? 'text-orange-300' : 'text-gray-500'}">${sel.col3 || '...'}</span>.
                              </div>
-                             ${isComplete ? `<button onclick="app.saveCurrentSentence()" class="bg-green-500 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg animate-bounce">Save It</button>` : ''}
+                             ${isComplete ? `<button onclick="app.addSentence('${sel.col1} ${sel.col2} ${sel.col3}.'); app.state.sentenceSelection={}; app.speak('Excellent'); app.render()" class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-6 rounded-full shadow-lg animate-bounce">Save It</button>` : ''}
                         </div>
-                        
-                        <div class="mt-8">
-                            <h3 class="font-bold text-gray-500 text-sm uppercase mb-3">Your Sentences</h3>
-                            <div class="space-y-2">
-                                ${this.data.sentences.map(s => `
-                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center">
-                                        <span class="text-gray-700">${s}</span>
-                                        <button onclick="app.speak('${s.replace(/'/g, "\\'")}')" class="text-blue-500"><i class="ph ph-speaker-high"></i></button>
-                                    </div>
-                                `).join('')}
-                            </div>
+                        <div>
+                            <h3 class="font-bold text-gray-500 text-sm mb-2">Saved Sentences:</h3>
+                            ${this.data.sentences.map(s => `<div class="bg-white p-2 rounded mb-1 shadow-sm flex justify-between"><span>${s}</span><button onclick="app.speak('${s.replace(/'/g, "\\'")}')">🔊</button></div>`).join('')}
                         </div>
-                    </div>
-                `;
+                    </div>`;
             },
 
-            selectSentencePart: function(col, val) {
-                this.state.sentenceSelection[col] = val;
-                this.render();
-            },
-
-            saveCurrentSentence: function() {
-                const s = this.state.sentenceSelection;
-                const full = `${s.col1} ${s.col2} ${s.col3}.`;
-                this.addSentence(full);
-                this.state.sentenceSelection = { col1: null, col2: null, col3: null };
-                this.speak("Excellent!");
-                this.render();
-            },
-
-
-            // 3. OPINION RENDERER
             renderOpinion: function(container, unit) {
-                const activities = unit.vocab.map(v => v.en).slice(0, 5);
-                
                 container.innerHTML = `
-                    <div class="animate-fade-in">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Step 3</span> Express Opinions</h2>
-                        ${this.renderInstructions('opinion')}
-                        
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="space-y-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-purple-500">
+                            <h2 class="text-xl font-bold">Step 3: Opinion</h2>
+                            <p class="text-sm text-gray-600">🇩🇪 Wie findest du das? Wähle.</p>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             ${unit.opinions.map(op => `
-                                <div onclick="app.speak('${op.en}')" class="p-4 rounded-xl text-center border-2 cursor-pointer hover:scale-105 transition-transform ${op.type === 'pos' ? 'bg-green-50 border-green-200' : op.type === 'neg' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}">
-                                    <div class="text-xl font-bold text-gray-800">${op.en}</div>
-                                    <div class="text-xs text-gray-500 mt-1">
-                                        <div>${op.de}</div>
-                                        <div class="ar">${op.ar}</div>
+                                <div onclick="app.speak('${op.en}')" class="p-3 rounded-lg text-center border bg-white hover:shadow-md cursor-pointer">
+                                    <div class="font-bold text-lg">${op.en}</div>
+                                    <div class="text-xs text-gray-500">${op.de} / ${op.ar}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow border">
+                            ${unit.vocab.slice(0,5).map(v => `
+                                <div class="flex justify-between items-center border-b last:border-0 py-2">
+                                    <span class="font-medium">${v.en} was...</span>
+                                    <div class="flex gap-1">
+                                        ${unit.opinions.map(op => `
+                                            <button onclick="app.addOpinion('${v.en}', '${op.en}'); app.speak('${v.en} was ${op.en}'); app.render()" 
+                                                class="px-2 py-1 text-xs rounded border ${this.data.opinions[v.en]===op.en ? 'bg-purple-600 text-white' : 'hover:bg-gray-50'}">${op.en}</button>
+                                        `).join('')}
                                     </div>
                                 </div>
                             `).join('')}
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                            ${activities.map(act => `
-                                <div class="mb-4 pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                        <p class="font-medium text-gray-700 min-w-[150px]">${act} was...</p>
-                                        <div class="flex flex-wrap gap-2">
-                                            ${unit.opinions.map(op => `
-                                                <button onclick="app.saveOpinion('${act.replace(/'/g, "\\'")}', '${op.en}')" 
-                                                    class="px-3 py-1 rounded-full text-sm font-medium border transition-all ${this.data.opinions[act] === op.en ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 hover:bg-gray-50'}">
-                                                    ${op.en}
-                                                </button>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                    </div>`;
             },
 
-            saveOpinion: function(act, op) {
-                this.addOpinion(act, op);
-                this.speak(`${act} was ${op}`);
-                this.render();
-            },
-
-
-            // 4. REPORT RENDERER
             renderReport: function(container, unit) {
                 container.innerHTML = `
-                    <div class="max-w-2xl mx-auto">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Step 4</span> Final Report</h2>
-                        ${this.renderInstructions('report')}
-                        
-                        <div class="bg-white p-8 rounded-xl shadow-2xl border-t-8 border-green-600 relative overflow-hidden">
-                             <div class="flex justify-between items-start mb-8 border-b border-gray-100 pb-6">
-                                <div><h1 class="text-3xl font-bold text-gray-900">My English Report</h1><p class="text-green-600 font-medium">${unit.title}</p></div>
-                             </div>
-                             <div class="mb-8 bg-gray-50 p-4 rounded-lg">
-                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Student Name</label>
-                                <input type="text" class="w-full text-2xl bg-transparent border-b-2 border-gray-300 focus:border-green-500 outline-none pb-1 text-gray-800 placeholder-gray-300" placeholder="Your Name...">
-                             </div>
-                             <div class="space-y-8 text-lg leading-relaxed relative z-10">
-                                <div>
-                                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2">My Sentences</h4>
-                                    ${this.data.sentences.length > 0 ? `<ul class="bg-green-50/50 rounded-lg p-4 space-y-2 border border-green-100">${this.data.sentences.map(s => `<li>• ${s}</li>`).join('')}</ul>` : '<p class="text-red-400 text-sm italic">Go to Step 2 to build sentences.</p>'}
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2">My Opinions</h4>
-                                    ${Object.keys(this.data.opinions).length > 0 ? `<ul class="bg-yellow-50/50 rounded-lg p-4 space-y-2 border border-yellow-100">${Object.entries(this.data.opinions).map(([act, op]) => `<li>• ${act} was <strong>${op}</strong>.</li>`).join('')}</ul>` : '<p class="text-red-400 text-sm italic">Go to Step 3 to add opinions.</p>'}
-                                </div>
-                             </div>
-                             <div class="mt-12 pt-6 border-t border-gray-100 flex justify-between items-center text-gray-400 text-xs uppercase tracking-wide"><span>Teacher Signature</span><span>${new Date().toLocaleDateString()}</span></div>
+                    <div class="bg-white p-8 rounded-xl shadow-2xl">
+                        <h1 class="text-3xl font-bold mb-4 border-b pb-2">My English Report</h1>
+                        <input class="text-2xl w-full border-b mb-6 outline-none" placeholder="My Name...">
+                        <div class="space-y-4">
+                            <h3 class="font-bold">Sentences:</h3>
+                            <ul class="list-disc pl-5">${this.data.sentences.map(s => `<li>${s}</li>`).join('')}</ul>
+                            <h3 class="font-bold">Opinions:</h3>
+                            <ul class="list-disc pl-5">${Object.entries(this.data.opinions).map(([k,v]) => `<li>${k} was ${v}</li>`).join('')}</ul>
                         </div>
-                        <button onclick="window.print()" class="w-full mt-6 bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2 group"><i class="ph ph-printer text-2xl"></i> Print Report</button>
+                        <button onclick="window.print()" class="mt-8 bg-gray-800 text-white px-6 py-3 rounded-lg w-full">Print</button>
+                    </div>`;
+            },
+
+            // --- SPECIAL UNIT VIEWS ---
+
+            renderAllList: function(container, unit) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                        <div class="p-4 bg-yellow-400 text-yellow-900 font-bold flex justify-between">
+                            <span>Wörterliste (${unit.vocab.length} Words)</span>
+                            <span>📖</span>
+                        </div>
+                        <div class="divide-y divide-gray-100 max-h-[70vh] overflow-y-auto">
+                            ${unit.vocab.map(w => `
+                                <div class="p-3 flex items-center justify-between hover:bg-yellow-50" onclick="app.speak('${w.en.replace(/'/g, "\\'")}')">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-2xl">${w.icon}</span>
+                                        <div>
+                                            <div class="font-bold text-gray-800">${w.en}</div>
+                                            <div class="text-xs text-gray-500">${w.unit}</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-medium text-gray-600">${w.de}</div>
+                                        <div class="text-sm text-gray-400 ar">${w.ar}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 `;
+            },
+
+            // GAME 1: MEMORY
+            initMemoryGame: function() {
+                const all = this.getAllVocab();
+                // Nimm 6 zufällige Paare
+                const selection = [...all].sort(() => 0.5 - Math.random()).slice(0, 6);
+                
+                // Erstelle Karten (En und De getrennt)
+                let cards = [];
+                selection.forEach((w, i) => {
+                    cards.push({ id: i, type: 'en', text: w.en, matchId: i, icon: w.icon });
+                    cards.push({ id: i, type: 'de', text: w.de, matchId: i, icon: '' }); // Deutsch ohne Icon, damit es schwerer ist? Oder mit? Machen wir ohne.
+                });
+                
+                // Mischen
+                this.state.memoryCards = cards.sort(() => 0.5 - Math.random());
+                this.state.memoryFlipped = [];
+                this.state.memoryMatched = [];
+                this.state.memoryLock = false;
+            },
+
+            flipMemoryCard: function(idx) {
+                if (this.state.memoryLock) return;
+                if (this.state.memoryFlipped.includes(idx)) return; // Schon offen
+                if (this.state.memoryMatched.includes(this.state.memoryCards[idx].matchId)) return; // Schon gelöst
+
+                this.state.memoryFlipped.push(idx);
+                this.render();
+
+                if (this.state.memoryFlipped.length === 2) {
+                    this.state.memoryLock = true;
+                    const c1 = this.state.memoryCards[this.state.memoryFlipped[0]];
+                    const c2 = this.state.memoryCards[this.state.memoryFlipped[1]];
+
+                    if (c1.matchId === c2.matchId) {
+                        // Match!
+                        this.state.memoryMatched.push(c1.matchId);
+                        this.state.memoryFlipped = [];
+                        this.state.memoryLock = false;
+                        this.speak("Correct!");
+                        this.render();
+                    } else {
+                        // Kein Match
+                        setTimeout(() => {
+                            this.state.memoryFlipped = [];
+                            this.state.memoryLock = false;
+                            this.render();
+                        }, 1000);
+                    }
+                }
+            },
+
+            renderMemory: function(container) {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-purple-100 p-4 rounded-lg text-purple-800">
+                            <h2 class="font-bold">🕹️ Memory Game</h2>
+                            <button onclick="app.initMemoryGame(); app.render()" class="bg-purple-600 text-white px-3 py-1 rounded shadow text-sm">Neu starten</button>
+                        </div>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                            ${this.state.memoryCards.map((card, idx) => {
+                                const isFlipped = this.state.memoryFlipped.includes(idx) || this.state.memoryMatched.includes(card.matchId);
+                                const isMatched = this.state.memoryMatched.includes(card.matchId);
+                                return `
+                                    <div onclick="app.flipMemoryCard(${idx})" class="perspective h-24 sm:h-32 cursor-pointer group">
+                                        <div class="relative w-full h-full duration-500 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}" style="transform-style: preserve-3d; transition: transform 0.6s;">
+                                            <!-- Back (Cover) -->
+                                            <div class="absolute w-full h-full bg-purple-600 rounded-xl flex items-center justify-center text-white text-2xl shadow-md backface-hidden" style="backface-visibility: hidden;">
+                                                ❓
+                                            </div>
+                                            <!-- Front (Content) -->
+                                            <div class="absolute w-full h-full ${isMatched ? 'bg-green-100 border-green-500' : 'bg-white'} border-2 rounded-xl flex flex-col items-center justify-center shadow-md backface-hidden" style="transform: rotateY(180deg); backface-visibility: hidden;">
+                                                <span class="text-2xl">${card.icon}</span>
+                                                <span class="font-bold text-center text-sm sm:text-base leading-tight p-1">${card.text}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            // GAME 2: SCRAMBLE
+            initScrambleGame: function() {
+                const all = this.getAllVocab();
+                this.state.scrambleWord = all[Math.floor(Math.random() * all.length)];
+                this.state.scrambleInput = "";
+                // Nur rendern, wenn wir im Tab sind
+            },
+
+            checkScramble: function(val) {
+                this.state.scrambleInput = val;
+                if (val.toLowerCase().trim() === this.state.scrambleWord.en.toLowerCase()) {
+                    this.speak("Great job!");
+                    setTimeout(() => {
+                        this.initScrambleGame();
+                        this.render();
+                    }, 1500);
+                } else {
+                    // Re-render nur wenn nötig vermeiden, hier simple DOM update wäre besser, aber für Scramble ok
+                    // Wir lassen es für jetzt re-rendern um Feedback zu zeigen
+                    this.render(); 
+                }
+            },
+
+            renderScramble: function(container) {
+                if (!this.state.scrambleWord) this.initScrambleGame();
+                const word = this.state.scrambleWord;
+                // Buchstaben mischen
+                const scrambled = word.en.split('').sort(() => 0.5 - Math.random()).join(' ');
+                const isCorrect = this.state.scrambleInput.toLowerCase().trim() === word.en.toLowerCase();
+
+                container.innerHTML = `
+                    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl text-center border-t-8 border-blue-500">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">🧩 Word Scramble</h2>
+                        <div class="text-6xl mb-4">${word.icon}</div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-xl mb-6">
+                            <p class="text-blue-800 font-mono text-2xl tracking-widest font-bold">${scrambled}</p>
+                            <p class="text-xs text-blue-400 mt-2 uppercase">Bringe die Buchstaben in Ordnung</p>
+                        </div>
+
+                        <input type="text" 
+                            oninput="app.checkScramble(this.value)"
+                            value="${this.state.scrambleInput}"
+                            class="w-full text-center text-2xl p-3 border-b-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-gray-300 focus:border-blue-500'} outline-none transition-all placeholder-gray-300 mb-4"
+                            placeholder="Type here..." autofocus>
+                        
+                        ${isCorrect ? `
+                            <div class="animate-bounce text-green-600 font-bold text-xl">
+                                ✅ Correct! Next word coming...
+                            </div>
+                        ` : `
+                            <div class="text-gray-400 text-sm flex justify-between px-4">
+                                <span>🇩🇪 ${word.de}</span>
+                                <span class="ar">🇸🇦 ${word.ar}</span>
+                            </div>
+                        `}
+                        
+                        <button onclick="app.initScrambleGame(); app.render()" class="mt-8 text-gray-400 text-sm underline hover:text-gray-600">Wort überspringen</button>
+                    </div>
+                `;
+                // Focus hack
+                setTimeout(() => {
+                    const inp = container.querySelector('input');
+                    if(inp) {
+                        inp.focus();
+                        inp.setSelectionRange(inp.value.length, inp.value.length);
+                    }
+                }, 50);
             }
         };
 
