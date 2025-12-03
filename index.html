@@ -369,7 +369,11 @@
                     <button onclick="app.setUnit('all_words')" 
                         class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-2 border-2 
                         ${this.currentUnitId === 'all_words' ? 'bg-yellow-400 text-yellow-900 border-yellow-200 shadow-lg' : 'bg-green-700 text-green-100 border-green-600 hover:bg-green-600'}">
-                        <span>📚</span> <span>Alle Wörter & Spiele</span>
+                        <span>📚</span> 
+                        <div class="flex flex-col items-start leading-tight">
+                            <span>Alle Wörter & Spiele</span>
+                            <span class="text-xs font-normal ar">كل الكلمات والألعاب</span>
+                        </div>
                     </button>
                 `;
                 html += COURSE_DATA.map(unit => `
