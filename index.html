@@ -53,10 +53,9 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // 1. DATEN (SIMPLE PRESENT & TRILINGUAL UI)
+        // 1. DATEN
         // ==========================================
         
-        // UI TEXTE (Dreisprachig für Buttons)
         const UI = {
             tabs: {
                 vocab: { en: "Words", de: "Wörter", ar: "كلمات" },
@@ -82,22 +81,22 @@
             // UNIT 1: HOLIDAYS
             {
                 id: "unit1",
-                title: "1: Free Time",
-                icon: "⚽",
+                title: "1: Holidays",
+                icon: "🌴",
                 vocab: [
-                    { en: "play football", de: "Fußball spielen", ar: "يلعب كرة القدم", icon: "⚽" },
-                    { en: "watch TV", de: "fernsehen", ar: "يشاهد التلفاز", icon: "📺" },
-                    { en: "sleep long", de: "lange schlafen", ar: "ينام طويلاً", icon: "😴" },
-                    { en: "meet friends", de: "Freunde treffen", ar: "يقابل الأصدقاء", icon: "🤝" },
-                    { en: "play games", de: "Spiele spielen", ar: "يلعب الألعاب", icon: "🎮" },
-                    { en: "eat pizza", de: "Pizza essen", ar: "يأكل البيتزا", icon: "🍕" },
-                    { en: "go to the park", de: "in den Park gehen", ar: "يذهب للحديقة", icon: "🌳" },
-                    { en: "listen to music", de: "Musik hören", ar: "يستمع للموسيقى", icon: "🎧" }
+                    { en: "played football", de: "Fußball gespielt", ar: "لعب كرة القدم", icon: "⚽" },
+                    { en: "watched TV", de: "ferngesehen", ar: "شاهد التلفاز", icon: "📺" },
+                    { en: "slept long", de: "lange geschlafen", ar: "نام طويلاً", icon: "😴" },
+                    { en: "met friends", de: "Freunde getroffen", ar: "قابل الأصدقاء", icon: "🤝" },
+                    { en: "played video games", de: "Videospiele gespielt", ar: "لعب ألعاب الفيديو", icon: "🎮" },
+                    { en: "ate pizza", de: "Pizza gegessen", ar: "أكل البيتزا", icon: "🍕" },
+                    { en: "went to the park", de: "in den Park gegangen", ar: "ذهب إلى الحديقة", icon: "🌳" },
+                    { en: "listened to music", de: "Musik gehört", ar: "استمع إلى الموسيقى", icon: "🎧" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["I", "We"] },
-                    col2: { title: "Action", items: ["play football", "watch TV", "eat pizza", "meet friends"] },
-                    col3: { title: "Time/Place", items: ["at the weekend", "in the park", "at home"] }
+                    col1: { title: "When?", items: ["In the holidays"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "What?", items: ["played football", "watched TV", "met friends", "slept long", "ate pizza", "went to the park"] }
                 }
             },
             // UNIT 2: HOBBIES
@@ -106,17 +105,17 @@
                 title: "2: Hobbies",
                 icon: "🎮",
                 vocab: [
-                    { en: "read comics", de: "Comics lesen", ar: "يقرأ قصص", icon: "📚" },
-                    { en: "ride a bike", de: "Rad fahren", ar: "يركب دراجة", icon: "🚲" },
-                    { en: "swim", de: "schwimmen", ar: "يسبح", icon: "🏊" },
-                    { en: "draw pictures", de: "malen", ar: "يرسم", icon: "🎨" },
-                    { en: "play cards", de: "Karten spielen", ar: "يلعب ورق", icon: "🃏" },
-                    { en: "dance", de: "tanzen", ar: "يرقص", icon: "💃" }
+                    { en: "read comics", de: "Comics lesen", ar: "قرأ القصص المصورة", icon: "📚" },
+                    { en: "ride a bike", de: "Fahrrad fahren", ar: "ركب دراجة", icon: "🚲" },
+                    { en: "swim", de: "schwimmen", ar: "سبح", icon: "🏊" },
+                    { en: "draw pictures", de: "Bilder malen", ar: "رسم صوراً", icon: "🎨" },
+                    { en: "play cards", de: "Karten spielen", ar: "لعب الورق", icon: "🃏" },
+                    { en: "dance", de: "tanzen", ar: "رقص", icon: "💃" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Time", items: ["Every day", "Sometimes"] },
-                    col2: { title: "Person", items: ["I", "We"] },
-                    col3: { title: "Action", items: ["read comics", "ride a bike", "swim", "dance"] }
+                    col1: { title: "Time", items: ["Every day", "Sometimes", "Never"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "What?", items: ["read comics", "ride my bike", "swim", "draw pictures", "play cards"] }
                 }
             },
             // UNIT 3: SCHOOL
@@ -127,15 +126,15 @@
                 vocab: [
                     { en: "Math", de: "Mathe", ar: "رياضيات", icon: "📐" },
                     { en: "English", de: "Englisch", ar: "إنجليزي", icon: "🇬🇧" },
-                    { en: "pen", de: "Stift", ar: "قلم", icon: "🖊️" },
-                    { en: "bag", de: "Tasche", ar: "حقيبة", icon: "🎒" },
-                    { en: "book", de: "Buch", ar: "كتاب", icon: "📖" },
-                    { en: "ruler", de: "Lineal", ar: "مسطرة", icon: "📏" }
+                    { en: "History", de: "Geschichte", ar: "تاريخ", icon: "🏛️" },
+                    { en: "Art", de: "Kunst", ar: "فن", icon: "🎨" },
+                    { en: "Pen", de: "Stift", ar: "قلم", icon: "🖊️" },
+                    { en: "Bag", de: "Tasche", ar: "حقيبة", icon: "🎒" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Day", items: ["On Monday", "On Tuesday"] },
-                    col2: { title: "Person", items: ["I", "We"] },
-                    col3: { title: "Have", items: ["have Math", "have English", "have a test"] }
+                    col1: { title: "When?", items: ["On Monday", "On Tuesday"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "What?", items: ["have Math", "have English", "have History"] }
                 }
             },
             // UNIT 4: TOWN
@@ -144,18 +143,16 @@
                 title: "4: Town",
                 icon: "🏙️",
                 vocab: [
-                    { en: "cinema", de: "Kino", ar: "سينما", icon: "🍿" },
-                    { en: "park", de: "Park", ar: "حديقة", icon: "🌳" },
-                    { en: "supermarket", de: "Supermarkt", ar: "سوبر ماركت", icon: "🛒" },
-                    { en: "school", de: "Schule", ar: "مدرسة", icon: "🏫" },
-                    { en: "go left", de: "links gehen", ar: "يسار", icon: "⬅️" },
-                    { en: "go right", de: "rechts gehen", ar: "يمين", icon: "➡️" },
-                    { en: "stop", de: "stopp", ar: "قف", icon: "🛑" }
+                    { en: "Cinema", de: "Kino", ar: "سينما", icon: "🍿" },
+                    { en: "Park", de: "Park", ar: "حديقة", icon: "🌳" },
+                    { en: "Go left", de: "Geh links", ar: "اذهب لليسار", icon: "⬅️" },
+                    { en: "Go right", de: "Geh rechts", ar: "اذهب لليمين", icon: "➡️" },
+                    { en: "Go straight", de: "Geh geradeaus", ar: "اذهب للأمام", icon: "⬆️" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Imperative", items: ["Please go", "Go"] },
-                    col2: { title: "Direction", items: ["left", "right", "straight"] },
-                    col3: { title: "Place", items: ["to the cinema", "to the park", "to school"] }
+                    col1: { title: "Where?", items: ["To the cinema", "To the park"] },
+                    col2: { title: "Please...", items: ["go left", "go right"] },
+                    col3: { title: "Distance", items: ["and stop", "for 100 meters"] }
                 }
             },
             // UNIT 5: SHOPPING
@@ -164,17 +161,18 @@
                 title: "5: Shopping",
                 icon: "🛍️",
                 vocab: [
-                    { en: "t-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
-                    { en: "jeans", de: "Jeans", ar: "جينز", icon: "👖" },
-                    { en: "apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
-                    { en: "banana", de: "Banane", ar: "موزة", icon: "🍌" },
-                    { en: "buy", de: "kaufen", ar: "يشتري", icon: "💳" },
-                    { en: "money", de: "Geld", ar: "مال", icon: "💶" }
+                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
+                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
+                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
+                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
+                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["I", "We"] },
-                    col2: { title: "Verb", items: ["buy", "want", "need"] },
-                    col3: { title: "Item", items: ["a t-shirt", "jeans", "an apple", "a banana"] }
+                    col1: { title: "Polite", items: ["I would like", "I want"] },
+                    col2: { title: "Action", items: ["to buy"] },
+                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple"] }
                 }
             },
             // UNIT 6: MY BODY
@@ -183,12 +181,12 @@
                 title: "6: My Body",
                 icon: "💪",
                 vocab: [
-                    { en: "head", de: "Kopf", ar: "رأس", icon: "😶" },
-                    { en: "arm", de: "Arm", ar: "ذراع", icon: "💪" },
-                    { en: "leg", de: "Bein", ar: "ساق", icon: "🦵" },
-                    { en: "hand", de: "Hand", ar: "يد", icon: "✋" },
-                    { en: "foot", de: "Fuß", ar: "قدم", icon: "🦶" },
-                    { en: "eye", de: "Auge", ar: "عين", icon: "👁️" }
+                    { en: "Head", de: "Kopf", ar: "رأس", icon: "😶" },
+                    { en: "Arm", de: "Arm", ar: "ذراع", icon: "💪" },
+                    { en: "Leg", de: "Bein", ar: "ساق", icon: "🦵" },
+                    { en: "Hand", de: "Hand", ar: "يد", icon: "✋" },
+                    { en: "Foot", de: "Fuß", ar: "قدم", icon: "🦶" },
+                    { en: "Eye", de: "Auge", ar: "عين", icon: "👁️" }
                 ],
                 sentenceParts: {
                     col1: { title: "Command", items: ["Touch your", "Point to your"] },
@@ -202,12 +200,12 @@
                 title: "7: Travel",
                 icon: "✈️",
                 vocab: [
-                    { en: "train", de: "Zug", ar: "قطار", icon: "🚆" },
-                    { en: "bus", de: "Bus", ar: "حافلة", icon: "🚌" },
-                    { en: "plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
-                    { en: "car", de: "Auto", ar: "سيارة", icon: "🚗" },
-                    { en: "ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
-                    { en: "hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
+                    { en: "Train", de: "Zug", ar: "قطار", icon: "🚆" },
+                    { en: "Bus", de: "Bus", ar: "حافلة", icon: "🚌" },
+                    { en: "Plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
+                    { en: "Car", de: "Auto", ar: "سيارة", icon: "🚗" },
+                    { en: "Ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
+                    { en: "Hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
                 ],
                 sentenceParts: {
                     col1: { title: "Time", items: ["In summer", "On Monday"] },
@@ -221,12 +219,13 @@
                 title: "8: Animals",
                 icon: "🐾",
                 vocab: [
-                    { en: "dog", de: "Hund", ar: "كلب", icon: "🐕" },
-                    { en: "cat", de: "Katze", ar: "قطة", icon: "🐈" },
-                    { en: "lion", de: "Löwe", ar: "أسد", icon: "🦁" },
-                    { en: "elephant", de: "Elefant", ar: "فيل", icon: "🐘" },
-                    { en: "bird", de: "Vogel", ar: "طائر", icon: "🐦" },
-                    { en: "fish", de: "Fisch", ar: "سمكة", icon: "🐟" }
+                    { en: "Dog", de: "Hund", ar: "كلب", icon: "🐕" },
+                    { en: "Cat", de: "Katze", ar: "قطة", icon: "🐈" },
+                    { en: "Lion", de: "Löwe", ar: "أسد", icon: "🦁" },
+                    { en: "Elephant", de: "Elefant", ar: "فيل", icon: "🐘" },
+                    { en: "Mouse", de: "Maus", ar: "فأر", icon: "🐁" },
+                    { en: "Bird", de: "Vogel", ar: "طائر", icon: "🐦" },
+                    { en: "Fish", de: "Fisch", ar: "سمكة", icon: "🐟" }
                 ],
                 sentenceParts: {
                     col1: { title: "Start", items: ["Look,", "I see"] },
@@ -240,12 +239,14 @@
                 title: "9: Food",
                 icon: "🍔",
                 vocab: [
-                    { en: "burger", de: "Burger", ar: "برغر", icon: "🍔" },
-                    { en: "salad", de: "Salat", ar: "سلطة", icon: "🥗" },
-                    { en: "water", de: "Wasser", ar: "ماء", icon: "💧" },
-                    { en: "milk", de: "Milch", ar: "حليب", icon: "🥛" },
-                    { en: "juice", de: "Saft", ar: "عصير", icon: "🧃" },
-                    { en: "cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
+                    { en: "Burger", de: "Burger", ar: "برغر", icon: "🍔" },
+                    { en: "Pizza", de: "Pizza", ar: "بيتزا", icon: "🍕" },
+                    { en: "Salad", de: "Salat", ar: "سلطة", icon: "🥗" },
+                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "Water", de: "Wasser", ar: "ماء", icon: "💧" },
+                    { en: "Milk", de: "Milch", ar: "حليب", icon: "🥛" },
+                    { en: "Juice", de: "Saft", ar: "عصير", icon: "🧃" },
+                    { en: "Cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
                 ],
                 sentenceParts: {
                     col1: { title: "Polite", items: ["I like", "I want"] },
@@ -259,12 +260,14 @@
                 title: "10: My Day",
                 icon: "⏰",
                 vocab: [
-                    { en: "morning", de: "Morgen", ar: "صباح", icon: "🌅" },
-                    { en: "bed", de: "Bett", ar: "سرير", icon: "🛏️" },
-                    { en: "breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
-                    { en: "school bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
-                    { en: "homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
-                    { en: "shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
+                    { en: "Morning", de: "Morgen", ar: "صباح", icon: "🌅" },
+                    { en: "Night", de: "Nacht", ar: "ليل", icon: "🌙" },
+                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "Clock", de: "Uhr", ar: "ساعة", icon: "⏰" },
+                    { en: "Breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
+                    { en: "School bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
+                    { en: "Homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
+                    { en: "Shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
                 ],
                 sentenceParts: {
                     col1: { title: "Time", items: ["In the morning", "At 8 o'clock"] },
@@ -278,12 +281,12 @@
                 title: "11: Family",
                 icon: "👨‍👩‍👧‍👦",
                 vocab: [
-                    { en: "mother", de: "Mutter", ar: "أم", icon: "👩" },
-                    { en: "father", de: "Vater", ar: "أب", icon: "👨" },
-                    { en: "sister", de: "Schwester", ar: "أخت", icon: "👧" },
-                    { en: "brother", de: "Bruder", ar: "أخ", icon: "👦" },
-                    { en: "baby", de: "Baby", ar: "طفل", icon: "👶" },
-                    { en: "friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
+                    { en: "Mother", de: "Mutter", ar: "أم", icon: "👩" },
+                    { en: "Father", de: "Vater", ar: "أب", icon: "👨" },
+                    { en: "Sister", de: "Schwester", ar: "أخت", icon: "👧" },
+                    { en: "Brother", de: "Bruder", ar: "أخ", icon: "👦" },
+                    { en: "Baby", de: "Baby", ar: "طفل", icon: "👶" },
+                    { en: "Friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
                 ],
                 sentenceParts: {
                     col1: { title: "Start", items: ["This is my", "I love my"] },
@@ -297,11 +300,11 @@
                 title: "12: Clothes",
                 icon: "🧥",
                 vocab: [
-                    { en: "jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
-                    { en: "hat", de: "Hut", ar: "قبعة", icon: "🧢" },
-                    { en: "shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
-                    { en: "socks", de: "Socken", ar: "جوارب", icon: "🧦" },
-                    { en: "pullover", de: "Pulli", ar: "بلوفر", icon: "🧥" }
+                    { en: "Jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
+                    { en: "Hat", de: "Hut", ar: "قبعة", icon: "🧢" },
+                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "Socks", de: "Socken", ar: "جوارب", icon: "🧦" },
+                    { en: "Pullover", de: "Pulli", ar: "بلوفر", icon: "🧥" }
                 ],
                 sentenceParts: {
                     col1: { title: "Person", items: ["I", "He", "She"] },
@@ -315,11 +318,11 @@
                 title: "13: Weather",
                 icon: "☀️",
                 vocab: [
-                    { en: "sun", de: "Sonne", ar: "شمس", icon: "☀️" },
-                    { en: "rain", de: "Regen", ar: "مطر", icon: "🌧️" },
-                    { en: "wind", de: "Wind", ar: "رياح", icon: "💨" },
-                    { en: "hot", de: "heiß", ar: "حار", icon: "🥵" },
-                    { en: "cold", de: "kalt", ar: "بارد", icon: "🥶" }
+                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "Rain", de: "Regen", ar: "مطر", icon: "🌧️" },
+                    { en: "Wind", de: "Wind", ar: "رياح", icon: "💨" },
+                    { en: "Hot", de: "Heiß", ar: "حار", icon: "🥵" },
+                    { en: "Cold", de: "Kalt", ar: "بارد", icon: "🥶" }
                 ],
                 sentenceParts: {
                     col1: { title: "Time", items: ["Today", "Tomorrow"] },
@@ -333,11 +336,11 @@
                 title: "14: Numbers",
                 icon: "🔢",
                 vocab: [
-                    { en: "one", de: "Eins", ar: "واحد", icon: "1️⃣" },
-                    { en: "two", de: "Zwei", ar: "اثنان", icon: "2️⃣" },
-                    { en: "three", de: "Drei", ar: "ثلاثة", icon: "3️⃣" },
-                    { en: "four", de: "Vier", ar: "أربعة", icon: "4️⃣" },
-                    { en: "five", de: "Fünf", ar: "خمسة", icon: "5️⃣" }
+                    { en: "One", de: "Eins", ar: "واحد", icon: "1️⃣" },
+                    { en: "Two", de: "Zwei", ar: "اثنان", icon: "2️⃣" },
+                    { en: "Three", de: "Drei", ar: "ثلاثة", icon: "3️⃣" },
+                    { en: "Four", de: "Vier", ar: "أربعة", icon: "4️⃣" },
+                    { en: "Five", de: "Fünf", ar: "خمسة", icon: "5️⃣" }
                 ],
                 sentenceParts: {
                     col1: { title: "Subject", items: ["I have", "I see"] },
@@ -351,11 +354,11 @@
                 title: "15: My Room",
                 icon: "🛏️",
                 vocab: [
-                    { en: "bed", de: "Bett", ar: "سرير", icon: "🛏️" },
-                    { en: "chair", de: "Stuhl", ar: "كرسي", icon: "🪑" },
-                    { en: "desk", de: "Tisch", ar: "طاولة", icon: "🖥️" },
-                    { en: "lamp", de: "Lampe", ar: "مصباح", icon: "💡" },
-                    { en: "door", de: "Tür", ar: "باب", icon: "🚪" }
+                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "Chair", de: "Stuhl", ar: "كرسي", icon: "🪑" },
+                    { en: "Desk", de: "Tisch", ar: "طاولة", icon: "🖥️" },
+                    { en: "Lamp", de: "Lampe", ar: "مصباح", icon: "💡" },
+                    { en: "Door", de: "Tür", ar: "باب", icon: "🚪" }
                 ],
                 sentenceParts: {
                     col1: { title: "Where?", items: ["In my room", "Next to me"] },
@@ -369,11 +372,11 @@
                 title: "16: Feelings",
                 icon: "😊",
                 vocab: [
-                    { en: "happy", de: "glücklich", ar: "سعيد", icon: "😊" },
-                    { en: "sad", de: "traurig", ar: "حزين", icon: "😢" },
-                    { en: "tired", de: "müde", ar: "متعب", icon: "😴" },
-                    { en: "hungry", de: "hungrig", ar: "جائع", icon: "😋" },
-                    { en: "sick", de: "krank", ar: "مريض", icon: "🤒" }
+                    { en: "Happy", de: "Glücklich", ar: "سعيد", icon: "😊" },
+                    { en: "Sad", de: "Traurig", ar: "حزين", icon: "😢" },
+                    { en: "Tired", de: "Müde", ar: "متعب", icon: "😴" },
+                    { en: "Hungry", de: "Hungrig", ar: "جائع", icon: "😋" },
+                    { en: "Sick", de: "Krank", ar: "مريض", icon: "🤒" }
                 ],
                 sentenceParts: {
                     col1: { title: "Person", items: ["I am", "He is", "She is"] },
@@ -387,10 +390,10 @@
                 title: "17: Jobs",
                 icon: "👮",
                 vocab: [
-                    { en: "teacher", de: "Lehrer", ar: "معلم", icon: "👨‍🏫" },
-                    { en: "doctor", de: "Arzt", ar: "طبيب", icon: "👨‍⚕️" },
-                    { en: "police", de: "Polizei", ar: "شرطة", icon: "👮" },
-                    { en: "driver", de: "Fahrer", ar: "سائق", icon: "🚕" }
+                    { en: "Teacher", de: "Lehrer", ar: "معلم", icon: "👨‍🏫" },
+                    { en: "Doctor", de: "Arzt", ar: "طبيب", icon: "👨‍⚕️" },
+                    { en: "Police", de: "Polizei", ar: "شرطة", icon: "👮" },
+                    { en: "Driver", de: "Fahrer", ar: "سائق", icon: "🚕" }
                 ],
                 sentenceParts: {
                     col1: { title: "Person", items: ["My father", "My mother"] },
@@ -404,11 +407,11 @@
                 title: "18: Colors",
                 icon: "🎨",
                 vocab: [
-                    { en: "red", de: "Rot", ar: "أحمر", icon: "🔴" },
-                    { en: "blue", de: "Blau", ar: "أزرق", icon: "🔵" },
-                    { en: "green", de: "Grün", ar: "أخضر", icon: "🟢" },
-                    { en: "yellow", de: "Gelb", ar: "أصفر", icon: "🟡" },
-                    { en: "black", de: "Schwarz", ar: "أسود", icon: "⚫" }
+                    { en: "Red", de: "Rot", ar: "أحمر", icon: "🔴" },
+                    { en: "Blue", de: "Blau", ar: "أزرق", icon: "🔵" },
+                    { en: "Green", de: "Grün", ar: "أخضر", icon: "🟢" },
+                    { en: "Yellow", de: "Gelb", ar: "أصفر", icon: "🟡" },
+                    { en: "Black", de: "Schwarz", ar: "أسود", icon: "⚫" }
                 ],
                 sentenceParts: {
                     col1: { title: "Object", items: ["The car", "The ball", "My shirt"] },
@@ -422,10 +425,10 @@
                 title: "19: At Home",
                 icon: "🏠",
                 vocab: [
-                    { en: "kitchen", de: "Küche", ar: "مطبخ", icon: "🍳" },
-                    { en: "bathroom", de: "Bad", ar: "حمام", icon: "🛁" },
-                    { en: "garden", de: "Garten", ar: "حديقة", icon: "🌻" },
-                    { en: "living room", de: "Wohnzimmer", ar: "غرفة المعيشة", icon: "🛋️" }
+                    { en: "Kitchen", de: "Küche", ar: "مطبخ", icon: "🍳" },
+                    { en: "Bathroom", de: "Bad", ar: "حمام", icon: "🛁" },
+                    { en: "Garden", de: "Garten", ar: "حديقة", icon: "🌻" },
+                    { en: "Living room", de: "Wohnzimmer", ar: "غرفة المعيشة", icon: "🛋️" }
                 ],
                 sentenceParts: {
                     col1: { title: "Who?", items: ["I am", "Mom is"] },
@@ -439,10 +442,10 @@
                 title: "20: Nature",
                 icon: "🌳",
                 vocab: [
-                    { en: "tree", de: "Baum", ar: "شجرة", icon: "🌳" },
-                    { en: "flower", de: "Blume", ar: "زهرة", icon: "🌸" },
-                    { en: "sun", de: "Sonne", ar: "شمس", icon: "☀️" },
-                    { en: "moon", de: "Mond", ar: "قمر", icon: "🌙" }
+                    { en: "Tree", de: "Baum", ar: "شجرة", icon: "🌳" },
+                    { en: "Flower", de: "Blume", ar: "زهرة", icon: "🌸" },
+                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "Moon", de: "Mond", ar: "قمر", icon: "🌙" }
                 ],
                 sentenceParts: {
                     col1: { title: "Start", items: ["I see a", "Look at the"] },
@@ -510,8 +513,42 @@
                 this.state.quizSelection = shuffled.slice(0, 3);
             },
 
-            // AUDIO SPEECH
-            speak: function(text, lang = 'en-US') {
+            // AUDIO SPEECH (HYBRID)
+            speak: function(text, lang = 'en-US', filenameKey = null) {
+                // 1. Try file if key provided (e.g. 'played football')
+                if (filenameKey) {
+                    const cleanName = filenameKey.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    const langSuffix = lang.startsWith('ar') ? 'ar' : 'en';
+                    // NOTE: Changed path to look in ROOT folder, not 'audio/' folder
+                    const audioPath = `${cleanName}_${langSuffix}.mp3`;
+                    
+                    const audio = new Audio(audioPath);
+                    
+                    // Fallback, wenn Datei nicht da ist
+                    audio.onerror = () => {
+                        console.log("Audio file missing, using TTS:", audioPath);
+                        this.speakTTS(text, lang);
+                    };
+                    
+                    // Versuch abzuspielen
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            // Success
+                        })
+                        .catch(e => {
+                            console.log("Play error:", e);
+                            this.speakTTS(text, lang);
+                        });
+                    }
+                    return; // Wenn MP3 startet, sind wir fertig
+                }
+                
+                // 2. Fallback: Computerstimme
+                this.speakTTS(text, lang);
+            },
+
+            speakTTS: function(text, lang) {
                 if (!('speechSynthesis' in window)) return;
                 
                 window.speechSynthesis.cancel();
@@ -519,13 +556,15 @@
                 u.lang = lang;
                 u.rate = 0.9;
                 
-                // Versuch, eine passende Stimme zu finden
+                // Intelligente Stimmen-Suche
                 const voices = window.speechSynthesis.getVoices();
-                const voice = voices.find(v => v.lang.startsWith(lang));
+                const mainLang = lang.split('-')[0]; // "ar-SA" -> "ar"
+                const voice = voices.find(v => v.lang.startsWith(mainLang));
                 if (voice) u.voice = voice;
                 
                 window.speechSynthesis.speak(u);
             },
+
             testAudio: function() { this.speak("Hello! Audio is working."); },
 
             // STORAGE (Nur Sätze speichern reicht)
@@ -623,10 +662,10 @@
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="text-4xl">${word.icon}</span>
                                         <div class="flex gap-2">
-                                            <!-- Arabic Audio -->
-                                            <button onclick="event.stopPropagation(); app.speak('${word.ar}', 'ar-SA')" class="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200">🇸🇦 🔊</button>
-                                            <!-- English Audio -->
-                                            <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200">🇬🇧 🔊</button>
+                                            <!-- Arabic Audio: Pass English Word as Key -->
+                                            <button onclick="event.stopPropagation(); app.speak('${word.ar}', 'ar-SA', '${word.en}')" class="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200">🇸🇦 🔊</button>
+                                            <!-- English Audio: Pass English Word as Key -->
+                                            <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}', 'en-US', '${word.en}')" class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200">🇬🇧 🔊</button>
                                         </div>
                                     </div>
                                     <h3 class="text-2xl font-bold text-gray-800">${word.en}</h3>
