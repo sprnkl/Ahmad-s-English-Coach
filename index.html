@@ -12,6 +12,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Klasse für arabische Schrift (Rechts-nach-Links) */
         .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
     </style>
 </head>
@@ -49,7 +50,7 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN
+        // DATEN (JETZT MIT ARABISCH)
         // ==========================================
         const COURSE_DATA = [
             {
@@ -57,14 +58,14 @@
                 title: "Modul 1: Holidays",
                 icon: "🌴",
                 vocab: [
-                    { en: "played football", de: "Fußball gespielt", icon: "⚽" },
-                    { en: "watched TV", de: "ferngesehen", icon: "📺" },
-                    { en: "slept long", de: "lange geschlafen", icon: "😴" },
-                    { en: "met friends", de: "Freunde getroffen", icon: "🤝" },
-                    { en: "played video games", de: "Videospiele gespielt", icon: "🎮" },
-                    { en: "ate pizza", de: "Pizza gegessen", icon: "🍕" },
-                    { en: "went to the park", de: "in den Park gegangen", icon: "🌳" },
-                    { en: "listened to music", de: "Musik gehört", icon: "🎧" }
+                    { en: "played football", de: "Fußball gespielt", ar: "لعب كرة القدم", icon: "⚽" },
+                    { en: "watched TV", de: "ferngesehen", ar: "شاهد التلفاز", icon: "📺" },
+                    { en: "slept long", de: "lange geschlafen", ar: "نام طويلاً", icon: "😴" },
+                    { en: "met friends", de: "Freunde getroffen", ar: "قابل الأصدقاء", icon: "🤝" },
+                    { en: "played video games", de: "Videospiele gespielt", ar: "لعب ألعاب الفيديو", icon: "🎮" },
+                    { en: "ate pizza", de: "Pizza gegessen", ar: "أكل البيتزا", icon: "🍕" },
+                    { en: "went to the park", de: "in den Park gegangen", ar: "ذهب إلى الحديقة", icon: "🌳" },
+                    { en: "listened to music", de: "Musik gehört", ar: "استمع إلى الموسيقى", icon: "🎧" }
                 ],
                 sentenceParts: {
                     col1: { title: "When?", items: ["In the holidays"] },
@@ -72,10 +73,10 @@
                     col3: { title: "What?", items: ["played football", "watched TV", "met friends", "slept long", "ate pizza", "went to the park"] }
                 },
                 opinions: [
-                    { en: "cool", de: "cool / toll", type: "pos" },
-                    { en: "fun", de: "spaßig", type: "pos" },
-                    { en: "ok", de: "okay", type: "neu" },
-                    { en: "boring", de: "langweilig", type: "neg" }
+                    { en: "cool", de: "cool / toll", ar: "رائع", type: "pos" },
+                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
+                    { en: "ok", de: "okay", ar: "حسناً", type: "neu" },
+                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
                 ]
             },
             {
@@ -83,12 +84,12 @@
                 title: "Modul 2: Hobbies",
                 icon: "🎮",
                 vocab: [
-                    { en: "read comics", de: "Comics lesen", icon: "📚" },
-                    { en: "ride a bike", de: "Fahrrad fahren", icon: "🚲" },
-                    { en: "swim", de: "schwimmen", icon: "🏊" },
-                    { en: "draw pictures", de: "Bilder malen", icon: "🎨" },
-                    { en: "play cards", de: "Karten spielen", icon: "🃏" },
-                    { en: "dance", de: "tanzen", icon: "💃" }
+                    { en: "read comics", de: "Comics lesen", ar: "قرأ القصص المصورة", icon: "📚" },
+                    { en: "ride a bike", de: "Fahrrad fahren", ar: "ركب دراجة", icon: "🚲" },
+                    { en: "swim", de: "schwimmen", ar: "سبح", icon: "🏊" },
+                    { en: "draw pictures", de: "Bilder malen", ar: "رسم صوراً", icon: "🎨" },
+                    { en: "play cards", de: "Karten spielen", ar: "لعب الورق", icon: "🃏" },
+                    { en: "dance", de: "tanzen", ar: "رقص", icon: "💃" }
                 ],
                 sentenceParts: {
                     col1: { title: "How often?", items: ["Every day", "Sometimes", "Never"] },
@@ -96,10 +97,10 @@
                     col3: { title: "What?", items: ["read comics", "ride my bike", "swim", "draw pictures", "play cards"] }
                 },
                 opinions: [
-                    { en: "great", de: "großartig", type: "pos" },
-                    { en: "fun", de: "spaßig", type: "pos" },
-                    { en: "okay", de: "okay", type: "neu" },
-                    { en: "stupid", de: "blöd", type: "neg" }
+                    { en: "great", de: "großartig", ar: "عظيم", type: "pos" },
+                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
+                    { en: "okay", de: "okay", ar: "حسناً", type: "neu" },
+                    { en: "stupid", de: "blöd", ar: "غبي", type: "neg" }
                 ]
             }
         ];
@@ -268,7 +269,12 @@
                                         <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-full hover:bg-blue-500 hover:text-white text-blue-500 transition-colors"><i class="ph ph-speaker-high text-xl"></i></button>
                                     </div>
                                     <h3 class="text-xl font-bold text-gray-800 mt-2">${word.en}</h3>
-                                    ${this.state.flippedCards[idx] ? `<p class="text-green-700 font-medium mt-2 pt-2 border-t border-green-200">= ${word.de}</p>` : '<p class="text-xs text-gray-400 mt-2">Click to translate</p>'}
+                                    ${this.state.flippedCards[idx] ? `
+                                        <div class="mt-2 pt-2 border-t border-green-200">
+                                            <p class="text-green-700 font-bold">= ${word.de}</p>
+                                            <p class="text-gray-500 ar text-right">= ${word.ar}</p>
+                                        </div>
+                                    ` : '<p class="text-xs text-gray-400 mt-2">Click to translate</p>'}
                                 </div>
                             `).join('')}
                         </div>
@@ -374,7 +380,10 @@
                             ${unit.opinions.map(op => `
                                 <div onclick="app.speak('${op.en}')" class="p-4 rounded-xl text-center border-2 cursor-pointer hover:scale-105 transition-transform ${op.type === 'pos' ? 'bg-green-50 border-green-200' : op.type === 'neg' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}">
                                     <div class="text-xl font-bold text-gray-800">${op.en}</div>
-                                    <div class="text-xs text-gray-500 mt-1">${op.de}</div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        <div>${op.de}</div>
+                                        <div class="ar">${op.ar}</div>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
