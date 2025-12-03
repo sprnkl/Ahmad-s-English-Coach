@@ -83,8 +83,11 @@
         const COURSE_DATA = [
             // UNIT 1
             {
-                id: "unit1", title: { en: "1: Free Time", de: "1: Freizeit", ar: "1: وقت الفراغ" }, icon: "⚽",
+                id: "unit1",
+                title: { en: "1: Free Time", de: "1: Freizeit", ar: "1: وقت الفراغ" }, 
+                icon: "⚽",
                 vocab: [
+                    // Die bisherigen 8
                     { en: "play football", de: "Fußball spielen", ar: "يلعب كرة القدم", icon: "⚽" },
                     { en: "watch TV", de: "fernsehen", ar: "يشاهد التلفاز", icon: "📺" },
                     { en: "sleep", de: "schlafen", ar: "ينام", icon: "😴" },
@@ -92,14 +95,36 @@
                     { en: "play games", de: "Spiele spielen", ar: "يلعب الألعاب", icon: "🎮" },
                     { en: "eat pizza", de: "Pizza essen", ar: "يأكل البيتزا", icon: "🍕" },
                     { en: "go to the park", de: "in den Park gehen", ar: "يذهب للحديقة", icon: "🌳" },
-                    { en: "listen to music", de: "Musik hören", ar: "يستمع للموسيقى", icon: "🎧" }
+                    { en: "listen to music", de: "Musik hören", ar: "يستمع للموسيقى", icon: "🎧" },
+                    
+                    // Die 20 neuen Wörter (Simple Present)
+                    { en: "read a book", de: "ein Buch lesen", ar: "يقرأ كتاباً", icon: "📖" },
+                    { en: "go swimming", de: "schwimmen gehen", ar: "يذهب للسباحة", icon: "🏊" },
+                    { en: "play tennis", de: "Tennis spielen", ar: "يلعب التنس", icon: "🎾" },
+                    { en: "ride a horse", de: "reiten", ar: "يركب حصان", icon: "🐎" },
+                    { en: "cook dinner", de: "Abendessen kochen", ar: "يطبخ العشاء", icon: "🍳" },
+                    { en: "paint a picture", de: "ein Bild malen", ar: "يرسم صورة", icon: "🎨" },
+                    { en: "sing a song", de: "ein Lied singen", ar: "يغني أغنية", icon: "🎤" },
+                    { en: "dance", de: "tanzen", ar: "يرقص", icon: "💃" },
+                    { en: "travel", de: "reisen", ar: "يسافر", icon: "✈️" },
+                    { en: "visit family", de: "Familie besuchen", ar: "يزور العائلة", icon: "👨‍👩‍👧‍👦" },
+                    { en: "go shopping", de: "einkaufen gehen", ar: "يذهب للتسوق", icon: "🛍️" },
+                    { en: "eat ice cream", de: "Eis essen", ar: "يأكل الآيس كريم", icon: "🍦" },
+                    { en: "drink tea", de: "Tee trinken", ar: "يشرب الشاي", icon: "☕" },
+                    { en: "write an email", de: "E-Mail schreiben", ar: "يكتب رسالة", icon: "📧" },
+                    { en: "take a photo", de: "Foto machen", ar: "يلتقط صورة", icon: "📸" },
+                    { en: "walk the dog", de: "Hund ausführen", ar: "يمشي الكلب", icon: "🐕" },
+                    { en: "play guitar", de: "Gitarre spielen", ar: "يعزف الجيتار", icon: "🎸" },
+                    { en: "watch a movie", de: "Film schauen", ar: "يشاهد فيلماً", icon: "🎬" },
+                    { en: "go to the beach", de: "zum Strand gehen", ar: "يذهب للشاطئ", icon: "🏖️" },
+                    { en: "ride a scooter", de: "Roller fahren", ar: "يركب سكوتر", icon: "🛴" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Person", items: ["I", "We"] },
-                    col2: { title: "Action", items: ["play football", "watch TV", "eat pizza", "meet friends"] },
-                    col3: { title: "Time/Place", items: ["at the weekend", "in the park", "at home"] }
+                    col1: { title: "Person", items: ["I", "We", "They"] },
+                    col2: { title: "Action (Simple Present)", items: ["play football", "watch TV", "eat pizza", "meet friends"] },
+                    col3: { title: "Time/Place", items: ["at the weekend", "in the park", "at home", "every day"] }
                 }
-            },
+            }, // <--- Komma nicht vergessen!
             // UNIT 2
             {
                 id: "unit2", title: { en: "2: Hobbies", de: "2: Hobbys", ar: "2: الهوايات" }, icon: "🎮",
