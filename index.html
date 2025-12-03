@@ -12,7 +12,6 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Extra Schriftart für Arabisch falls nötig, meistens reicht System-Font */
         .ar { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; }
     </style>
 </head>
@@ -22,8 +21,14 @@
     <div class="bg-green-800 text-white p-4 shadow-md">
         <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 English Trainer</h1>
-            <div id="unit-selector" class="flex flex-wrap gap-2 bg-green-900/50 p-1 rounded-lg">
-                <!-- Units werden hier rein generiert -->
+            
+            <div class="flex items-center gap-4">
+                <button onclick="app.testAudio()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 border border-green-500">
+                    🔊 Audio Test
+                </button>
+                <div id="unit-selector" class="flex flex-wrap gap-2 bg-green-900/50 p-1 rounded-lg">
+                    <!-- Units werden hier rein generiert -->
+                </div>
             </div>
         </div>
     </div>
@@ -39,14 +44,12 @@
     </div>
 
     <!-- MAIN CONTENT AREA -->
-    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh]">
-        <!-- Hier wird der Inhalt per Javascript reingeladen -->
-    </div>
+    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh]"></div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN (HIER KANNST DU EDITIEREN)
+        // DATEN
         // ==========================================
         const COURSE_DATA = [
             {
@@ -99,29 +102,13 @@
                     { en: "stupid", de: "blöd", type: "neg" }
                 ]
             }
-            // Weitere Module hier einfügen...
         ];
 
-        // ==========================================
-        // UI TEXTS (DEUTSCH & ARABISCH)
-        // ==========================================
         const UI_TEXT = {
-            vocab: {
-                de: "Klicke auf die Karte. Höre das Wort. Schreibe das Wort.",
-                ar: "اضغط على البطاقة. استمع للكلمة. اكتب الكلمة."
-            },
-            sentences: {
-                de: "Wähle aus jeder Spalte ein Wort. Baue einen Satz.",
-                ar: "اختر كلمة من كل قائمة. ركب جملة."
-            },
-            opinion: {
-                de: "Wie findest du das? Wähle eine Meinung.",
-                ar: "ما رأيك؟ اختر إجابة."
-            },
-            report: {
-                de: "Schreibe deinen Namen. Drucke das Blatt.",
-                ar: "اكتب اسمك. اطبع الورقة."
-            }
+            vocab: { de: "Klicke auf die Karte. Höre das Wort. Schreibe das Wort.", ar: "اضغط على البطاقة. استمع للكلمة. اكتب الكلمة." },
+            sentences: { de: "Wähle aus jeder Spalte ein Wort. Baue einen Satz.", ar: "اختر كلمة من كل قائمة. ركب جملة." },
+            opinion: { de: "Wie findest du das? Wähle eine Meinung.", ar: "ما رأيك؟ اختر إجابة." },
+            report: { de: "Schreibe deinen Namen. Drucke das Blatt.", ar: "اكتب اسمك. اطبع الورقة." }
         };
 
         // ==========================================
@@ -133,23 +120,44 @@
             activeTab: 'vocab',
             state: { sentenceSelection: { col1: null, col2: null, col3: null }, flippedCards: {}, quizInputs: {} },
             data: { sentences: [], opinions: {} },
-            voices: [], // Speicher für die Stimmen
 
             init: function() {
                 this.loadData();
-                this.initVoices(); // Stimmen vorladen
                 this.renderUnitSelector();
                 this.render();
+                
+                // Audio Init Versuch
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.getVoices(); 
+                }
             },
 
-            // NEU: Stimmen laden (wichtig für Chrome)
-            initVoices: function() {
-                const load = () => {
-                    this.voices = window.speechSynthesis.getVoices();
-                };
-                window.speechSynthesis.onvoiceschanged = load;
-                load();
+            // --- AUDIO CORE ---
+            speak: function(text) {
+                if (!('speechSynthesis' in window)) {
+                    alert("Dein Browser unterstützt leider keine Audio-Ausgabe.");
+                    return;
+                }
+
+                // 1. Laufende Sprache abbrechen
+                window.speechSynthesis.cancel();
+
+                // 2. Neues Objekt erstellen
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // 3. Sprache erzwingen (Standard Englisch)
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9; // Leicht verlangsamt
+                utterance.volume = 1.0; // Max Lautstärke
+
+                // 4. Abspielen
+                window.speechSynthesis.speak(utterance);
             },
+
+            testAudio: function() {
+                this.speak("Hello! The audio is working.");
+            },
+            // ------------------
 
             getUnit: function() { return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0]; },
 
@@ -189,26 +197,6 @@
             addOpinion: function(activity, opinion) {
                 this.data.opinions[activity] = opinion;
                 this.saveData();
-            },
-
-            // VERBESSERTE AUDIO FUNKTION
-            speak: function(text) {
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'en-US';
-                    
-                    // Versuche eine englische Stimme zu finden
-                    if (this.voices.length > 0) {
-                        const enVoice = this.voices.find(v => v.lang.includes('en-US') || v.lang.includes('en-GB'));
-                        if (enVoice) utterance.voice = enVoice;
-                    }
-
-                    utterance.rate = 0.85; // Etwas langsamer für Schüler
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    alert("Audio nicht verfügbar");
-                }
             },
 
             // --- RENDERING HELPERS ---
