@@ -54,7 +54,7 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN (ALLE 10 MODULE)
+        // DATEN (ALLE 20 MODULE)
         // ==========================================
         const COURSE_DATA = [
             {
@@ -299,6 +299,266 @@
                     { en: "late", de: "spät", ar: "متأخر", type: "neg" },
                     { en: "tired", de: "müde", ar: "متعب", type: "neg" },
                     { en: "active", de: "aktiv/fit", ar: "نشيط", type: "pos" }
+                ]
+            },
+            {
+                id: "unit11",
+                title: "11: Family",
+                icon: "👨‍👩‍👧‍👦",
+                vocab: [
+                    { en: "Mother", de: "Mutter", ar: "أم", icon: "👩" },
+                    { en: "Father", de: "Vater", ar: "أب", icon: "👨" },
+                    { en: "Sister", de: "Schwester", ar: "أخت", icon: "👧" },
+                    { en: "Brother", de: "Bruder", ar: "أخ", icon: "👦" },
+                    { en: "Grandma", de: "Oma", ar: "جدة", icon: "👵" },
+                    { en: "Grandpa", de: "Opa", ar: "جد", icon: "👴" },
+                    { en: "Baby", de: "Baby", ar: "طفل", icon: "👶" },
+                    { en: "Friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Person", items: ["This is my", "I love my"] },
+                    col2: { title: "Who?", items: ["mother", "father", "sister", "brother"] },
+                    col3: { title: "Name/Desc", items: ["called Anna", "who is nice"] }
+                },
+                opinions: [
+                    { en: "nice", de: "nett", ar: "لطيف", type: "pos" },
+                    { en: "funny", de: "lustig", ar: "مضحك", type: "pos" },
+                    { en: "strict", de: "streng", ar: "صارم", type: "neg" },
+                    { en: "kind", de: "freundlich", ar: "ودود", type: "pos" }
+                ]
+            },
+            {
+                id: "unit12",
+                title: "12: Clothes",
+                icon: "🧥",
+                vocab: [
+                    { en: "Jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
+                    { en: "Hat", de: "Hut/Mütze", ar: "قبعة", icon: "🧢" },
+                    { en: "Dress", de: "Kleid", ar: "فستان", icon: "👗" },
+                    { en: "Skirt", de: "Rock", ar: "تنورة", icon: "👗" },
+                    { en: "Socks", de: "Socken", ar: "جوارب", icon: "🧦" },
+                    { en: "Pullover", de: "Pulli", ar: "بلوفر", icon: "🧥" },
+                    { en: "Glasses", de: "Brille", ar: "نظارة", icon: "👓" },
+                    { en: "Scarf", de: "Schal", ar: "وشاح", icon: "🧣" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Person", items: ["I wear", "He wears"] },
+                    col2: { title: "Color", items: ["a red", "a blue", "a green"] },
+                    col3: { title: "Item", items: ["jacket", "hat", "pullover"] }
+                },
+                opinions: [
+                    { en: "cool", de: "cool", ar: "رائع", type: "pos" },
+                    { en: "warm", de: "warm", ar: "دافئ", type: "pos" },
+                    { en: "old", de: "alt", ar: "قديم", type: "neu" },
+                    { en: "new", de: "neu", ar: "جديد", type: "pos" }
+                ]
+            },
+            {
+                id: "unit13",
+                title: "13: Weather",
+                icon: "☀️",
+                vocab: [
+                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "Rain", de: "Regen", ar: "مطر", icon: "🌧️" },
+                    { en: "Snow", de: "Schnee", ar: "ثلج", icon: "❄️" },
+                    { en: "Wind", de: "Wind", ar: "رياح", icon: "💨" },
+                    { en: "Cloud", de: "Wolke", ar: "سحابة", icon: "☁️" },
+                    { en: "Hot", de: "Heiß", ar: "حار", icon: "🥵" },
+                    { en: "Cold", de: "Kalt", ar: "بارد", icon: "🥶" },
+                    { en: "Storm", de: "Sturm", ar: "عاصفة", icon: "⛈️" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Time", items: ["Today", "Tomorrow"] },
+                    col2: { title: "Verb", items: ["is", "will be"] },
+                    col3: { title: "Weather", items: ["sunny", "rainy", "windy", "cold"] }
+                },
+                opinions: [
+                    { en: "nice", de: "schön", ar: "جميل", type: "pos" },
+                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" },
+                    { en: "wet", de: "nass", ar: "مبتل", type: "neu" },
+                    { en: "freezing", de: "eiskalt", ar: "متجمد", type: "neg" }
+                ]
+            },
+            {
+                id: "unit14",
+                title: "14: Numbers",
+                icon: "🔢",
+                vocab: [
+                    { en: "One", de: "Eins", ar: "واحد", icon: "1️⃣" },
+                    { en: "Two", de: "Zwei", ar: "اثنان", icon: "2️⃣" },
+                    { en: "Three", de: "Drei", ar: "ثلاثة", icon: "3️⃣" },
+                    { en: "Four", de: "Vier", ar: "أربعة", icon: "4️⃣" },
+                    { en: "Five", de: "Fünf", ar: "خمسة", icon: "5️⃣" },
+                    { en: "Six", de: "Sechs", ar: "ستة", icon: "6️⃣" },
+                    { en: "Seven", de: "Sieben", ar: "سبعة", icon: "7️⃣" },
+                    { en: "Eight", de: "Acht", ar: "ثمانية", icon: "8️⃣" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Subject", items: ["I see", "I have"] },
+                    col2: { title: "Number", items: ["one", "two", "three", "five"] },
+                    col3: { title: "Object", items: ["apples", "cars", "pens", "books"] }
+                },
+                opinions: [
+                    { en: "many", de: "viele", ar: "كثير", type: "pos" },
+                    { en: "few", de: "wenige", ar: "قليل", type: "neu" },
+                    { en: "enough", de: "genug", ar: "كاف", type: "pos" },
+                    { en: "zero", de: "null/keine", ar: "صفر", type: "neg" }
+                ]
+            },
+            {
+                id: "unit15",
+                title: "15: My Room",
+                icon: "🛏️",
+                vocab: [
+                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "Chair", de: "Stuhl", ar: "كرسي", icon: "🪑" },
+                    { en: "Desk", de: "Tisch", ar: "طاولة", icon: "🖥️" },
+                    { en: "Lamp", de: "Lampe", ar: "مصباح", icon: "💡" },
+                    { en: "Door", de: "Tür", ar: "باب", icon: "🚪" },
+                    { en: "Window", de: "Fenster", ar: "نافذة", icon: "🪟" },
+                    { en: "Computer", de: "Computer", ar: "كمبيوتر", icon: "💻" },
+                    { en: "Box", de: "Kiste", ar: "صندوق", icon: "📦" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Where?", items: ["In my room", "Next to the bed"] },
+                    col2: { title: "Is...", items: ["is a", "is the"] },
+                    col3: { title: "Item", items: ["lamp", "chair", "desk", "computer"] }
+                },
+                opinions: [
+                    { en: "clean", de: "sauber", ar: "نظيف", type: "pos" },
+                    { en: "messy", de: "unordentlich", ar: "فوضوي", type: "neg" },
+                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
+                    { en: "small", de: "klein", ar: "صغير", type: "neu" }
+                ]
+            },
+            {
+                id: "unit16",
+                title: "16: Feelings",
+                icon: "😊",
+                vocab: [
+                    { en: "Happy", de: "Glücklich", ar: "سعيد", icon: "😊" },
+                    { en: "Sad", de: "Traurig", ar: "حزين", icon: "😢" },
+                    { en: "Angry", de: "Wütend", ar: "غاضب", icon: "😡" },
+                    { en: "Tired", de: "Müde", ar: "متعب", icon: "😴" },
+                    { en: "Hungry", de: "Hungrig", ar: "جائع", icon: "😋" },
+                    { en: "Thirsty", de: "Durstig", ar: "عطشان", icon: "🥤" },
+                    { en: "Scared", de: "Ängstlich", ar: "خائف", icon: "😱" },
+                    { en: "Sick", de: "Krank", ar: "مريض", icon: "🤒" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Person", items: ["I am", "He is", "She is"] },
+                    col2: { title: "Feeling", items: ["very", "a little"] },
+                    col3: { title: "Emotion", items: ["happy", "sad", "tired", "hungry"] }
+                },
+                opinions: [
+                    { en: "good", de: "gut", ar: "جيد", type: "pos" },
+                    { en: "bad", de: "schlecht", ar: "سيء", type: "neg" },
+                    { en: "okay", de: "okay", ar: "حسناً", type: "neu" },
+                    { en: "great", de: "super", ar: "عظيم", type: "pos" }
+                ]
+            },
+            {
+                id: "unit17",
+                title: "17: Jobs",
+                icon: "👮",
+                vocab: [
+                    { en: "Teacher", de: "Lehrer", ar: "معلم", icon: "👨‍🏫" },
+                    { en: "Doctor", de: "Arzt", ar: "طبيب", icon: "👨‍⚕️" },
+                    { en: "Police", de: "Polizei", ar: "شرطة", icon: "👮" },
+                    { en: "Cook", de: "Koch", ar: "طباخ", icon: "👨‍🍳" },
+                    { en: "Driver", de: "Fahrer", ar: "سائق", icon: "🚕" },
+                    { en: "Pilot", de: "Pilot", ar: "طيار", icon: "✈️" },
+                    { en: "Farmer", de: "Bauer", ar: "مزارع", icon: "👨‍🌾" },
+                    { en: "Singer", de: "Sänger", ar: "مغني", icon: "🎤" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Person", items: ["My father", "My mother", "I want to be"] },
+                    col2: { title: "Is/A", items: ["is a", "a"] },
+                    col3: { title: "Job", items: ["teacher", "doctor", "pilot", "cook"] }
+                },
+                opinions: [
+                    { en: "hard", de: "hart", ar: "صعب", type: "neg" },
+                    { en: "fun", de: "spaßig", ar: "ممتع", type: "pos" },
+                    { en: "important", de: "wichtig", ar: "مهم", type: "pos" },
+                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
+                ]
+            },
+            {
+                id: "unit18",
+                title: "18: Colors",
+                icon: "🎨",
+                vocab: [
+                    { en: "Red", de: "Rot", ar: "أحمر", icon: "🔴" },
+                    { en: "Blue", de: "Blau", ar: "أزرق", icon: "🔵" },
+                    { en: "Green", de: "Grün", ar: "أخضر", icon: "🟢" },
+                    { en: "Yellow", de: "Gelb", ar: "أصفر", icon: "🟡" },
+                    { en: "Black", de: "Schwarz", ar: "أسود", icon: "⚫" },
+                    { en: "White", de: "Weiß", ar: "أبيض", icon: "⚪" },
+                    { en: "Orange", de: "Orange", ar: "برتقالي", icon: "🟠" },
+                    { en: "Pink", de: "Pink", ar: "وردي", icon: "🩷" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Object", items: ["The car", "The flower", "My shirt"] },
+                    col2: { title: "Is", items: ["is"] },
+                    col3: { title: "Color", items: ["red", "blue", "green", "black"] }
+                },
+                opinions: [
+                    { en: "bright", de: "hell", ar: "ساطع", type: "pos" },
+                    { en: "dark", de: "dunkel", ar: "داكن", type: "neu" },
+                    { en: "beautiful", de: "wunderschön", ar: "جميل", type: "pos" },
+                    { en: "colorful", de: "bunt", ar: "ملون", type: "pos" }
+                ]
+            },
+            {
+                id: "unit19",
+                title: "19: At Home",
+                icon: "🏠",
+                vocab: [
+                    { en: "House", de: "Haus", ar: "منزل", icon: "🏠" },
+                    { en: "Kitchen", de: "Küche", ar: "مطبخ", icon: "🍳" },
+                    { en: "Bathroom", de: "Bad", ar: "حمام", icon: "🛁" },
+                    { en: "Garden", de: "Garten", ar: "حديقة", icon: "🌻" },
+                    { en: "Living room", de: "Wohnzimmer", ar: "غرفة المعيشة", icon: "🛋️" },
+                    { en: "Bedroom", de: "Schlafzimmer", ar: "غرفة النوم", icon: "🛏️" },
+                    { en: "Door", de: "Tür", ar: "باب", icon: "🚪" },
+                    { en: "Wall", de: "Wand", ar: "جدار", icon: "🧱" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Who?", items: ["I am", "Mom is"] },
+                    col2: { title: "Where?", items: ["in the"] },
+                    col3: { title: "Room", items: ["kitchen", "garden", "bathroom", "house"] }
+                },
+                opinions: [
+                    { en: "cozy", de: "gemütlich", ar: "مريح", type: "pos" },
+                    { en: "big", de: "groß", ar: "كبير", type: "pos" },
+                    { en: "small", de: "klein", ar: "صغير", type: "neu" },
+                    { en: "quiet", de: "ruhig", ar: "هادئ", type: "pos" }
+                ]
+            },
+            {
+                id: "unit20",
+                title: "20: Nature",
+                icon: "🌳",
+                vocab: [
+                    { en: "Tree", de: "Baum", ar: "شجرة", icon: "🌳" },
+                    { en: "Flower", de: "Blume", ar: "زهرة", icon: "🌸" },
+                    { en: "Water", de: "Wasser", ar: "ماء", icon: "💧" },
+                    { en: "Sky", de: "Himmel", ar: "سماء", icon: "☁️" },
+                    { en: "Sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "Moon", de: "Mond", ar: "قمر", icon: "🌙" },
+                    { en: "Star", de: "Stern", ar: "نجمة", icon: "⭐" },
+                    { en: "Stone", de: "Stein", ar: "حجر", icon: "🪨" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Look!", items: ["I see a", "Look at the"] },
+                    col2: { title: "Adjective", items: ["big", "beautiful", "high"] },
+                    col3: { title: "Nature", items: ["tree", "flower", "star", "moon"] }
+                },
+                opinions: [
+                    { en: "beautiful", de: "schön", ar: "جميل", type: "pos" },
+                    { en: "green", de: "grün", ar: "أخضر", type: "neu" },
+                    { en: "high", de: "hoch", ar: "عالي", type: "neu" },
+                    { en: "sunny", de: "sonnig", ar: "مشمس", type: "pos" }
                 ]
             }
         ]; // <--- HIER IST JETZT ALLES SAUBER
