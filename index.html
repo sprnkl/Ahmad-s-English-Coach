@@ -54,7 +54,7 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
-        // DATEN (ALLE 8 MODULE)
+        // DATEN (ALLE 10 MODULE)
         // ==========================================
         const COURSE_DATA = [
             {
@@ -152,7 +152,31 @@
             },
             {
                 id: "unit5",
-                title: "5: My Body",
+                title: "5: Shopping",
+                icon: "🛍️",
+                vocab: [
+                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
+                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
+                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
+                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
+                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Polite", items: ["I would like", "I want"] },
+                    col2: { title: "Action", items: ["to buy"] },
+                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple"] }
+                },
+                opinions: [
+                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
+                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
+                    { en: "nice", de: "schön", ar: "جميل", type: "pos" }
+                ]
+            },
+            {
+                id: "unit6",
+                title: "6: My Body",
                 icon: "💪",
                 vocab: [
                     { en: "Head", de: "Kopf", ar: "رأس", icon: "😶" },
@@ -174,30 +198,6 @@
                     { en: "hurt", de: "verletzt/weh tun", ar: "مؤلم", type: "neg" },
                     { en: "healthy", de: "gesund", ar: "صحي", type: "pos" },
                     { en: "tired", de: "müde", ar: "متعب", type: "neg" }
-                ]
-            },
-            {
-                id: "unit6",
-                title: "6: Shopping",
-                icon: "🛍️",
-                vocab: [
-                    { en: "T-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
-                    { en: "Jeans", de: "Jeans", ar: "جينز", icon: "👖" },
-                    { en: "Shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
-                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
-                    { en: "Banana", de: "Banane", ar: "موزة", icon: "🍌" },
-                    { en: "Buy", de: "Kaufen", ar: "يشتري", icon: "💳" },
-                    { en: "Money", de: "Geld", ar: "مال", icon: "💶" }
-                ],
-                sentenceParts: {
-                    col1: { title: "Polite", items: ["I would like", "I want"] },
-                    col2: { title: "Action", items: ["to buy"] },
-                    col3: { title: "Item", items: ["a T-shirt", "jeans", "an apple"] }
-                },
-                opinions: [
-                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
-                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
-                    { en: "nice", de: "schön", ar: "جميل", type: "pos" }
                 ]
             },
             {
@@ -248,15 +248,60 @@
                     { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
                     { en: "strong", de: "stark", ar: "قوي", type: "pos" }
                 ]
-            }, // <--- WICHTIG: Das Komma hier trennt Unit 8 vom nächsten Modul!
-
-            // ==========================================
-            //  HIER NEUE MODULE EINFÜGEN (Unit 9, 10...)
-            //  Kopiere einfach einen Block { ... } von oben
-            //  und füge ihn hier ein.
-            // ==========================================
-
-        ];
+            }, 
+            {
+                id: "unit9",
+                title: "9: Food & Drinks",
+                icon: "🍔",
+                vocab: [
+                    { en: "Burger", de: "Burger", ar: "برغر", icon: "🍔" },
+                    { en: "Pizza", de: "Pizza", ar: "بيتزا", icon: "🍕" },
+                    { en: "Salad", de: "Salat", ar: "سلطة", icon: "🥗" },
+                    { en: "Apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
+                    { en: "Water", de: "Wasser", ar: "ماء", icon: "💧" },
+                    { en: "Milk", de: "Milch", ar: "حليب", icon: "🥛" },
+                    { en: "Juice", de: "Saft", ar: "عصير", icon: "🧃" },
+                    { en: "Cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Polite", items: ["Can I have", "I would like"] },
+                    col2: { title: "Action", items: ["to eat", "to drink"] },
+                    col3: { title: "Item", items: ["a burger", "a pizza", "water", "apple juice"] }
+                },
+                opinions: [
+                    { en: "delicious", de: "lecker", ar: "لذيذ", type: "pos" },
+                    { en: "yummy", de: "lecker (ugs.)", ar: "شهي", type: "pos" },
+                    { en: "hot", de: "heiß", ar: "ساخن", type: "neu" },
+                    { en: "cold", de: "kalt", ar: "بارد", type: "neu" }
+                ]
+            },
+            {
+                id: "unit10",
+                title: "10: My Day",
+                icon: "⏰",
+                vocab: [
+                    { en: "Morning", de: "Morgen", ar: "صباح", icon: "🌅" },
+                    { en: "Night", de: "Nacht", ar: "ليل", icon: "🌙" },
+                    { en: "Bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "Clock", de: "Uhr", ar: "ساعة", icon: "⏰" },
+                    { en: "Breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
+                    { en: "School bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
+                    { en: "Homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
+                    { en: "Shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
+                ],
+                sentenceParts: {
+                    col1: { title: "Time", items: ["In the morning", "At 8 o'clock"] },
+                    col2: { title: "Who?", items: ["I"] },
+                    col3: { title: "Action", items: ["get up", "go to school", "eat breakfast", "go to sleep"] }
+                },
+                opinions: [
+                    { en: "early", de: "früh", ar: "مبكر", type: "neu" },
+                    { en: "late", de: "spät", ar: "متأخر", type: "neg" },
+                    { en: "tired", de: "müde", ar: "متعب", type: "neg" },
+                    { en: "active", de: "aktiv/fit", ar: "نشيط", type: "pos" }
+                ]
+            }
+        ]; // <--- HIER IST JETZT ALLES SAUBER
 
         // ==========================================
         // APP LOGIC
