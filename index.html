@@ -3,97 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Training: Modular</title>
+    <title>English Training: Pure</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (Design) - Wenn das blockiert wird, sieht es hässlich aus, aber LÄUFT trotzdem -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Phosphor Icons (via CDNJS) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/script/phosphor-icons.min.js"></script>
-
-    <!-- STABILER SERVER (CDNJS) - Wird seltener von Schulfiltern blockiert -->
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
+        /* Fallback, falls Tailwind nicht lädt */
+        .fallback-btn { padding: 10px 20px; margin: 5px; background: #ddd; border: 1px solid #999; cursor: pointer; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Debug Console Style */
-        #debug-console {
-            display: none;
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: #fee2e2; border-top: 4px solid #ef4444;
-            padding: 20px; color: #991b1b; z-index: 9999;
-            font-family: monospace;
-            max-height: 50vh; overflow-y: auto;
-        }
     </style>
 </head>
-<body>
-    <!-- Lade-Indikator -->
-    <div id="root">
-        <div class="min-h-screen flex items-center justify-center flex-col text-gray-500">
-            <h1 class="text-4xl mb-4">⏳</h1>
-            <h2 class="text-2xl font-bold">Lade App...</h2>
-            <p class="mt-2 text-center max-w-md">
-                Verbinde mit Server...<br>
-                <span class="text-sm text-gray-400">(Falls dies in der Schule nicht lädt, wird 'cdnjs' oder 'tailwindcss' blockiert.)</span>
-            </p>
+<body class="bg-green-50 text-gray-800">
+
+    <!-- HEADER / UNIT SELECTOR -->
+    <div class="bg-green-800 text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-xl font-bold flex items-center gap-2">🇬🇧 English Trainer</h1>
+            <div id="unit-selector" class="flex flex-wrap gap-2 bg-green-900/50 p-1 rounded-lg">
+                <!-- Units werden hier rein generiert -->
+            </div>
         </div>
     </div>
 
-    <!-- Visuelle Fehler-Ausgabe -->
-    <div id="debug-console"></div>
+    <!-- NAVIGATION TABS -->
+    <div class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-green-100 p-2 mb-6 shadow-sm">
+        <div id="nav-tabs" class="max-w-4xl mx-auto flex justify-center gap-2 overflow-x-auto hide-scroll">
+            <button onclick="app.setTab('vocab')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all bg-green-600 text-white shadow-md" data-tab="vocab">1. Words</button>
+            <button onclick="app.setTab('sentences')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="sentences">2. Sentences</button>
+            <button onclick="app.setTab('opinion')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="opinion">3. Opinion</button>
+            <button onclick="app.setTab('report')" class="nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all text-gray-500 hover:bg-green-50" data-tab="report">4. Report</button>
+        </div>
+    </div>
 
+    <!-- MAIN CONTENT AREA -->
+    <div id="app-content" class="container mx-auto max-w-3xl p-4 min-h-[60vh]">
+        <!-- Hier wird der Inhalt per Javascript reingeladen -->
+    </div>
+
+    <!-- JAVASCRIPT LOGIC (Keine externen Libraries mehr!) -->
     <script>
-        // Global Error Handler mit mehr Details
-        window.onerror = function(msg, url, line, col, error) {
-            const consoleDiv = document.getElementById('debug-console');
-            consoleDiv.style.display = 'block';
-            let extra = "";
-            if (error && error.stack) extra = error.stack;
-            consoleDiv.innerHTML += `<strong>FEHLER:</strong> ${msg}<br><small>${url}:${line}</small><br><pre style="font-size:10px">${extra}</pre><br>`;
-            return false;
-        };
-        
-        // Catch Promise Errors (z.B. fetch)
-        window.onunhandledrejection = function(event) {
-             const consoleDiv = document.getElementById('debug-console');
-             consoleDiv.style.display = 'block';
-             consoleDiv.innerHTML += `<strong>PROMISE ERROR:</strong> ${event.reason}<br><br>`;
-        };
-    </script>
-
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
-
         // ==========================================
-        // HELPER: SAFE STORAGE
+        // DATEN (HIER KANNST DU EDITIEREN)
         // ==========================================
-        const safeStorage = {
-            get: (key) => {
-                try {
-                    return localStorage.getItem(key);
-                } catch (e) {
-                    console.warn("Storage access failed:", e);
-                    return null;
-                }
-            },
-            set: (key, value) => {
-                try {
-                    localStorage.setItem(key, value);
-                } catch (e) {
-                    console.warn("Storage write failed:", e);
-                }
-            }
-        };
-
-        // ==========================================
-        // ANDREAS: HIER DATEN EINFÜGEN / ÄNDERN
-        // ==========================================
-        
         const COURSE_DATA = [
             {
                 id: "unit1",
@@ -148,498 +102,317 @@
         ];
 
         // ==========================================
-        // LOGIC
+        // APP LOGIC (Pure Vanilla JS)
         // ==========================================
+        
+        const app = {
+            currentUnitId: COURSE_DATA[0].id,
+            activeTab: 'vocab',
+            state: { // Temporärer Speicher
+                sentenceSelection: { col1: null, col2: null, col3: null },
+                flippedCards: {},
+                quizInputs: {}
+            },
+            data: { // Persistenter Speicher (LocalStorage)
+                sentences: [],
+                opinions: {}
+            },
 
-        const speak = (text) => {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        };
+            init: function() {
+                this.loadData();
+                this.renderUnitSelector();
+                this.render();
+            },
 
-        const Navigation = ({ activeTab, setActiveTab }) => {
-            const tabs = [
-                { id: 'vocab', label: '1. Words', icon: 'ph-book-open' },
-                { id: 'sentences', label: '2. Sentences', icon: 'ph-pencil' },
-                { id: 'opinion', label: '3. Opinion', icon: 'ph-thumbs-up' },
-                { id: 'final', label: '4. Report', icon: 'ph-file-text' },
-            ];
+            getUnit: function() {
+                return COURSE_DATA.find(u => u.id === this.currentUnitId) || COURSE_DATA[0];
+            },
 
-            return (
-                <div className="bg-white/80 backdrop-blur-sm border-b border-green-100 p-2 mb-6 sticky top-0 z-40 shadow-sm">
-                    <div className="max-w-4xl mx-auto flex justify-center gap-2 overflow-x-auto hide-scroll">
-                        {tabs.map(tab => (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
-                                    activeTab === tab.id 
-                                    ? 'bg-green-600 text-white shadow-md transform scale-105' 
-                                    : 'text-gray-500 hover:bg-green-50'
-                                }`}
-                            >
-                                <i className={`ph ${tab.icon} text-lg sm:text-xl`}></i>
-                                <span>{tab.label}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            );
-        };
+            setUnit: function(id) {
+                this.currentUnitId = id;
+                this.activeTab = 'vocab';
+                this.state = { sentenceSelection: {}, flippedCards: {}, quizInputs: {} }; // Reset Temp State
+                this.loadData(); // Load data for new unit
+                this.renderUnitSelector();
+                this.render();
+            },
 
-        const UnitSelector = ({ currentUnitId, setUnitId }) => {
-            return (
-                <div className="bg-green-800 text-white p-4 pb-6">
-                    <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <h1 className="text-xl font-bold flex items-center gap-2">
-                            <i className="ph ph-student text-2xl"></i>
-                            English Trainer
-                        </h1>
-                        <div className="flex bg-green-900/50 p-1 rounded-lg">
-                            {COURSE_DATA.map(unit => (
-                                <button
-                                    key={unit.id}
-                                    onClick={() => setUnitId(unit.id)}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
-                                        currentUnitId === unit.id
-                                        ? 'bg-white text-green-800 shadow-sm'
-                                        : 'text-green-100 hover:bg-green-700'
-                                    }`}
-                                >
-                                    <span>{unit.icon}</span>
-                                    <span className="hidden sm:inline">{unit.title}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+            setTab: function(tabId) {
+                this.activeTab = tabId;
+                this.updateNavStyles();
+                this.render();
+            },
 
-        const AutoVowelQuiz = ({ vocabList }) => {
-            const [inputs, setInputs] = useState({});
-            
-            const quizItems = useMemo(() => {
-                if (!vocabList || vocabList.length === 0) return [];
-                const shuffled = [...vocabList].sort(() => 0.5 - Math.random());
-                return shuffled.slice(0, 3).map(item => ({
-                    id: item.en, 
-                    original: item.en,
-                    masked: item.en.replace(/[aeiou]/gi, '_')
-                }));
-            }, [vocabList]);
-
-            const handleChange = (id, val) => {
-                setInputs(prev => ({...prev, [id]: val}));
-            };
-
-            return (
-                <div className="space-y-4">
-                    {quizItems.map(item => {
-                        // FIX: Babel 6 kompatibler Code (kein Optional Chaining ?.)
-                        const val = inputs[item.id] || "";
-                        const isCorrect = val.toLowerCase().trim() === item.original.toLowerCase();
-                        
-                        return (
-                            <div key={item.id} className="flex flex-col sm:flex-row gap-2 items-center bg-gray-50 p-2 rounded-lg">
-                                <span className="font-mono text-lg bg-white border px-3 py-1 rounded w-full sm:w-48 text-center tracking-widest text-gray-600 font-bold">{item.masked}</span>
-                                <span className="text-gray-400 hidden sm:block">➔</span>
-                                <div className="relative w-full flex-grow">
-                                    <input 
-                                        type="text" 
-                                        className={`w-full border-2 p-2 pl-4 rounded-lg outline-none transition-colors ${
-                                            val.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'
-                                        }`}
-                                        placeholder="Type the full word..."
-                                        value={val}
-                                        onChange={(e) => handleChange(item.id, e.target.value)}
-                                    />
-                                    {isCorrect && <i className="ph ph-check-circle text-green-500 text-2xl absolute right-2 top-1/2 -translate-y-1/2 animate-bounce"></i>}
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
-            )
-        };
-
-        const VocabTrainer = ({ data }) => {
-            const [flipped, setFlipped] = useState({});
-            
-            const toggleFlip = (id) => {
-                setFlipped(prev => ({...prev, [id]: !prev[id]}));
-            };
-
-            return (
-                <div className="max-w-3xl mx-auto p-4 animate-fade-in">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Step 1</span>
-                        Learn the Words
-                    </h2>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                        {data.map((word, idx) => (
-                            <div key={idx} 
-                                 className={`bg-white rounded-xl shadow-sm hover:shadow-md p-6 cursor-pointer border-2 transition-all relative overflow-hidden group ${flipped[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}`}
-                                 onClick={() => toggleFlip(idx)}
-                            >
-                                <div className="flex justify-between items-start mb-2">
-                                    <span className="text-4xl group-hover:scale-110 transition-transform">{word.icon}</span>
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); speak(word.en); }}
-                                        className="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-full hover:bg-blue-500 hover:text-white text-blue-500 transition-colors"
-                                    >
-                                        <i className="ph ph-speaker-high text-xl"></i>
-                                    </button>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-800 mt-2">{word.en}</h3>
-                                <div className={`transition-all duration-300 overflow-hidden ${flipped[idx] ? 'max-h-20 opacity-100 mt-2 pt-2 border-t border-green-200' : 'max-h-0 opacity-0'}`}>
-                                    <p className="text-green-700 font-medium">= {word.de}</p>
-                                </div>
-                                {!flipped[idx] && <p className="text-xs text-gray-400 mt-2">Click to translate</p>}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 bg-yellow-100 rounded-lg text-yellow-700"><i className="ph ph-lightning text-xl"></i></div>
-                            <h3 className="text-xl font-bold text-gray-800">Speed Quiz: Fill in vowels</h3>
-                        </div>
-                        <AutoVowelQuiz vocabList={data} />
-                    </div>
-                </div>
-            );
-        };
-
-        const SentenceBuilder = ({ parts, addToReport }) => {
-            const [selection, setSelection] = useState({ col1: null, col2: null, col3: null });
-            const [history, setHistory] = useState([]);
-
-            const handleSelect = (col, value) => {
-                setSelection(prev => ({...prev, [col]: value}));
-            };
-
-            const isComplete = selection.col1 && selection.col2 && selection.col3;
-
-            const saveSentence = () => {
-                const sentence = `${selection.col1} ${selection.col2} ${selection.col3}.`;
-                setHistory([sentence, ...history]);
-                addToReport(sentence);
-                setSelection({ col1: null, col2: null, col3: null });
-                speak("Excellent!");
-            };
-
-            // FIX: Explicit class mapping instead of dynamic strings for Tailwind
-            const getClassForColor = (color, isActive) => {
-                const baseClasses = "w-full p-3 mb-2 rounded-lg text-left transition-all text-sm font-medium";
-                const colorMap = {
-                    blue: {
-                        active: "bg-blue-600 text-white shadow-lg ring-2 ring-offset-2 ring-blue-400",
-                        inactive: "bg-white text-gray-600 hover:bg-blue-100",
-                        container: "bg-blue-50 border-blue-100 text-blue-800"
-                    },
-                    purple: {
-                        active: "bg-purple-600 text-white shadow-lg ring-2 ring-offset-2 ring-purple-400",
-                        inactive: "bg-white text-gray-600 hover:bg-purple-100",
-                        container: "bg-purple-50 border-purple-100 text-purple-800"
-                    },
-                    orange: {
-                        active: "bg-orange-600 text-white shadow-lg ring-2 ring-offset-2 ring-orange-400",
-                        inactive: "bg-white text-gray-600 hover:bg-orange-100",
-                        container: "bg-orange-50 border-orange-100 text-orange-800"
+            // --- STORAGE ---
+            loadData: function() {
+                try {
+                    const saved = localStorage.getItem('english_data_' + this.currentUnitId);
+                    if (saved) {
+                        this.data = JSON.parse(saved);
+                    } else {
+                        this.data = { sentences: [], opinions: {} };
                     }
-                };
-                
-                if (isActive) return `${baseClasses} ${colorMap[color].active}`;
-                return `${baseClasses} ${colorMap[color].inactive}`;
-            };
-            
-            const getContainerClass = (color) => {
-                const map = {
-                    blue: "bg-blue-50 border-blue-100 text-blue-800",
-                    purple: "bg-purple-50 border-purple-100 text-purple-800",
-                    orange: "bg-orange-50 border-orange-100 text-orange-800"
-                };
-                return `p-4 rounded-xl border ${map[color]}`;
-            }
+                } catch(e) { console.error("Storage Error", e); }
+            },
 
-            const columns = [
-                { id: 'col1', data: parts.col1, color: 'blue' },
-                { id: 'col2', data: parts.col2, color: 'purple' },
-                { id: 'col3', data: parts.col3, color: 'orange' }
-            ];
+            saveData: function() {
+                try {
+                    localStorage.setItem('english_data_' + this.currentUnitId, JSON.stringify(this.data));
+                } catch(e) {}
+            },
 
-            return (
-                <div className="max-w-4xl mx-auto p-4">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Step 2</span>
-                        Build Sentences
-                    </h2>
+            addSentence: function(sentence) {
+                if (!this.data.sentences.includes(sentence)) {
+                    this.data.sentences.push(sentence);
+                    this.saveData();
+                }
+            },
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        {columns.map(col => (
-                            <div key={col.id} className={getContainerClass(col.color)}>
-                                <h3 className="font-bold mb-3 uppercase text-sm tracking-wide">{col.data.title}</h3>
-                                {col.data.items.map(item => (
-                                    <button key={item} 
-                                        onClick={() => handleSelect(col.id, item)}
-                                        className={getClassForColor(col.color, selection[col.id] === item)}
-                                    >
-                                        {item}
-                                    </button>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
+            addOpinion: function(activity, opinion) {
+                this.data.opinions[activity] = opinion;
+                this.saveData();
+            },
 
-                    <div className="bg-gray-800 text-white p-8 rounded-2xl shadow-xl text-center min-h-[160px] flex flex-col items-center justify-center relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500"></div>
-                        <div className="text-xl md:text-3xl mb-6 font-mono font-medium">
-                            <span className={selection.col1 ? "text-blue-300" : "text-gray-600"}>{selection.col1 || "..."}</span>
-                            <span className="mx-2"> </span>
-                            <span className={selection.col2 ? "text-purple-300" : "text-gray-600"}>{selection.col2 || "..."}</span>
-                            <span className="mx-2"> </span>
-                            <span className={selection.col3 ? "text-orange-300" : "text-gray-600"}>{selection.col3 || "..."}</span>
-                            <span className="text-gray-500">.</span>
-                        </div>
-                        {isComplete && (
-                            <button 
-                                onClick={saveSentence}
-                                className="bg-green-500 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-green-500/30 animate-bounce flex items-center gap-2"
-                            >
-                                <i className="ph ph-check-fat text-xl"></i> Save It
-                            </button>
-                        )}
-                    </div>
+            // --- TTS ---
+            speak: function(text) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    window.speechSynthesis.speak(utterance);
+                }
+            },
 
-                    {history.length > 0 && (
-                        <div className="mt-8">
-                            <h3 className="font-bold text-gray-500 text-sm uppercase mb-3">Your Sentences</h3>
-                            <div className="space-y-2">
-                                {history.map((s, idx) => (
-                                    <div key={idx} className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center group">
-                                        <span className="text-gray-700">{s}</span>
-                                        <button onClick={() => speak(s)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
-                                            <i className="ph ph-speaker-high"></i>
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-
-        const OpinionTrainer = ({ vocab, opinions, addOpinionToReport }) => {
-            const [matches, setMatches] = useState({});
-            const activities = vocab.map(v => v.en);
-
-            return (
-                <div className="max-w-3xl mx-auto p-4">
-                     <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Step 3</span>
-                        Express Opinions
-                    </h2>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                        {opinions.map((op, idx) => {
-                            // Fix Tailwind dynamic classes here too
-                            let bgClass = "bg-yellow-50 border-yellow-200";
-                            if (op.type === 'pos') bgClass = "bg-green-50 border-green-200";
-                            if (op.type === 'neg') bgClass = "bg-red-50 border-red-200";
-
-                            return (
-                                <div key={idx} className={`p-4 rounded-xl text-center border-2 transition-all hover:scale-105 cursor-pointer ${bgClass}`}
-                                     onClick={() => speak(op.en)}
-                                >
-                                    <div className="text-xl font-bold text-gray-800">{op.en}</div>
-                                    <div className="text-xs text-gray-500 mt-1">{op.de}</div>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                        <h3 className="font-bold text-gray-700 mb-4">How was it?</h3>
-                        {activities.slice(0, 5).map((activity, i) => (
-                            <div key={i} className="mb-4 pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                    <p className="font-medium text-gray-700 min-w-[150px]">{activity} was...</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {opinions.map((op) => (
-                                            <button 
-                                                key={op.en}
-                                                onClick={() => {
-                                                    setMatches({...matches, [activity]: op.en});
-                                                    speak(`${activity} was ${op.en}`);
-                                                    addOpinionToReport(activity, op.en);
-                                                }}
-                                                className={`px-3 py-1 rounded-full text-sm font-medium border transition-all ${matches[activity] === op.en ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                                            >
-                                                {op.en}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )
-        }
-
-        const FinalReport = ({ reportData, unitTitle }) => {
-            const [name, setName] = useState("");
-            
-            return (
-                <div className="max-w-2xl mx-auto p-4">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Step 4</span>
-                        Final Report
-                    </h2>
-
-                    <div className="bg-white p-8 rounded-xl shadow-2xl border-t-8 border-green-600 relative overflow-hidden print:shadow-none" id="printable-area">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <i className="ph ph-medal text-9xl"></i>
-                        </div>
-
-                        <div className="flex justify-between items-start mb-8 border-b border-gray-100 pb-6">
-                            <div>
-                                <h1 className="text-3xl font-bold text-gray-900">My English Report</h1>
-                                <p className="text-green-600 font-medium">{unitTitle}</p>
-                            </div>
-                        </div>
-
-                        <div className="mb-8 bg-gray-50 p-4 rounded-lg">
-                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Student Name</label>
-                            <input 
-                                type="text" 
-                                value={name} 
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full text-2xl font-handwriting bg-transparent border-b-2 border-gray-300 focus:border-green-500 outline-none pb-1 text-gray-800 placeholder-gray-300"
-                                placeholder="Your Name..."
-                            />
-                        </div>
-
-                        <div className="space-y-8 text-lg leading-relaxed relative z-10">
-                            <div>
-                                <h4 className="font-bold text-gray-900 flex items-center gap-2 mb-2">
-                                    <i className="ph ph-check-circle text-green-500"></i>
-                                    My Sentences
-                                </h4>
-                                {reportData.sentences.length > 0 ? (
-                                    <ul className="bg-green-50/50 rounded-lg p-4 space-y-2 border border-green-100">
-                                        {reportData.sentences.map((s, i) => <li key={i} className="text-gray-700">• {s}</li>)}
-                                    </ul>
-                                ) : <p className="text-red-400 text-sm italic">Go to Step 2 to build sentences.</p>}
-                            </div>
-
-                            <div>
-                                <h4 className="font-bold text-gray-900 flex items-center gap-2 mb-2">
-                                    <i className="ph ph-star text-yellow-500"></i>
-                                    My Opinions
-                                </h4>
-                                {Object.keys(reportData.opinions).length > 0 ? (
-                                    <ul className="bg-yellow-50/50 rounded-lg p-4 space-y-2 border border-yellow-100">
-                                        {Object.entries(reportData.opinions).map(([act, op], i) => (
-                                            <li key={i} className="text-gray-700">• {act} was <strong>{op}</strong>.</li>
-                                        ))}
-                                    </ul>
-                                ) : <p className="text-red-400 text-sm italic">Go to Step 3 to add opinions.</p>}
-                            </div>
-                        </div>
-                        
-                        <div className="mt-12 pt-6 border-t border-gray-100 flex justify-between items-center text-gray-400 text-xs uppercase tracking-wide">
-                            <span>Teacher Signature</span>
-                            <span>{new Date().toLocaleDateString()}</span>
-                        </div>
-                    </div>
-
-                    <button 
-                        onClick={() => window.print()}
-                        className="w-full mt-6 bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2 group"
-                    >
-                        <i className="ph ph-printer text-2xl group-hover:scale-110 transition-transform"></i> 
-                        Print Report
+            // --- RENDERING ---
+            renderUnitSelector: function() {
+                const container = document.getElementById('unit-selector');
+                container.innerHTML = COURSE_DATA.map(unit => `
+                    <button onclick="app.setUnit('${unit.id}')" 
+                        class="px-3 py-1 rounded text-sm font-medium transition-colors flex items-center gap-2 ${this.currentUnitId === unit.id ? 'bg-white text-green-800 shadow' : 'text-green-100 hover:bg-green-700'}">
+                        <span>${unit.icon}</span> <span class="hidden sm:inline">${unit.title}</span>
                     </button>
-                </div>
-            );
-        };
+                `).join('');
+            },
 
-        const App = () => {
-            const [currentUnitId, setCurrentUnitId] = useState(COURSE_DATA[0].id);
-            const [activeTab, setActiveTab] = useState('vocab');
-            
-            const currentUnit = COURSE_DATA.find(u => u.id === currentUnitId) || COURSE_DATA[0];
-            const [reportData, setReportData] = useState({ sentences: [], opinions: {} });
+            updateNavStyles: function() {
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    const isActive = btn.getAttribute('data-tab') === this.activeTab;
+                    btn.className = `nav-btn px-4 py-2 rounded-lg font-bold text-sm transition-all ${isActive ? 'bg-green-600 text-white shadow-md scale-105' : 'text-gray-500 hover:bg-green-50'}`;
+                });
+            },
 
-            // FIX: Use safeStorage instead of direct localStorage access
-            useEffect(() => {
-                const storageKey = `english_data_${currentUnitId}`;
-                const saved = safeStorage.get(storageKey);
-                if (saved) {
-                    setReportData(JSON.parse(saved));
-                } else {
-                    setReportData({ sentences: [], opinions: {} });
-                }
-                setActiveTab('vocab');
-            }, [currentUnitId]);
+            render: function() {
+                const content = document.getElementById('app-content');
+                const unit = this.getUnit();
 
-            useEffect(() => {
-                const storageKey = `english_data_${currentUnitId}`;
-                safeStorage.set(storageKey, JSON.stringify(reportData));
-            }, [reportData, currentUnitId]);
+                if (this.activeTab === 'vocab') this.renderVocab(content, unit);
+                else if (this.activeTab === 'sentences') this.renderSentences(content, unit);
+                else if (this.activeTab === 'opinion') this.renderOpinion(content, unit);
+                else if (this.activeTab === 'report') this.renderReport(content, unit);
+            },
 
-            const addToReport = (sentence) => {
-                if (!reportData.sentences.includes(sentence)) {
-                    setReportData(prev => ({
-                        ...prev,
-                        sentences: [...prev.sentences, sentence]
-                    }));
-                }
-            };
+            // 1. VOCAB RENDERER
+            renderVocab: function(container, unit) {
+                // Generate Quiz items logic (simple random selection based on unit id to be consistent)
+                const quizHTML = unit.vocab.slice(0, 3).map((word, idx) => {
+                    const masked = word.en.replace(/[aeiouAEIOU]/g, '_');
+                    const inputVal = this.state.quizInputs[word.en] || '';
+                    const isCorrect = inputVal.toLowerCase().trim() === word.en.toLowerCase();
+                    
+                    return `
+                        <div class="flex flex-col sm:flex-row gap-2 items-center bg-gray-50 p-2 rounded-lg mb-2">
+                            <span class="font-mono text-lg bg-white border px-3 py-1 rounded w-full sm:w-48 text-center tracking-widest text-gray-600 font-bold">${masked}</span>
+                            <div class="relative w-full flex-grow">
+                                <input type="text" oninput="app.handleQuizInput('${word.en}', this.value)" value="${inputVal}"
+                                    class="w-full border-2 p-2 pl-4 rounded-lg outline-none ${inputVal.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'}" placeholder="Ganzes Wort...">
+                                ${isCorrect ? '<i class="ph ph-check-circle text-green-500 text-2xl absolute right-2 top-1/2 -translate-y-1/2"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
 
-            const addOpinionToReport = (activity, opinion) => {
-                setReportData(prev => ({
-                    ...prev,
-                    opinions: { ...prev.opinions, [activity]: opinion }
-                }));
-            };
-
-            return (
-                <div className="min-h-screen pb-12 bg-[#f0fdf4]">
-                    <UnitSelector currentUnitId={currentUnitId} setUnitId={setCurrentUnitId} />
-                    <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
-
-                    <div className="container mx-auto mt-6">
-                        {activeTab === 'vocab' && <VocabTrainer data={currentUnit.vocab} />}
-                        
-                        {activeTab === 'sentences' && <SentenceBuilder 
-                            parts={currentUnit.sentenceParts} 
-                            addToReport={addToReport} 
-                        />}
-                        
-                        {activeTab === 'opinion' && <OpinionTrainer 
-                            vocab={currentUnit.vocab} 
-                            opinions={currentUnit.opinions} 
-                            addOpinionToReport={addOpinionToReport} 
-                        />}
-                        
-                        {activeTab === 'final' && <FinalReport 
-                            reportData={reportData} 
-                            unitTitle={currentUnit.title} 
-                        />}
+                container.innerHTML = `
+                    <div class="animate-fade-in">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Step 1</span> Learn the Words</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                            ${unit.vocab.map((word, idx) => `
+                                <div onclick="app.toggleCard(${idx})" class="bg-white rounded-xl shadow-sm hover:shadow-md p-6 cursor-pointer border-2 transition-all relative overflow-hidden group ${this.state.flippedCards[idx] ? 'border-green-500 bg-green-50' : 'border-gray-100'}">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-4xl">${word.icon}</span>
+                                        <button onclick="event.stopPropagation(); app.speak('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-full hover:bg-blue-500 hover:text-white text-blue-500 transition-colors"><i class="ph ph-speaker-high text-xl"></i></button>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mt-2">${word.en}</h3>
+                                    ${this.state.flippedCards[idx] ? `<p class="text-green-700 font-medium mt-2 pt-2 border-t border-green-200">= ${word.de}</p>` : '<p class="text-xs text-gray-400 mt-2">Click to translate</p>'}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                             <h3 class="text-xl font-bold text-gray-800 mb-4">⚡ Speed Quiz: Fill in vowels</h3>
+                             ${quizHTML}
+                        </div>
                     </div>
-                </div>
-            );
+                `;
+            },
+
+            toggleCard: function(idx) {
+                this.state.flippedCards[idx] = !this.state.flippedCards[idx];
+                this.render(); // Re-render to show change
+            },
+
+            handleQuizInput: function(id, val) {
+                this.state.quizInputs[id] = val;
+                this.render(); // Re-render to show validation
+                // Keep focus logic would be complex in pure HTML re-render, but good enough for now
+                // Ideally we'd update DOM directly, but full re-render is safer for state consistency
+                setTimeout(() => {
+                    const inputs = document.querySelectorAll(`input[value="${val}"]`);
+                    if(inputs.length > 0) inputs[inputs.length-1].focus();
+                }, 10);
+            },
+
+
+            // 2. SENTENCE RENDERER
+            renderSentences: function(container, unit) {
+                const sel = this.state.sentenceSelection;
+                const isComplete = sel.col1 && sel.col2 && sel.col3;
+                
+                const renderCol = (id, data, color) => `
+                    <div class="bg-${color}-50 p-4 rounded-xl border border-${color}-100">
+                        <h3 class="font-bold text-${color}-800 mb-3 uppercase text-sm tracking-wide">${data.title}</h3>
+                        ${data.items.map(item => `
+                            <button onclick="app.selectSentencePart('${id}', '${item}')" 
+                                class="w-full p-3 mb-2 rounded-lg text-left transition-all text-sm font-medium ${sel[id] === item ? `bg-${color}-600 text-white shadow-lg` : `bg-white text-gray-600 hover:bg-${color}-100`}">
+                                ${item}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+
+                container.innerHTML = `
+                    <div class="animate-fade-in">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Step 2</span> Build Sentences</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            ${renderCol('col1', unit.sentenceParts.col1, 'blue')}
+                            ${renderCol('col2', unit.sentenceParts.col2, 'purple')}
+                            ${renderCol('col3', unit.sentenceParts.col3, 'orange')}
+                        </div>
+                        <div class="bg-gray-800 text-white p-8 rounded-2xl shadow-xl text-center">
+                             <div class="text-xl md:text-3xl mb-6 font-mono font-medium">
+                                <span class="${sel.col1 ? 'text-blue-300' : 'text-gray-600'}">${sel.col1 || '...'}</span>
+                                <span class="${sel.col2 ? 'text-purple-300' : 'text-gray-600'}">${sel.col2 || '...'}</span>
+                                <span class="${sel.col3 ? 'text-orange-300' : 'text-gray-600'}">${sel.col3 || '...'}</span>.
+                             </div>
+                             ${isComplete ? `<button onclick="app.saveCurrentSentence()" class="bg-green-500 hover:bg-green-400 text-white font-bold py-3 px-8 rounded-full shadow-lg animate-bounce">Save It</button>` : ''}
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h3 class="font-bold text-gray-500 text-sm uppercase mb-3">Your Sentences</h3>
+                            <div class="space-y-2">
+                                ${this.data.sentences.map(s => `
+                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center">
+                                        <span class="text-gray-700">${s}</span>
+                                        <button onclick="app.speak('${s.replace(/'/g, "\\'")}')" class="text-blue-500"><i class="ph ph-speaker-high"></i></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            selectSentencePart: function(col, val) {
+                this.state.sentenceSelection[col] = val;
+                this.render();
+            },
+
+            saveCurrentSentence: function() {
+                const s = this.state.sentenceSelection;
+                const full = `${s.col1} ${s.col2} ${s.col3}.`;
+                this.addSentence(full);
+                this.state.sentenceSelection = { col1: null, col2: null, col3: null };
+                this.speak("Excellent!");
+                this.render();
+            },
+
+
+            // 3. OPINION RENDERER
+            renderOpinion: function(container, unit) {
+                const activities = unit.vocab.map(v => v.en).slice(0, 5);
+                
+                container.innerHTML = `
+                    <div class="animate-fade-in">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Step 3</span> Express Opinions</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            ${unit.opinions.map(op => `
+                                <div onclick="app.speak('${op.en}')" class="p-4 rounded-xl text-center border-2 cursor-pointer hover:scale-105 transition-transform ${op.type === 'pos' ? 'bg-green-50 border-green-200' : op.type === 'neg' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}">
+                                    <div class="text-xl font-bold text-gray-800">${op.en}</div>
+                                    <div class="text-xs text-gray-500 mt-1">${op.de}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                            ${activities.map(act => `
+                                <div class="mb-4 pb-4 border-b border-gray-50 last:border-0 last:pb-0">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <p class="font-medium text-gray-700 min-w-[150px]">${act} was...</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${unit.opinions.map(op => `
+                                                <button onclick="app.saveOpinion('${act.replace(/'/g, "\\'")}', '${op.en}')" 
+                                                    class="px-3 py-1 rounded-full text-sm font-medium border transition-all ${this.data.opinions[act] === op.en ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 hover:bg-gray-50'}">
+                                                    ${op.en}
+                                                </button>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            saveOpinion: function(act, op) {
+                this.addOpinion(act, op);
+                this.speak(`${act} was ${op}`);
+                this.render();
+            },
+
+
+            // 4. REPORT RENDERER
+            renderReport: function(container, unit) {
+                container.innerHTML = `
+                    <div class="max-w-2xl mx-auto">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Step 4</span> Final Report</h2>
+                        <div class="bg-white p-8 rounded-xl shadow-2xl border-t-8 border-green-600 relative overflow-hidden">
+                             <div class="flex justify-between items-start mb-8 border-b border-gray-100 pb-6">
+                                <div><h1 class="text-3xl font-bold text-gray-900">My English Report</h1><p class="text-green-600 font-medium">${unit.title}</p></div>
+                             </div>
+                             <div class="mb-8 bg-gray-50 p-4 rounded-lg">
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Student Name</label>
+                                <input type="text" class="w-full text-2xl bg-transparent border-b-2 border-gray-300 focus:border-green-500 outline-none pb-1 text-gray-800 placeholder-gray-300" placeholder="Your Name...">
+                             </div>
+                             <div class="space-y-8 text-lg leading-relaxed relative z-10">
+                                <div>
+                                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2">My Sentences</h4>
+                                    ${this.data.sentences.length > 0 ? `<ul class="bg-green-50/50 rounded-lg p-4 space-y-2 border border-green-100">${this.data.sentences.map(s => `<li>• ${s}</li>`).join('')}</ul>` : '<p class="text-red-400 text-sm italic">Go to Step 2 to build sentences.</p>'}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2">My Opinions</h4>
+                                    ${Object.keys(this.data.opinions).length > 0 ? `<ul class="bg-yellow-50/50 rounded-lg p-4 space-y-2 border border-yellow-100">${Object.entries(this.data.opinions).map(([act, op]) => `<li>• ${act} was <strong>${op}</strong>.</li>`).join('')}</ul>` : '<p class="text-red-400 text-sm italic">Go to Step 3 to add opinions.</p>'}
+                                </div>
+                             </div>
+                             <div class="mt-12 pt-6 border-t border-gray-100 flex justify-between items-center text-gray-400 text-xs uppercase tracking-wide"><span>Teacher Signature</span><span>${new Date().toLocaleDateString()}</span></div>
+                        </div>
+                        <button onclick="window.print()" class="w-full mt-6 bg-gray-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2 group"><i class="ph ph-printer text-2xl"></i> Print Report</button>
+                    </div>
+                `;
+            }
         };
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        // Start the App
+        app.init();
+
     </script>
 </body>
 </html>
