@@ -5,40 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Training: Modular</title>
     
-    <!-- ERROR HANDLER: Zeigt Fehler an statt weißem Bildschirm -->
-    <script>
-        window.onerror = function(message, source, lineno, colno, error) {
-            document.body.innerHTML += '<div style="color:red; background: #fee; padding:20px; border: 2px solid red; margin: 20px; font-family: sans-serif; font-weight:bold; z-index: 9999; position: relative;">⚠️ Fehler: ' + message + '<br><small>Zeile: ' + lineno + '</small></div>';
-        };
-    </script>
-
-    <!-- React & ReactDOM (React 18) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX (AKTUALISIERT auf Version 7) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- ROBUST LIBRARY LOADING (React 17 + Babel 6) -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
-        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .correct { border-color: #22c55e; background-color: #dcfce7; }
-        .wrong { border-color: #ef4444; background-color: #fee2e2; }
-        
-        /* Custom Scrollbar for unit selector */
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Debug Console Style */
+        #debug-console {
+            display: none;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #fee2e2; border-top: 4px solid #ef4444;
+            padding: 20px; color: #991b1b; z-index: 9999;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <!-- Lade-Indikator: Wenn dieser Text bleibt, ist React nicht gestartet -->
+    <div id="root">
+        <div class="min-h-screen flex items-center justify-center flex-col text-gray-500">
+            <h1 class="text-4xl mb-4">⏳</h1>
+            <h2 class="text-2xl font-bold">Lade App...</h2>
+            <p class="mt-2">Bitte warten. (Falls dies länger als 5s dauert, ist ein Fehler aufgetreten.)</p>
+        </div>
+    </div>
 
-    <script type="text/babel" data-presets="react,env">
+    <!-- Visuelle Fehler-Ausgabe -->
+    <div id="debug-console"></div>
+
+    <script>
+        // Global Error Handler
+        window.onerror = function(msg, url, line) {
+            const consoleDiv = document.getElementById('debug-console');
+            consoleDiv.style.display = 'block';
+            consoleDiv.innerHTML += `<strong>FEHLER:</strong> ${msg}<br><small>${url}:${line}</small><br><br>`;
+            return false;
+        };
+    </script>
+
+    <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
         // ==========================================
@@ -96,11 +111,10 @@
                     { en: "stupid", de: "blöd", type: "neg" }
                 ]
             }
-            // HIER KANNST DU SPÄTER UNIT 3 EINFÜGEN...
         ];
 
         // ==========================================
-        // LOGIC (DO NOT TOUCH UNLESS NEEDED)
+        // LOGIC
         // ==========================================
 
         const speak = (text) => {
@@ -171,18 +185,14 @@
             );
         };
 
-        // --- DYNAMIC VOWEL QUIZ GENERATOR ---
         const AutoVowelQuiz = ({ vocabList }) => {
             const [inputs, setInputs] = useState({});
             
-            // Randomly select 3 unique words from vocab list when component mounts or list changes
             const quizItems = useMemo(() => {
                 if (!vocabList || vocabList.length === 0) return [];
-                // Shuffle array
                 const shuffled = [...vocabList].sort(() => 0.5 - Math.random());
-                // Take first 3
                 return shuffled.slice(0, 3).map(item => ({
-                    id: item.en, // use english word as ID
+                    id: item.en, 
                     original: item.en,
                     masked: item.en.replace(/[aeiou]/gi, '_')
                 }));
@@ -286,7 +296,6 @@
                 speak("Excellent!");
             };
 
-            // Dynamic keys based on config
             const columns = [
                 { id: 'col1', data: parts.col1, color: 'blue' },
                 { id: 'col2', data: parts.col2, color: 'purple' },
@@ -357,10 +366,6 @@
 
         const OpinionTrainer = ({ vocab, opinions, addOpinionToReport }) => {
             const [matches, setMatches] = useState({});
-
-            // We use vocab items for the opinion exercise. 
-            // We assume "What?" from sentence parts is too simple, let's use the vocab list activities.
-            // Filter vocab to things that sound like activities (usually most of them in this level)
             const activities = vocab.map(v => v.en);
 
             return (
@@ -383,7 +388,7 @@
 
                     <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                         <h3 className="font-bold text-gray-700 mb-4">How was it?</h3>
-                        {activities.slice(0, 5).map((activity, i) => ( // Limit to 5 items to not overwhelm
+                        {activities.slice(0, 5).map((activity, i) => (
                             <div key={i} className="mb-4 pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <p className="font-medium text-gray-700 min-w-[150px]">{activity} was...</p>
@@ -444,7 +449,6 @@
                         </div>
 
                         <div className="space-y-8 text-lg leading-relaxed relative z-10">
-                            
                             <div>
                                 <h4 className="font-bold text-gray-900 flex items-center gap-2 mb-2">
                                     <i className="ph ph-check-circle text-green-500"></i>
@@ -470,7 +474,6 @@
                                     </ul>
                                 ) : <p className="text-red-400 text-sm italic">Go to Step 3 to add opinions.</p>}
                             </div>
-
                         </div>
                         
                         <div className="mt-12 pt-6 border-t border-gray-100 flex justify-between items-center text-gray-400 text-xs uppercase tracking-wide">
@@ -490,17 +493,11 @@
             );
         };
 
-        // --- MAIN APP ---
-
         const App = () => {
             const [currentUnitId, setCurrentUnitId] = useState(COURSE_DATA[0].id);
             const [activeTab, setActiveTab] = useState('vocab');
             
-            // Get current Unit Data
             const currentUnit = COURSE_DATA.find(u => u.id === currentUnitId) || COURSE_DATA[0];
-
-            // Report Data State (reset when unit changes?) -> Let's keep it simple, one report per session per unit
-            // We namespace the storage by unitID
             const [reportData, setReportData] = useState({ sentences: [], opinions: {} });
 
             useEffect(() => {
@@ -511,7 +508,6 @@
                 } else {
                     setReportData({ sentences: [], opinions: {} });
                 }
-                // Reset tab to vocab when switching units
                 setActiveTab('vocab');
             }, [currentUnitId]);
 
@@ -564,8 +560,7 @@
             );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
