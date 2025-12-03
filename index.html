@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <!-- Lade-Indikator: Wenn dieser Text bleibt, ist React nicht gestartet -->
+    <!-- Lade-Indikator -->
     <div id="root">
         <div class="min-h-screen flex items-center justify-center flex-col text-gray-500">
             <h1 class="text-4xl mb-4">⏳</h1>
@@ -55,6 +55,27 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
+
+        // ==========================================
+        // HELPER: SAFE STORAGE
+        // ==========================================
+        const safeStorage = {
+            get: (key) => {
+                try {
+                    return localStorage.getItem(key);
+                } catch (e) {
+                    console.warn("Storage access failed:", e);
+                    return null;
+                }
+            },
+            set: (key, value) => {
+                try {
+                    localStorage.setItem(key, value);
+                } catch (e) {
+                    console.warn("Storage write failed:", e);
+                }
+            }
+        };
 
         // ==========================================
         // ANDREAS: HIER DATEN EINFÜGEN / ÄNDERN
@@ -296,6 +317,40 @@
                 speak("Excellent!");
             };
 
+            // FIX: Explicit class mapping instead of dynamic strings for Tailwind
+            const getClassForColor = (color, isActive) => {
+                const baseClasses = "w-full p-3 mb-2 rounded-lg text-left transition-all text-sm font-medium";
+                const colorMap = {
+                    blue: {
+                        active: "bg-blue-600 text-white shadow-lg ring-2 ring-offset-2 ring-blue-400",
+                        inactive: "bg-white text-gray-600 hover:bg-blue-100",
+                        container: "bg-blue-50 border-blue-100 text-blue-800"
+                    },
+                    purple: {
+                        active: "bg-purple-600 text-white shadow-lg ring-2 ring-offset-2 ring-purple-400",
+                        inactive: "bg-white text-gray-600 hover:bg-purple-100",
+                        container: "bg-purple-50 border-purple-100 text-purple-800"
+                    },
+                    orange: {
+                        active: "bg-orange-600 text-white shadow-lg ring-2 ring-offset-2 ring-orange-400",
+                        inactive: "bg-white text-gray-600 hover:bg-orange-100",
+                        container: "bg-orange-50 border-orange-100 text-orange-800"
+                    }
+                };
+                
+                if (isActive) return `${baseClasses} ${colorMap[color].active}`;
+                return `${baseClasses} ${colorMap[color].inactive}`;
+            };
+            
+            const getContainerClass = (color) => {
+                const map = {
+                    blue: "bg-blue-50 border-blue-100 text-blue-800",
+                    purple: "bg-purple-50 border-purple-100 text-purple-800",
+                    orange: "bg-orange-50 border-orange-100 text-orange-800"
+                };
+                return `p-4 rounded-xl border ${map[color]}`;
+            }
+
             const columns = [
                 { id: 'col1', data: parts.col1, color: 'blue' },
                 { id: 'col2', data: parts.col2, color: 'purple' },
@@ -311,12 +366,12 @@
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                         {columns.map(col => (
-                            <div key={col.id} className={`bg-${col.color}-50 p-4 rounded-xl border border-${col.color}-100`}>
-                                <h3 className={`font-bold text-${col.color}-800 mb-3 uppercase text-sm tracking-wide`}>{col.data.title}</h3>
+                            <div key={col.id} className={getContainerClass(col.color)}>
+                                <h3 className="font-bold mb-3 uppercase text-sm tracking-wide">{col.data.title}</h3>
                                 {col.data.items.map(item => (
                                     <button key={item} 
                                         onClick={() => handleSelect(col.id, item)}
-                                        className={`w-full p-3 mb-2 rounded-lg text-left transition-all text-sm font-medium ${selection[col.id] === item ? `bg-${col.color}-600 text-white shadow-lg ring-2 ring-offset-2 ring-${col.color}-400` : `bg-white text-gray-600 hover:bg-${col.color}-100`}`}
+                                        className={getClassForColor(col.color, selection[col.id] === item)}
                                     >
                                         {item}
                                     </button>
@@ -376,14 +431,21 @@
                     </h2>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                        {opinions.map((op, idx) => (
-                            <div key={idx} className={`p-4 rounded-xl text-center border-2 transition-all hover:scale-105 cursor-pointer ${op.type === 'pos' ? 'bg-green-50 border-green-200' : op.type === 'neg' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}`}
-                                 onClick={() => speak(op.en)}
-                            >
-                                <div className="text-xl font-bold text-gray-800">{op.en}</div>
-                                <div className="text-xs text-gray-500 mt-1">{op.de}</div>
-                            </div>
-                        ))}
+                        {opinions.map((op, idx) => {
+                            // Fix Tailwind dynamic classes here too
+                            let bgClass = "bg-yellow-50 border-yellow-200";
+                            if (op.type === 'pos') bgClass = "bg-green-50 border-green-200";
+                            if (op.type === 'neg') bgClass = "bg-red-50 border-red-200";
+
+                            return (
+                                <div key={idx} className={`p-4 rounded-xl text-center border-2 transition-all hover:scale-105 cursor-pointer ${bgClass}`}
+                                     onClick={() => speak(op.en)}
+                                >
+                                    <div className="text-xl font-bold text-gray-800">{op.en}</div>
+                                    <div className="text-xs text-gray-500 mt-1">{op.de}</div>
+                                </div>
+                            );
+                        })}
                     </div>
 
                     <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
@@ -500,9 +562,10 @@
             const currentUnit = COURSE_DATA.find(u => u.id === currentUnitId) || COURSE_DATA[0];
             const [reportData, setReportData] = useState({ sentences: [], opinions: {} });
 
+            // FIX: Use safeStorage instead of direct localStorage access
             useEffect(() => {
                 const storageKey = `english_data_${currentUnitId}`;
-                const saved = localStorage.getItem(storageKey);
+                const saved = safeStorage.get(storageKey);
                 if (saved) {
                     setReportData(JSON.parse(saved));
                 } else {
@@ -513,7 +576,7 @@
 
             useEffect(() => {
                 const storageKey = `english_data_${currentUnitId}`;
-                localStorage.setItem(storageKey, JSON.stringify(reportData));
+                safeStorage.set(storageKey, JSON.stringify(reportData));
             }, [reportData, currentUnitId]);
 
             const addToReport = (sentence) => {
