@@ -7,13 +7,13 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Phosphor Icons (via CDNJS) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/script/phosphor-icons.min.js"></script>
 
-    <!-- ROBUST LIBRARY LOADING (React 17 + Babel 6) -->
-    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- STABILER SERVER (CDNJS) - Wird seltener von Schulfiltern blockiert -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0fdf4; }
@@ -27,6 +27,7 @@
             background: #fee2e2; border-top: 4px solid #ef4444;
             padding: 20px; color: #991b1b; z-index: 9999;
             font-family: monospace;
+            max-height: 50vh; overflow-y: auto;
         }
     </style>
 </head>
@@ -36,7 +37,10 @@
         <div class="min-h-screen flex items-center justify-center flex-col text-gray-500">
             <h1 class="text-4xl mb-4">⏳</h1>
             <h2 class="text-2xl font-bold">Lade App...</h2>
-            <p class="mt-2">Bitte warten. (Falls dies länger als 5s dauert, ist ein Fehler aufgetreten.)</p>
+            <p class="mt-2 text-center max-w-md">
+                Verbinde mit Server...<br>
+                <span class="text-sm text-gray-400">(Falls dies in der Schule nicht lädt, wird 'cdnjs' oder 'tailwindcss' blockiert.)</span>
+            </p>
         </div>
     </div>
 
@@ -44,12 +48,21 @@
     <div id="debug-console"></div>
 
     <script>
-        // Global Error Handler
-        window.onerror = function(msg, url, line) {
+        // Global Error Handler mit mehr Details
+        window.onerror = function(msg, url, line, col, error) {
             const consoleDiv = document.getElementById('debug-console');
             consoleDiv.style.display = 'block';
-            consoleDiv.innerHTML += `<strong>FEHLER:</strong> ${msg}<br><small>${url}:${line}</small><br><br>`;
+            let extra = "";
+            if (error && error.stack) extra = error.stack;
+            consoleDiv.innerHTML += `<strong>FEHLER:</strong> ${msg}<br><small>${url}:${line}</small><br><pre style="font-size:10px">${extra}</pre><br>`;
             return false;
+        };
+        
+        // Catch Promise Errors (z.B. fetch)
+        window.onunhandledrejection = function(event) {
+             const consoleDiv = document.getElementById('debug-console');
+             consoleDiv.style.display = 'block';
+             consoleDiv.innerHTML += `<strong>PROMISE ERROR:</strong> ${event.reason}<br><br>`;
         };
     </script>
 
