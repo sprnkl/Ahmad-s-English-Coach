@@ -239,7 +239,10 @@
             return (
                 <div className="space-y-4">
                     {quizItems.map(item => {
-                        const isCorrect = inputs[item.id]?.toLowerCase().trim() === item.original.toLowerCase();
+                        // FIX: Babel 6 kompatibler Code (kein Optional Chaining ?.)
+                        const val = inputs[item.id] || "";
+                        const isCorrect = val.toLowerCase().trim() === item.original.toLowerCase();
+                        
                         return (
                             <div key={item.id} className="flex flex-col sm:flex-row gap-2 items-center bg-gray-50 p-2 rounded-lg">
                                 <span className="font-mono text-lg bg-white border px-3 py-1 rounded w-full sm:w-48 text-center tracking-widest text-gray-600 font-bold">{item.masked}</span>
@@ -248,10 +251,10 @@
                                     <input 
                                         type="text" 
                                         className={`w-full border-2 p-2 pl-4 rounded-lg outline-none transition-colors ${
-                                            inputs[item.id]?.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'
+                                            val.length > 2 ? (isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-300 bg-red-50') : 'border-gray-200'
                                         }`}
                                         placeholder="Type the full word..."
-                                        value={inputs[item.id] || ''}
+                                        value={val}
                                         onChange={(e) => handleChange(item.id, e.target.value)}
                                     />
                                     {isCorrect && <i className="ph ph-check-circle text-green-500 text-2xl absolute right-2 top-1/2 -translate-y-1/2 animate-bounce"></i>}
