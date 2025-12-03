@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Training: Modular</title>
-    <!-- React & ReactDOM -->
+    
+    <!-- ERROR HANDLER: Zeigt Fehler an statt weißem Bildschirm -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            document.body.innerHTML += '<div style="color:red; background: #fee; padding:20px; border: 2px solid red; margin: 20px; font-family: sans-serif; font-weight:bold; z-index: 9999; position: relative;">⚠️ Fehler: ' + message + '<br><small>Zeile: ' + lineno + '</small></div>';
+        };
+    </script>
+
+    <!-- React & ReactDOM (React 18) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Babel for JSX (AKTUALISIERT auf Version 7) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons -->
@@ -28,7 +38,7 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react,env">
         const { useState, useEffect, useMemo } = React;
 
         // ==========================================
@@ -94,10 +104,12 @@
         // ==========================================
 
         const speak = (text) => {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
         };
 
         const Navigation = ({ activeTab, setActiveTab }) => {
@@ -109,7 +121,7 @@
             ];
 
             return (
-                <div className="bg-white/80 backdrop-blur-sm border-b border-green-100 p-2 mb-6 sticky top-0 z-40">
+                <div className="bg-white/80 backdrop-blur-sm border-b border-green-100 p-2 mb-6 sticky top-0 z-40 shadow-sm">
                     <div className="max-w-4xl mx-auto flex justify-center gap-2 overflow-x-auto hide-scroll">
                         {tabs.map(tab => (
                             <button
