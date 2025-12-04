@@ -254,121 +254,288 @@
             },
             // UNIT 5
             {
-                id: "unit5", title: { en: "5: Shopping", de: "5: Einkaufen", ar: "5: التسوق" }, icon: "🛍️",
+                                id: "unit5",
+                title: { en: "5: Shopping", de: "5: Einkaufen", ar: "5: التسوق" },
+                icon: "🛍️",
                 vocab: [
+                    // Die bisherigen 6
                     { en: "t-shirt", de: "T-Shirt", ar: "قميص", icon: "👕" },
                     { en: "jeans", de: "Jeans", ar: "جينز", icon: "👖" },
                     { en: "apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
                     { en: "banana", de: "Banane", ar: "موزة", icon: "🍌" },
                     { en: "buy", de: "kaufen", ar: "يشتري", icon: "💳" },
-                    { en: "money", de: "Geld", ar: "مال", icon: "💶" }
+                    { en: "money", de: "Geld", ar: "مال", icon: "💶" },
+
+                    // 20 neue Wörter (Kleidung & Supermarkt)
+                    { en: "shoes", de: "Schuhe", ar: "أحذية", icon: "👟" },
+                    { en: "jacket", de: "Jacke", ar: "جاكيت", icon: "🧥" },
+                    { en: "hat", de: "Hut/Mütze", ar: "قبعة", icon: "🧢" },
+                    { en: "dress", de: "Kleid", ar: "فستان", icon: "👗" },
+                    { en: "skirt", de: "Rock", ar: "تنورة", icon: "👚" },
+                    { en: "socks", de: "Socken", ar: "جوارب", icon: "🧦" },
+                    { en: "bag", de: "Tasche/Tüte", ar: "حقيبة", icon: "🛍️" },
+                    { en: "basket", de: "Einkaufskorb", ar: "سلة", icon: "🧺" },
+                    { en: "bread", de: "Brot", ar: "خبز", icon: "🍞" },
+                    { en: "milk", de: "Milch", ar: "حليب", icon: "🥛" },
+                    { en: "egg", de: "Ei", ar: "بيضة", icon: "🥚" },
+                    { en: "cheese", de: "Käse", ar: "جبن", icon: "🧀" },
+                    { en: "meat", de: "Fleisch", ar: "لحم", icon: "🥩" },
+                    { en: "fish", de: "Fisch", ar: "سمك", icon: "🐟" },
+                    { en: "rice", de: "Reis", ar: "أرز", icon: "🍚" },
+                    { en: "sugar", de: "Zucker", ar: "سكر", icon: "🧂" },
+                    { en: "chocolate", de: "Schokolade", ar: "شوكولاتة", icon: "🍫" },
+                    { en: "orange", de: "Orange", ar: "برتقال", icon: "🍊" },
+                    { en: "potato", de: "Kartoffel", ar: "بطاطس", icon: "🥔" },
+                    { en: "tomato", de: "Tomate", ar: "طماطم", icon: "🍅" }
                 ],
                 sentenceParts: {
                     col1: { title: "Person", items: ["I", "We"] },
                     col2: { title: "Verb", items: ["buy", "want", "need"] },
-                    col3: { title: "Item", items: ["a t-shirt", "jeans", "an apple"] }
-                }
+                    col3: { title: "Item", items: ["a t-shirt", "milk", "an apple", "bread"] }
+                },
+                opinions: [
+                    { en: "cheap", de: "billig", ar: "رخيص", type: "pos" },
+                    { en: "expensive", de: "teuer", ar: "غالي", type: "neg" },
+                    { en: "nice", de: "schön", ar: "جميل", type: "pos" },
+                    { en: "ugly", de: "hässlich", ar: "قبيح", type: "neg" }
+                ]
             },
             // UNIT 6
             {
-                id: "unit6", title: { en: "6: My Body", de: "6: Körper", ar: "6: جسمي" }, icon: "💪",
+                id: "unit6",
+                title: { en: "6: My Body", de: "6: Körper", ar: "6: جسمي" },
+                icon: "💪",
                 vocab: [
+                    // Die bisherigen 6
                     { en: "head", de: "Kopf", ar: "رأس", icon: "😶" },
                     { en: "arm", de: "Arm", ar: "ذراع", icon: "💪" },
                     { en: "leg", de: "Bein", ar: "ساق", icon: "🦵" },
                     { en: "hand", de: "Hand", ar: "يد", icon: "✋" },
                     { en: "foot", de: "Fuß", ar: "قدم", icon: "🦶" },
-                    { en: "eye", de: "Auge", ar: "عين", icon: "👁️" }
+                    { en: "eye", de: "Auge", ar: "عين", icon: "👁️" },
+
+                    // 20 neue Wörter (Körperteile)
+                    { en: "nose", de: "Nase", ar: "أنف", icon: "👃" },
+                    { en: "mouth", de: "Mund", ar: "فم", icon: "👄" },
+                    { en: "ear", de: "Ohr", ar: "أذن", icon: "👂" },
+                    { en: "hair", de: "Haare", ar: "شعر", icon: "💇" },
+                    { en: "tooth", de: "Zahn", ar: "سن", icon: "🦷" },
+                    { en: "finger", de: "Finger", ar: "إصبع", icon: "👆" },
+                    { en: "toe", de: "Zeh", ar: "إصبع القدم", icon: "🦶" },
+                    { en: "knee", de: "Knie", ar: "ركبة", icon: "🦵" },
+                    { en: "shoulder", de: "Schulter", ar: "كتف", icon: "🤷" },
+                    { en: "stomach", de: "Bauch/Magen", ar: "معدة", icon: "🤰" },
+                    { en: "back", de: "Rücken", ar: "ظهر", icon: "🔙" },
+                    { en: "neck", de: "Hals", ar: "رقبة", icon: "🧣" },
+                    { en: "face", de: "Gesicht", ar: "وجه", icon: "😀" },
+                    { en: "lips", de: "Lippen", ar: "شفاه", icon: "💋" },
+                    { en: "tongue", de: "Zunge", ar: "لسان", icon: "👅" },
+                    { en: "heart", de: "Herz", ar: "قلب", icon: "❤️" },
+                    { en: "brain", de: "Gehirn", ar: "دماغ", icon: "🧠" },
+                    { en: "skin", de: "Haut", ar: "جلد", icon: "✋" },
+                    { en: "bone", de: "Knochen", ar: "عظم", icon: "🦴" },
+                    { en: "muscle", de: "Muskel", ar: "عضلة", icon: "💪" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Command", items: ["Touch your", "Point to your"] },
-                    col2: { title: "Side", items: ["left", "right"] },
-                    col3: { title: "Part", items: ["hand", "foot", "eye", "ear"] }
-                }
+                    col1: { title: "Command", items: ["Touch your", "Point to your", "Move your"] },
+                    col2: { title: "Side/Adjective", items: ["left", "right", "long", "short"] },
+                    col3: { title: "Part", items: ["hand", "foot", "nose", "ear"] }
+                },
+                opinions: [
+                    { en: "strong", de: "stark", ar: "قوي", type: "pos" },
+                    { en: "weak", de: "schwach", ar: "ضعيف", type: "neg" },
+                    { en: "healthy", de: "gesund", ar: "صحي", type: "pos" },
+                    { en: "sick", de: "krank", ar: "مريض", type: "neg" }
+                ]
             },
             // UNIT 7
             {
-                id: "unit7", title: { en: "7: Travel", de: "7: Reisen", ar: "7: السفر" }, icon: "✈️",
+                                id: "unit7",
+                title: { en: "7: Travel", de: "7: Reisen", ar: "7: السفر" },
+                icon: "✈️",
                 vocab: [
+                    // Die bisherigen 6
                     { en: "train", de: "Zug", ar: "قطار", icon: "🚆" },
                     { en: "bus", de: "Bus", ar: "حافلة", icon: "🚌" },
                     { en: "plane", de: "Flugzeug", ar: "طائرة", icon: "✈️" },
                     { en: "car", de: "Auto", ar: "سيارة", icon: "🚗" },
                     { en: "ticket", de: "Ticket", ar: "تذكرة", icon: "🎫" },
-                    { en: "hotel", de: "Hotel", ar: "فندق", icon: "🏨" }
+                    { en: "hotel", de: "Hotel", ar: "فندق", icon: "🏨" },
+
+                    // 20 neue Reisewörter
+                    { en: "suitcase", de: "Koffer", ar: "حقيبة سفر", icon: "🧳" },
+                    { en: "passport", de: "Reisepass", ar: "جواز سفر", icon: "🛂" },
+                    { en: "backpack", de: "Rucksack", ar: "حقيبة ظهر", icon: "🎒" },
+                    { en: "map", de: "Landkarte", ar: "خريطة", icon: "🗺️" },
+                    { en: "camera", de: "Kamera", ar: "كاميرا", icon: "📷" },
+                    { en: "taxi", de: "Taxi", ar: "سيارة أجرة", icon: "🚕" },
+                    { en: "boat", de: "Boot", ar: "قارب", icon: "⛵" },
+                    { en: "bicycle", de: "Fahrrad", ar: "دراجة", icon: "🚲" },
+                    { en: "airport", de: "Flughafen", ar: "مطار", icon: "🛫" },
+                    { en: "train station", de: "Bahnhof", ar: "محطة قطار", icon: "🚉" },
+                    { en: "bus stop", de: "Bushaltestelle", ar: "موقف حافلات", icon: "🚏" },
+                    { en: "beach", de: "Strand", ar: "شاطئ", icon: "🏖️" },
+                    { en: "sea", de: "Meer", ar: "بحر", icon: "🌊" },
+                    { en: "mountain", de: "Berg", ar: "جبل", icon: "⛰️" },
+                    { en: "tent", de: "Zelt", ar: "خيمة", icon: "⛺" },
+                    { en: "postcard", de: "Postkarte", ar: "بطاقة بريدية", icon: "🖼️" },
+                    { en: "sunglasses", de: "Sonnenbrille", ar: "نظارة شمسية", icon: "🕶️" },
+                    { en: "sun", de: "Sonne", ar: "شمس", icon: "☀️" },
+                    { en: "umbrella", de: "Regenschirm", ar: "مظلة", icon: "☂️" },
+                    { en: "picnic", de: "Picknick", ar: "نزهة", icon: "🧺" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Time", items: ["In summer", "On Monday"] },
-                    col2: { title: "Person", items: ["I", "We"] },
-                    col3: { title: "Action", items: ["go by bus", "go by car", "go by plane"] }
-                }
+                    col1: { title: "Time", items: ["In summer", "On Monday", "Tomorrow"] },
+                    col2: { title: "Person", items: ["I", "We", "My family"] },
+                    col3: { title: "Action", items: ["go by bus", "go by car", "fly to London", "go to the beach"] }
+                },
+                opinions: [
+                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
+                    { en: "slow", de: "langsam", ar: "بطيء", type: "neg" },
+                    { en: "exciting", de: "aufregend", ar: "مثير", type: "pos" },
+                    { en: "boring", de: "langweilig", ar: "ممل", type: "neg" }
+                ]
             },
             // UNIT 8
             {
-                id: "unit8", title: { en: "8: Animals", de: "8: Tiere", ar: "8: الحيوانات" }, icon: "🐾",
+                id: "unit8",
+                title: { en: "8: Animals", de: "8: Tiere", ar: "8: الحيوانات" },
+                icon: "🐾",
                 vocab: [
+                    // Die bisherigen 6
                     { en: "dog", de: "Hund", ar: "كلب", icon: "🐕" },
                     { en: "cat", de: "Katze", ar: "قطة", icon: "🐈" },
                     { en: "lion", de: "Löwe", ar: "أسد", icon: "🦁" },
                     { en: "elephant", de: "Elefant", ar: "فيل", icon: "🐘" },
                     { en: "bird", de: "Vogel", ar: "طائر", icon: "🐦" },
-                    { en: "fish", de: "Fisch", ar: "سمكة", icon: "🐟" }
+                    { en: "fish", de: "Fisch", ar: "سمكة", icon: "🐟" },
+
+                    // 20 neue Tiere
+                    { en: "tiger", de: "Tiger", ar: "نمر", icon: "🐅" },
+                    { en: "monkey", de: "Affe", ar: "قرد", icon: "🐒" },
+                    { en: "bear", de: "Bär", ar: "دب", icon: "🐻" },
+                    { en: "rabbit", de: "Hase", ar: "أرنب", icon: "🐇" },
+                    { en: "horse", de: "Pferd", ar: "حصان", icon: "🐎" },
+                    { en: "cow", de: "Kuh", ar: "بقرة", icon: "🐄" },
+                    { en: "pig", de: "Schwein", ar: "خنزير", icon: "🐖" },
+                    { en: "sheep", de: "Schaf", ar: "خروف", icon: "🐑" },
+                    { en: "chicken", de: "Huhn", ar: "دجاجة", icon: "🐔" },
+                    { en: "duck", de: "Ente", ar: "بطة", icon: "🦆" },
+                    { en: "mouse", de: "Maus", ar: "فأر", icon: "🐁" },
+                    { en: "snake", de: "Schlange", ar: "ثعبان", icon: "🐍" },
+                    { en: "frog", de: "Frosch", ar: "ضفدع", icon: "🐸" },
+                    { en: "turtle", de: "Schildkröte", ar: "سلحفاة", icon: "🐢" },
+                    { en: "spider", de: "Spinne", ar: "عنكبوت", icon: "🕷️" },
+                    { en: "bee", de: "Biene", ar: "نحلة", icon: "🐝" },
+                    { en: "butterfly", de: "Schmetterling", ar: "فراشة", icon: "🦋" },
+                    { en: "crocodile", de: "Krokodil", ar: "تمساح", icon: "🐊" },
+                    { en: "giraffe", de: "Giraffe", ar: "زرافة", icon: "🦒" },
+                    { en: "zebra", de: "Zebra", ar: "حمار وحشي", icon: "🦓" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Start", items: ["Look,", "I see"] },
-                    col2: { title: "Size", items: ["a big", "a small", "a fast"] },
-                    col3: { title: "Animal", items: ["lion", "elephant", "cat", "dog"] }
-                }
+                    col1: { title: "Start", items: ["Look, a", "I see a"] },
+                    col2: { title: "Adjective", items: ["big", "small", "fast", "green"] },
+                    col3: { title: "Animal", items: ["lion", "elephant", "cat", "frog"] }
+                },
+                opinions: [
+                    { en: "cute", de: "süß", ar: "لطيف", type: "pos" },
+                    { en: "dangerous", de: "gefährlich", ar: "خطير", type: "neg" },
+                    { en: "fast", de: "schnell", ar: "سريع", type: "pos" },
+                    { en: "strong", de: "stark", ar: "قوي", type: "pos" }
+                ]
             },
             // UNIT 9
             {
-                id: "unit9", title: { en: "9: Food", de: "9: Essen", ar: "9: الطعام" }, icon: "🍔",
+                                id: "unit9",
+                title: { en: "9: Food & Drinks", de: "9: Essen & Trinken", ar: "9: الطعام والشراب" },
+                icon: "🍔",
                 vocab: [
+                    // Die bisherigen 8
                     { en: "burger", de: "Burger", ar: "برغر", icon: "🍔" },
+                    { en: "pizza", de: "Pizza", ar: "بيتزا", icon: "🍕" },
                     { en: "salad", de: "Salat", ar: "سلطة", icon: "🥗" },
+                    { en: "apple", de: "Apfel", ar: "تفاحة", icon: "🍎" },
                     { en: "water", de: "Wasser", ar: "ماء", icon: "💧" },
                     { en: "milk", de: "Milch", ar: "حليب", icon: "🥛" },
                     { en: "juice", de: "Saft", ar: "عصير", icon: "🧃" },
-                    { en: "cake", de: "Kuchen", ar: "كعكة", icon: "🍰" }
+                    { en: "cake", de: "Kuchen", ar: "كعكة", icon: "🍰" },
+
+                    // 20 neue Wörter (Essen & Trinken)
+                    { en: "bread", de: "Brot", ar: "خبز", icon: "🍞" },
+                    { en: "cheese", de: "Käse", ar: "جبن", icon: "🧀" },
+                    { en: "egg", de: "Ei", ar: "بيضة", icon: "🥚" },
+                    { en: "meat", de: "Fleisch", ar: "لحم", icon: "🥩" },
+                    { en: "fish", de: "Fisch", ar: "سمك", icon: "🐟" },
+                    { en: "rice", de: "Reis", ar: "أرز", icon: "🍚" },
+                    { en: "pasta", de: "Nudeln", ar: "معكرونة", icon: "🍝" },
+                    { en: "potato", de: "Kartoffel", ar: "بطاطس", icon: "🥔" },
+                    { en: "tomato", de: "Tomate", ar: "طماطم", icon: "🍅" },
+                    { en: "carrot", de: "Karotte", ar: "جزر", icon: "🥕" },
+                    { en: "cucumber", de: "Gurke", ar: "خيار", icon: "🥒" },
+                    { en: "banana", de: "Banane", ar: "موز", icon: "🍌" },
+                    { en: "orange", de: "Orange", ar: "برتقال", icon: "🍊" },
+                    { en: "grapes", de: "Trauben", ar: "عنب", icon: "🍇" },
+                    { en: "strawberry", de: "Erdbeere", ar: "فراولة", icon: "🍓" },
+                    { en: "chocolate", de: "Schokolade", ar: "شوكولاتة", icon: "🍫" },
+                    { en: "ice cream", de: "Eis", ar: "آيس كريم", icon: "🍦" },
+                    { en: "tea", de: "Tee", ar: "شاي", icon: "☕" },
+                    { en: "coffee", de: "Kaffee", ar: "قهوة", icon: "☕" },
+                    { en: "soup", de: "Suppe", ar: "حساء", icon: "🥣" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Polite", items: ["I like", "I want"] },
+                    col1: { title: "Polite", items: ["I like", "I want", "Can I have"] },
                     col2: { title: "Action", items: ["to eat", "to drink"] },
-                    col3: { title: "Item", items: ["a burger", "salad", "water", "juice"] }
-                }
+                    col3: { title: "Item", items: ["a burger", "salad", "water", "tea", "an apple"] }
+                },
+                opinions: [
+                    { en: "delicious", de: "lecker", ar: "لذيذ", type: "pos" },
+                    { en: "yummy", de: "lecker (ugs.)", ar: "شهي", type: "pos" },
+                    { en: "hot", de: "heiß", ar: "ساخن", type: "neu" },
+                    { en: "cold", de: "kalt", ar: "بارد", type: "neu" }
+                ]
             },
             // UNIT 10
             {
-                id: "unit10", title: { en: "10: My Day", de: "10: Mein Tag", ar: "10: يومي" }, icon: "⏰",
+                               id: "unit10",
+                title: { en: "10: My Day", de: "10: Mein Tag", ar: "10: يومي" },
+                icon: "⏰",
                 vocab: [
+                    // Die bisherigen 8
                     { en: "morning", de: "Morgen", ar: "صباح", icon: "🌅" },
+                    { en: "night", de: "Nacht", ar: "ليل", icon: "🌙" },
                     { en: "bed", de: "Bett", ar: "سرير", icon: "🛏️" },
+                    { en: "clock", de: "Uhr", ar: "ساعة", icon: "⏰" },
                     { en: "breakfast", de: "Frühstück", ar: "إفطار", icon: "🥣" },
                     { en: "school bus", de: "Schulbus", ar: "حافلة المدرسة", icon: "🚌" },
                     { en: "homework", de: "Hausaufgaben", ar: "واجب منزلي", icon: "📝" },
-                    { en: "shower", de: "Dusche", ar: "استحمام", icon: "🚿" }
+                    { en: "shower", de: "Dusche", ar: "استحمام", icon: "🚿" },
+
+                    // 20 neue Wörter (Tagesablauf)
+                    { en: "alarm clock", de: "Wecker", ar: "منبه", icon: "⏰" },
+                    { en: "toothbrush", de: "Zahnbürste", ar: "فرشاة أسنان", icon: "🪥" },
+                    { en: "toothpaste", de: "Zahnpasta", ar: "معجون أسنان", icon: "tub" },
+                    { en: "soap", de: "Seife", ar: "صابون", icon: "🧼" },
+                    { en: "towel", de: "Handtuch", ar: "منشفة", icon: "🧖" },
+                    { en: "lunch", de: "Mittagessen", ar: "غداء", icon: "🍝" },
+                    { en: "dinner", de: "Abendessen", ar: "عشاء", icon: "🍲" },
+                    { en: "afternoon", de: "Nachmittag", ar: "بعد الظهر", icon: "☀️" },
+                    { en: "evening", de: "Abend", ar: "مساء", icon: "🌆" },
+                    { en: "week", de: "Woche", ar: "أسبوع", icon: "📅" },
+                    { en: "weekend", de: "Wochenende", ar: "عطلة نهاية الأسبوع", icon: "🎉" },
+                    { en: "today", de: "heute", ar: "اليوم", icon: "👇" },
+                    { en: "tomorrow", de: "morgen", ar: "غداً", icon: "👉" },
+                    { en: "hour", de: "Stunde", ar: "ساعة", icon: "⏳" },
+                    { en: "minute", de: "Minute", ar: "دقيقة", icon: "⏱️" },
+                    { en: "pyjamas", de: "Schlafanzug", ar: "بيجامة", icon: "👕" },
+                    { en: "pillow", de: "Kissen", ar: "وسادة", icon: "🛌" },
+                    { en: "school bag", de: "Schultasche", ar: "حقيبة مدرسية", icon: "🎒" },
+                    { en: "bus stop", de: "Bushaltestelle", ar: "موقف حافلات", icon: "🚏" },
+                    { en: "home", de: "Zuhause", ar: "منزل", icon: "🏠" }
                 ],
                 sentenceParts: {
-                    col1: { title: "Time", items: ["In the morning", "At 8 o'clock"] },
-                    col2: { title: "Person", items: ["I", "We"] },
-                    col3: { title: "Action", items: ["get up", "eat breakfast", "go to school"] }
-                }
-            },
-            // UNIT 11
-            {
-                id: "unit11", title: { en: "11: Family", de: "11: Familie", ar: "11: العائلة" }, icon: "👨‍👩‍👧‍👦",
-                vocab: [
-                    { en: "mother", de: "Mutter", ar: "أم", icon: "👩" },
-                    { en: "father", de: "Vater", ar: "أب", icon: "👨" },
-                    { en: "sister", de: "Schwester", ar: "أخت", icon: "👧" },
-                    { en: "brother", de: "Bruder", ar: "أخ", icon: "👦" },
-                    { en: "baby", de: "Baby", ar: "طفل", icon: "👶" },
-                    { en: "friend", de: "Freund", ar: "صديق", icon: "🧑‍🤝‍🧑" }
-                ],
-                sentenceParts: {
-                    col1: { title: "Start", items: ["This is my", "I love my"] },
-                    col2: { title: "Person", items: ["mother", "father", "sister", "brother"] },
-                    col3: { title: "Name", items: ["Anna", "Tom", "Ali", "Sara"] }
+                    col1: { title: "Time", items: ["In the morning", "At 8 o'clock", "In the evening"] },
+                    col2: { title: "Person", items: ["I", "We", "He"] },
+                    col3: { title: "Action", items: ["get up", "eat breakfast", "go to school", "go to bed"] }
                 }
             },
             // UNIT 12
